@@ -4,3 +4,6 @@
 *.old
 *~
 .*.swp
+
+# generated templates
+/_templates
