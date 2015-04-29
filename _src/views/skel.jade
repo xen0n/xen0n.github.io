@@ -1,0 +1,32 @@
+doctype html
+html.browser-modern(lang='cmn')
+  head
+    meta(charset='utf-8')
+
+    title ##TITLE##
+
+    //- meta(name='description', content='')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no')
+    //- meta(name='apple-mobile-web-app-capable', content='yes')
+    //- meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+
+    //- link(rel='icon', type='image/x-icon', href='/static/img/favicon.ico')
+
+    link(rel='stylesheet', href='/static/css/app.css?#{STATIC_CACHEBUSTER_QS}')
+
+    //- script(src='/static/js/bundle.js?#{STATIC_CACHEBUSTER_QS}')
+
+  body
+    .page__wrap
+      //- noscript.page__header__noscript
+        | 请启用 JavaScript 浏览本站以享受最佳体验。
+
+      block content
+
+    footer.page__footer
+
+    //- if !PRODUCTION
+      script(src='//localhost:35729/livereload.js')
+
+
+//- vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:

@@ -1,0 +1,10 @@
+* text
+*.sh text eol=lf
+.gitignore -text
+
+*.jpg binary
+*.png binary
+*.gif binary
+*.psd binary
+*.svg binary
+*.ico binary
