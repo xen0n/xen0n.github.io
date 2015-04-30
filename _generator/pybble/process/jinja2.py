@@ -36,7 +36,7 @@ class Jinja2Process(base.BaseProcess):
 
         context = {
             'post_title': sf.attrs['title'],
-            'post_ctime': sf.attrs['date'],
+            'post_ctime': sf.attrs.get('date', None),
             'post_content': sf.content['content'],
             }
         rendered = template.render(context).encode('utf-8')
