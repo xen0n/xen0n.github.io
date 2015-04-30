@@ -12,6 +12,8 @@ stream:
     args:
       skip_unknown: true
   -
+    name: markdown-pre
+  -
     name: markdown
     args:
       options:

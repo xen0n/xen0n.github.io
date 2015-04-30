@@ -4,6 +4,7 @@
 import pathlib
 
 from . import base
+from ..stream import SkipFile
 
 
 class DestProcess(base.BaseProcess):
@@ -17,6 +18,10 @@ class DestProcess(base.BaseProcess):
         self.base = pathlib.Path(base)
 
     def process_file(self, sf):
+        if sf.virtual:
+            # don't write out virtual (intermediate) files
+            raise SkipFile
+
         # output into self.base
         dest_path = self.base / sf.path
         print(dest_path)

@@ -5,9 +5,11 @@
 class StreamedFile(object):
     '''Streamed file.'''
 
-    def __init__(self, path, content):
+    def __init__(self, path, content, attrs, virtual):
         self.path = path
         self.content = content
+        self.attrs = attrs
+        self.virtual = virtual
 
 
 class SkipFile(Exception):

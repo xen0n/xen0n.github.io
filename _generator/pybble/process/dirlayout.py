@@ -27,6 +27,10 @@ class DirLayoutProcess(base.BaseProcess):
         self.skip_unknown = skip_unknown
 
     def process_file(self, sf):
+        # only process files marked as post
+        if sf.attrs.get('layout', None) != 'post':
+            return sf
+
         match = DATE_INDEXED_FILENAME_RE.match(sf.path.name)
 
         if match is None:
@@ -42,7 +46,7 @@ class DirLayoutProcess(base.BaseProcess):
         # make directory hierarchy
         path = pathlib.Path(Y) / m / d / basename
 
-        return StreamedFile(path, sf.content)
+        return StreamedFile(path, sf.content, sf.attrs, sf.virtual)
 
 
 # vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8:

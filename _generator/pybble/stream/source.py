@@ -19,7 +19,7 @@ class Globber(object):
             with path.open('rb') as fp:
                 content = fp.read()
 
-            yield StreamedFile(path.relative_to(base), content)
+            yield StreamedFile(path.relative_to(base), content, {}, False)
 
 
 # vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8:
