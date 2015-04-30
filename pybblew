@@ -1,0 +1,8 @@
+#!/bin/sh
+
+export PYTHONPATH=./_generator
+
+exec ./_generator/venv/bin/python -c 'import sys; from pybble.cli import main; sys.exit(main(sys.argv))' $@
+
+
+# vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:
