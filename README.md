@@ -12,9 +12,10 @@ Nothing to see here for now; I'll update when I have time.
 ## Build
 
 ```sh
-# gulp is needed for generating the static template
+# you need bower and gulp to generate the static templates
 cd _src
 npm install
+bower install
 gulp
 
 # prepare the generator
