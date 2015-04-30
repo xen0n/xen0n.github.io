@@ -4,6 +4,7 @@
 from . import src
 from . import markdown
 from . import dirlayout
+from . import jinja2
 from . import dest
 
 

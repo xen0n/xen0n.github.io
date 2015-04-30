@@ -1,3 +1,4 @@
 six
 PyYAML
 markdown2
+Jinja2
