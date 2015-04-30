@@ -16,6 +16,16 @@ Nothing to see here for now; I'll update when I have time.
 cd _src
 npm install
 gulp
+
+# prepare the generator
+# create the virtualenv with a Python 3.4+ (only tested on that version)
+cd ../_generator
+virtualenv venv
+./venv/bin/pip install -r requirements.txt
+
+# generate the site
+cd ..
+./pybblew
 ```
 
 
