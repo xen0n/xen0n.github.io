@@ -8,11 +8,13 @@ stream:
       path: '*.md'
       cwd: '_posts'
   -
+    # We got to extract attrs before we can filter out extra files such as
+    # skel...
+    name: markdown-pre
+  -
     name: dirlayout
     args:
       skip_unknown: true
-  -
-    name: markdown-pre
   -
     name: markdown
     args:
