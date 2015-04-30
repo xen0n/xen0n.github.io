@@ -27,8 +27,8 @@ class DirLayoutProcess(base.BaseProcess):
         self.skip_unknown = skip_unknown
 
     def process_file(self, sf):
-        # only process files marked as post
-        if sf.attrs.get('layout', None) != 'post':
+        # don't re-arrange paths of files marked as standalone
+        if sf.attrs.get('standalone', False):
             return sf
 
         match = DATE_INDEXED_FILENAME_RE.match(sf.path.name)
