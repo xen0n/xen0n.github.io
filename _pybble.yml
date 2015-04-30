@@ -25,9 +25,15 @@ stream:
           - tables
           # - spoiler  # seems not working?
   -
+    name: jinja2
+    args:
+      template_dir: '_templates'
+      env:
+        blog_title: 'write(2)'
+  -
     name: dest
     args:
-      base: 'generated'
+      base: '.'
 
 
 # vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:
