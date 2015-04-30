@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-__all__ = [
-    'entry',
-]
+from .. import conf
+from .. import driver
 
 
 def main(argv):
     '''CLI Entrypoint.'''
 
-    print(argv)
+    # use default config for now
+    config = conf.load_config(None)
+
+    # build stream processes
+    stream = driver.stream_from_config(config['stream'])
+
+    # let's stream!
+    stream.run()
+
     return 0
 
 

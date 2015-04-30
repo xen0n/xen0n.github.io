@@ -1,0 +1,29 @@
+# Pybble config.
+
+# build config
+stream:
+  -
+    name: src
+    args:
+      path: '*.md'
+      cwd: '_posts'
+  -
+    name: dirlayout
+    args:
+      skip_unknown: true
+  -
+    name: markdown
+    args:
+      options:
+        extras:
+          - code-friendly
+          - fenced-code-blocks
+          - tables
+          # - spoiler  # seems not working?
+  -
+    name: dest
+    args:
+      base: 'generated'
+
+
+# vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:
