@@ -1,6 +1,6 @@
 ---
 layout: post
-title:
+title: ''
 date: 2015-04-30 00:00:00
 ---
 
