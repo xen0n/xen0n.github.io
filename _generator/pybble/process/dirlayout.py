@@ -12,7 +12,7 @@ DATE_INDEXED_FILENAME_RE = re.compile(
         r'^(?P<Y>\d{4})'
         r'-(?P<m>\d{2})'
         r'-(?P<d>\d{2})'
-        r'-(?P<name>.*)$'
+        r'-(?P<name>.*)\.md$'
         )
 
 
@@ -44,7 +44,7 @@ class DirLayoutProcess(base.BaseProcess):
         Y, m, d, basename = g('Y'), g('m'), g('d'), g('name')
 
         # make directory hierarchy
-        path = pathlib.Path(Y) / m / d / basename
+        path = pathlib.Path(Y) / m / d / basename / 'index.md'
 
         return StreamedFile(path, sf.content, sf.attrs, sf.virtual)
 
