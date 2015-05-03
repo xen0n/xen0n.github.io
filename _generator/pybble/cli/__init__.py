@@ -11,11 +11,19 @@ def main(argv):
     # use default config for now
     config = conf.load_config(None)
 
-    # build stream processes
-    stream = driver.stream_from_config(config['stream'])
+    # build stream driver
+    stream_driver = driver.StreamDriver.from_config(
+            config['streams'],
+            callback=(lambda result: print(
+                ' * Stream {} completed in {} s'.format(
+                    result['stream_name'],
+                    result['time_end'] - result['time_start'],
+                    )
+                ))
+            )
 
     # let's stream!
-    stream.run()
+    stream_driver.execute()
 
     return 0
 
