@@ -35,6 +35,7 @@ class BaseProcess(object):
     '''Base class for process passes.'''
 
     name = None
+    anticausal = False
 
     def __init__(self, prev):
         self.prev = prev
@@ -51,6 +52,14 @@ class BaseProcess(object):
 
             return
 
+        # buffer input if we're anticausal
+        if self.anticausal:
+            input_files = self.prev.run()
+            for sf in self.process_buffered(input_files):
+                yield sf
+
+            return
+
         # stream from the previous process
         for sf in self.prev.run_iter():
             try:
@@ -62,6 +71,9 @@ class BaseProcess(object):
     def process_file(self, sf):
         # base impl does nothing
         return sf
+
+    def process_buffered(self, files):
+        return files
 
     def stream_source(self):
         '''Provide the stream source if asked to be the source process.'''
