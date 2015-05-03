@@ -11,6 +11,16 @@ class StreamedFile(object):
         self.attrs = attrs
         self.virtual = virtual
 
+    def __repr__(self):
+        content_repr = repr(self.content)
+
+        return "<StreamedFile {} [{}] attrs={}: {}>".format(
+                repr(self.path),
+                'V' if self.virtual else '-',
+                repr(self.attrs),
+                repr(self.content),
+                )
+
 
 class SkipFile(Exception):
     '''Exception to raise to skip the currently processed StreamedFile.'''
