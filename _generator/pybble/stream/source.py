@@ -16,6 +16,10 @@ class Globber(object):
     def stream(self):
         base = pathlib.Path(self.cwd)
         for path in base.glob(self.pattern):
+            if not path.is_file():
+                # we're not interested in directories or broken symlinks
+                continue
+
             with path.open('rb') as fp:
                 content = fp.read()
 
