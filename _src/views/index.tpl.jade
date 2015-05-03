@@ -9,7 +9,7 @@ block content
 
     article.post
       h2.post__title
-        a.post__title__link(href='#') {{ article.title }}
+        a.post__title__link(href='/{{ article.path }}/') {{ article.title }}
 
     | {% endfor %}
 
