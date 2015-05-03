@@ -7,4 +7,4 @@ templates:
 	@rm -rf _templates static
 	@cd _src && gulp
 
-.PHONY: pybble-buildd templates
+.PHONY: pybble-build templates
