@@ -6,9 +6,6 @@
 # generated templates
 /_templates
 
-# sourcemaps
-_sourcemap
-
 # generator virtualenv
 /_generator/venv
 
