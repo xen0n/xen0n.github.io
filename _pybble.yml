@@ -3,6 +3,19 @@
 # build config
 streams:
   -
+    # static assets
+    -
+      name: src
+      args:
+        path: '**/*'
+        cwd: '_templates/static'
+    -
+      name: dest
+      args:
+        base: 'static'
+
+  -
+    # rendering
     -
       name: src
       args:
