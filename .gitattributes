@@ -8,3 +8,5 @@
 *.psd binary
 *.svg binary
 *.ico binary
+
+static/**/* binary
