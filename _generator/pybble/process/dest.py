@@ -24,7 +24,7 @@ class DestProcess(base.BaseProcess):
 
         # output into self.base
         dest_path = self.base / sf.path
-        print(dest_path)
+        # print(dest_path)
 
         # mkdir if necessary
         try:
@@ -34,7 +34,7 @@ class DestProcess(base.BaseProcess):
             pass
 
         # write
-        print(repr(sf.content))
+        print(repr(sf))
         with dest_path.open('wb') as fp:
             fp.write(sf.content)
 
