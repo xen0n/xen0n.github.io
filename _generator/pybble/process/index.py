@@ -5,6 +5,16 @@ from . import base
 from ..stream import StreamedFile
 
 
+def post_object_from_sf(sf):
+    tmp = sf.attrs.copy()
+    del tmp['layout']
+
+    # assumes dirlayout-processed path; like `yyyy/mm/dd/index.md`
+    tmp['path'] = sf.path.parent
+
+    return tmp
+
+
 class IndexProcess(base.BaseProcess):
     '''Index generation pass.
 
@@ -38,7 +48,8 @@ class IndexProcess(base.BaseProcess):
                 posts_indexed.append((-sf.attrs.get('date').timestamp(), sf, ))
 
         posts_indexed.sort()
-        index_file.attrs['posts'] = [post.attrs for _, post in posts_indexed]
+        post_objs = [post_object_from_sf(post) for _, post in posts_indexed]
+        index_file.attrs['posts'] = post_objs
 
         return files
 
