@@ -25,6 +25,8 @@ stream:
           - tables
           # - spoiler  # seems not working?
   -
+    name: index
+  -
     name: jinja2
     args:
       template_dir: '_templates'
