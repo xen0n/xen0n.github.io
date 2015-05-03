@@ -19,10 +19,11 @@ var JADE_SRC = './views/*.tpl.jade';
 var TEMPLATE_DEST = TEMPLATE_ROOT;
 var SASS_WATCH = './sass/**/*.scss';
 var JADE_WATCH = './views/**/*.jade';
+var ENABLE_CACHEBUSTER = false;
 
 
 var getStaticCachebuster = function() {
-  return (+new Date()).toString(36);
+  return ENABLE_CACHEBUSTER ? '?_ts=' + (+new Date()).toString(36) : '';
 };
 
 
@@ -44,8 +45,9 @@ gulp.task('sass', function() {
 
 
 gulp.task('jade', function() {
-  var jadeLocals = {
-    STATIC_CACHEBUSTER_QS: '_ts=' + getStaticCachebuster()
+  var jadeLocals;
+  jadeLocals = {
+    STATIC_CACHEBUSTER_QS: getStaticCachebuster()
   };
 
   var jadeOptions = {
