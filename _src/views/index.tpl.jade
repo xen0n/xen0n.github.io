@@ -4,5 +4,14 @@ extends skel.jade
 block content
   h1 It works!
 
+  section.posts
+    | {% for article in post.attrs.posts %}
+
+    article.post
+      h2.post__title
+        a.post__title__link(href='#') {{ article.title }}
+
+    | {% endfor %}
+
 
 //- vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:
