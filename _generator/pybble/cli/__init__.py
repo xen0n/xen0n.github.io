@@ -14,11 +14,14 @@ def main(argv):
     # build stream driver
     stream_driver = driver.StreamDriver.from_config(
             config['streams'],
-            callback=(lambda result: print(
-                ' * Stream {} completed in {} s'.format(
-                    result['stream_name'],
-                    result['time_end'] - result['time_start'],
-                    )
+            callback=(lambda result: (
+                print(
+                    ' * Stream {} {} in {} s'.format(
+                        result['stream_name'],
+                        'completed' if not result['exception'] else 'errored',
+                        result['time_end'] - result['time_start'],
+                        )),
+                (print(result['exception']) if result['exception'] else 0),
                 ))
             )
 

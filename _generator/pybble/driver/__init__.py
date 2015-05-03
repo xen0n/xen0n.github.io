@@ -34,13 +34,21 @@ class StreamDriverThread(threading.Thread):
 
     def run(self):
         time_start = time.time()
-        self.process.run()
+        exc = None
+
+        # always report a result to avoid infinitely blocking the main thread
+        try:
+            self.process.run()
+        except Exception as e:
+            exc = e
+
         time_end = time.time()
 
         result = {
                 'stream_name': self.stream_name,
                 'time_start': time_start,
                 'time_end': time_end,
+                'exception': exc,
                 }
         self.result_queue.put(result)
 
