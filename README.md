@@ -14,19 +14,18 @@ Nothing to see here for now; I'll update when I have time.
 ```sh
 # you need bower and gulp to generate the static templates
 cd _src
-npm install
+npm install --dev
 bower install
-gulp
 
 # prepare the generator
 # create the virtualenv with a Python 3.4+ (only tested on that version)
 cd ../_generator
-virtualenv venv
+pyvenv-3.4 venv
 ./venv/bin/pip install -r requirements.txt
 
 # generate the site
 cd ..
-./pybblew
+make templates && make
 ```
 
 
