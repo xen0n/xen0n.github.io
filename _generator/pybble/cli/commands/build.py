@@ -10,7 +10,7 @@ def build_cmd(config, args):
             config['streams'],
             callback=(lambda result: (
                 print(
-                    ' * Stream {} {} in {} s'.format(
+                    ' * Stream {} {} in {:.3f} s'.format(
                         result['stream_name'],
                         'completed' if not result['exception'] else 'errored',
                         result['time_end'] - result['time_start'],
