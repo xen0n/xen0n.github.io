@@ -1,7 +1,7 @@
 all: pybble-build
 
 pybble-build:
-	@./pybblew
+	@./pybblew build
 
 templates:
 	@rm -rf _templates static
