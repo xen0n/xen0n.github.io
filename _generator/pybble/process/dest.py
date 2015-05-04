@@ -34,7 +34,8 @@ class DestProcess(base.BaseProcess):
             pass
 
         # write
-        print(repr(sf))
+        # TODO: add debug switch
+        #print(repr(sf))
         with dest_path.open('wb') as fp:
             fp.write(sf.content)
 
