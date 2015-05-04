@@ -4,7 +4,7 @@
 import argparse
 
 from .. import conf
-from .. import driver
+from .commands import build
 
 parser = argparse.ArgumentParser(
         description='Pybble command-line interface.',
@@ -15,34 +15,12 @@ parser.add_argument('-c', dest='config', help='Config file to use')
 subparsers = parser.add_subparsers(
         title='sub-commands')
 
+# TODO: refactor this into subcommand module
 parser_build = subparsers.add_parser(
         'build',
         help='Build the specified project',
         )
-
-
-def build_cmd(config, args):
-    # build stream driver
-    stream_driver = driver.StreamDriver.from_config(
-            config['streams'],
-            callback=(lambda result: (
-                print(
-                    ' * Stream {} {} in {} s'.format(
-                        result['stream_name'],
-                        'completed' if not result['exception'] else 'errored',
-                        result['time_end'] - result['time_start'],
-                        )),
-                (print(result['exception']) if result['exception'] else 0),
-                ))
-            )
-
-    # let's stream!
-    stream_driver.execute()
-
-    return 0
-
-
-parser_build.set_defaults(func=build_cmd)
+parser_build.set_defaults(func=build.build_cmd)
 
 
 def main():
