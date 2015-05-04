@@ -1,8 +1,18 @@
-#!/bin/sh
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-export PYTHONPATH=./_generator
+import sys
+import pathlib
 
-exec ./_generator/venv/bin/python -c 'import sys; from pybble.cli import main; sys.exit(main(sys.argv))' $@
+THIS_DIR = pathlib.Path(__file__).parent
+PYBBLE_PATH = THIS_DIR / '_generator'
+sys.path.insert(0, str(PYBBLE_PATH.resolve()))
+
+from pybble.cli import main
 
 
-# vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:
+if __name__ == '__main__':
+    sys.exit(main())
+
+
+# vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8:
