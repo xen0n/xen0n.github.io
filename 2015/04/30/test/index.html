@@ -8,11 +8,17 @@
   </head>
   <body>
     <div class="page__wrap">
-      <article>
-        <header class="article__header">
-          <h1 class="article__header__title">测试文章</h1>
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title">write(2)</h1>
+          </div>
         </header>
-        <div class="article__content"><h2>测试小标题</h2>
+        <article>
+          <header class="article__header">
+            <h1 class="article__header__title">测试文章</h1>
+          </header>
+          <div class="article__content"><h2>测试小标题</h2>
 
 <p>wow this markdown <em>so python</em> <code>much github</code> <strong>very flavor</strong></p>
 
@@ -47,8 +53,11 @@
 
 <!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
 </div>
-      </article>
+        </article>
+      </div>
     </div>
-    <footer class="page__footer"></footer>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
   </body>
 </html>
