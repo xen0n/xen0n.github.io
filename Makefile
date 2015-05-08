@@ -1,7 +1,7 @@
 all: pybble-build
 
 pybble-build:
-	@./pybblew build
+	@./_generator/venv/bin/python3 ./pybblew build
 
 templates:
 	@rm -rf _templates static
