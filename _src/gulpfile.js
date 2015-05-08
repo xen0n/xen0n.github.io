@@ -66,9 +66,21 @@ gulp.task('jade', function() {
 });
 
 
+var pybbleRun = function() {
+  return run('make', { cwd: '..' });
+};
+
+
+gulp.task('pybble', function(cb) {
+  pybbleRun().exec(function(err) {
+    cb(err);
+  });
+});
+
+
 var makePybbleWatchTask = function(depTask) {
   gulp.task('pybble-' + depTask, [depTask], function(cb) {
-    run('make', { cwd: '..' }).exec(function(err) {
+    pybbleRun().exec(function(err) {
       cb(err);
     });
   });
@@ -83,7 +95,7 @@ makePybbleWatchTask('sass');
 makePybbleWatchTask('jade');
 
 
-gulp.task('serve', ['sass', 'jade'], function() {
+gulp.task('serve', ['sass', 'jade', 'pybble'], function() {
   bs.init({
     server: {
       baseDir: '..'
@@ -95,7 +107,7 @@ gulp.task('serve', ['sass', 'jade'], function() {
 });
 
 
-gulp.task('default', ['sass', 'jade']);
+gulp.task('default', ['sass', 'jade', 'pybble']);
 
 
 // vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:
