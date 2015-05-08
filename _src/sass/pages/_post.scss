@@ -99,6 +99,14 @@
     margin-bottom: $spacing-small * 2;
   }
 
+  & em {
+    font-style: italic;
+  }
+
+  & strong {
+    font-weight: bold;
+  }
+
   & code {
     display: inline-block;
 
