@@ -1,0 +1,34 @@
+// https://css-tricks.com/html-vs-body-in-css/
+html {
+  color: $grey-900;
+  background-color: $grey-50;
+
+  font: $body-font-weight $body-font-size $body-font-family;
+  line-height: $body-line-height;
+}
+
+
+// http://www.cssstickyfooter.com
+html,
+body {
+  height: 100%;
+}
+
+.page__wrap {
+  min-height: 100%;
+}
+
+.page__root {
+  overflow: auto;
+  padding-bottom: $footer-height;
+}
+
+.page__footer {
+  position: relative;
+  margin-top: -$footer-height;
+  height: $footer-height;
+  clear: both;
+}
+
+
+// vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:

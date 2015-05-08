@@ -1,0 +1,32 @@
+// simple mixin for accessing FontAwesome directly without axtra tags
+@mixin fa-inplace($fa-var, $font-size: inherit, $force-line-height: true) {
+  // font-awesome/scss/_core.scss
+  display: inline-block;
+
+  @if $force-line-height == 'true' or $force-line-height == 'yes' {
+    @if $font-size == 'inherit' {
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+    } @else {
+      font: normal normal normal $font-size/1 FontAwesome;
+    }
+  } @else {
+    @if $font-size == 'inherit' {
+      font: normal normal normal 14px FontAwesome;
+      font-size: inherit;
+    } @else {
+      font: normal normal normal $font-size FontAwesome;
+    }
+    line-height: inherit;
+  }
+
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // font-awesome/scss/_icons.scss
+  content: $fa-var;
+}
+
+
+// vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:

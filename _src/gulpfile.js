@@ -30,7 +30,12 @@ var getStaticCachebuster = function() {
 
 gulp.task('sass', function() {
   var sassOptions = {
-    outputStyle: 'compressed'
+    outputStyle: 'compressed',
+    includePaths: [
+      'bower_components/bourbon/app/assets/stylesheets',
+      'bower_components/neat/app/assets/stylesheets',
+      'bower_components/font-awesome/scss'
+    ]
   };
 
   gulp.src(SASS_APP)

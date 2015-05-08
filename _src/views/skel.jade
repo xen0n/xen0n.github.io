@@ -18,18 +18,22 @@ html.browser-modern(lang='cmn')
 
   body
     .page__wrap
-      //- noscript.page__header__noscript
-        | 请启用 JavaScript 浏览本站以享受最佳体验。
+      .page__root
+        //- noscript.page__header__noscript
+          | 请启用 JavaScript 浏览本站以享受最佳体验。
 
-      block content
+        include header
+
+        block content
 
     footer.page__footer
-      | &copy; 2015
+      .page__footer__content
+        | &copy; 2015
 
-      a(href='https://github.com/xen0n') xen0n
+        span.page__footer__author xen0n
 
-      span.page__footer__links
-        i.page__footer__link--github
+        span.page__footer__links
+          a.page__footer__link--github(href='https://github.com/xen0n') github
 
     //- if !PRODUCTION
       script(src='//localhost:35729/livereload.js')

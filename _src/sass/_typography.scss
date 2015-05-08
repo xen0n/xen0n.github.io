@@ -1,0 +1,52 @@
+$body-font-size: 16px !default;
+$body-font-weight: 200 !default;
+$body-line-height: 1.5 !default;
+
+$helvetica-without-fallback: remove-last($helvetica);
+
+$sans-prefer-font-family-western: (
+  "Source Sans Pro"
+  ) !default;
+
+$sans-font-family-western: join(
+  $sans-prefer-font-family-western,
+  $helvetica-without-fallback,
+  'comma'
+  ) !default;
+
+$sans-font-family-chinese: (
+  "Source Han Sans SC"
+  "WenQuanYi Micro Hei"
+  "Microsoft YaHei"
+  SimSun
+  ) !default;
+
+$sans-font-family: join(
+  $sans-font-family-western,
+  $sans-font-family-chinese,
+  'comma'
+  ),
+  sans-serif !default;
+
+$body-font-family: $sans-font-family;
+
+$font-family-monospace-western: (
+  'Source Code Pro',
+  'Inconsolata',
+  'DejaVu Sans Mono',
+  'Menlo',
+  'Monaco',
+  'Consolas',
+  'Courier New'
+  ) !default;
+
+$font-family-monospace-chinese: $sans-font-family-chinese !default;
+$font-family-monospace: join(
+  $font-family-monospace-western,
+  $font-family-monospace-chinese,
+  'comma'
+  ),
+  monospace !default;
+
+
+// vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:
