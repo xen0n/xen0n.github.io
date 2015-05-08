@@ -140,6 +140,36 @@
 
     @include highlight-solarized-light;
   }
+
+  & table {
+    width: 80%;
+    margin: $spacing-small auto;
+  }
+
+  & th {
+    background-color: $grey-200;
+
+    font-weight: bold;
+  }
+
+  & th,
+  & td {
+    border: 1px solid $grey-300;
+
+    padding: 0.5rem;
+
+    &[align='center'] {
+      text-align: center;
+    }
+
+    &[align='left'] {
+      text-align: left;
+    }
+
+    &[align='right'] {
+      text-align: right;
+    }
+  }
 }
 
 
