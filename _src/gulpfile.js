@@ -4,9 +4,10 @@ var gulp = require('gulp');
 var changed = require('gulp-changed');
 var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
-var filter = require('gulp-filter');
+// var filter = require('gulp-filter');
 var sass = require('gulp-sass');
 var jade = require('gulp-jade');
+var run = require('gulp-run');
 var bs = require('browser-sync').create();
 
 
@@ -38,8 +39,7 @@ gulp.task('sass', function() {
       .pipe(sass(sassOptions))
     .pipe(sourcemaps.write(CSS_SOURCEMAP_REL_DEST))
     .pipe(gulp.dest(CSS_DEST))
-    .pipe(filter('**/*.css'))
-    .pipe(bs.reload({ stream: true }))
+    // .pipe(filter('**/*.css'))
     ;
 });
 
@@ -66,19 +66,31 @@ gulp.task('jade', function() {
 });
 
 
-gulp.task('jade-watch', ['jade'], function() {
-  bs.reload();
-});
+var makePybbleWatchTask = function(depTask) {
+  gulp.task('pybble-' + depTask, [depTask], function(cb) {
+    run('make', { cwd: '..' }).exec(function(err) {
+      cb(err);
+    });
+  });
+
+  gulp.task(depTask + '-watch', ['pybble-' + depTask], function() {
+    bs.reload();
+  });
+};
+
+
+makePybbleWatchTask('sass');
+makePybbleWatchTask('jade');
 
 
 gulp.task('serve', ['sass', 'jade'], function() {
   bs.init({
     server: {
-      baseDir: TEMPLATE_DEST
+      baseDir: '..'
     }
   });
 
-  gulp.watch(SASS_WATCH, ['sass']);
+  gulp.watch(SASS_WATCH, ['sass-watch']);
   gulp.watch(JADE_WATCH, ['jade-watch']);
 });
 
