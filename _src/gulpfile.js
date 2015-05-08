@@ -36,7 +36,7 @@ gulp.task('sass', function() {
   gulp.src(SASS_APP)
     .pipe(changed(CSS_DEST))
     .pipe(sourcemaps.init())
-      .pipe(sass(sassOptions))
+      .pipe(sass(sassOptions).on('error', sass.logError))
     .pipe(sourcemaps.write(CSS_SOURCEMAP_REL_DEST))
     .pipe(gulp.dest(CSS_DEST))
     // .pipe(filter('**/*.css'))
