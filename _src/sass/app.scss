@@ -20,7 +20,12 @@
 @import 'header';
 @import 'footer';
 
+@import 'highlight/solarized-common';
+@import 'highlight/solarized-dark';
+@import 'highlight/solarized-light';
+
 @import 'pages/index';
+@import 'pages/post';
 
 @import 'shame';
 
