@@ -112,7 +112,7 @@ gulp.task('serve', ['sass', 'jade', 'pybble'], function() {
 });
 
 
-gulp.task('default', ['sass', 'jade', 'pybble']);
+gulp.task('default', ['sass', 'jade']);
 
 
 // vim:set ai et ts=2 sw=2 sts=2 fenc=utf-8:
