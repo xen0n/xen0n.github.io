@@ -95,7 +95,11 @@
     @include md-heading-prefix('######');
   }
 
-  & p {
+  & p,
+  & .codehilite,
+  & ul,
+  & ol,
+  & table {
     margin-bottom: $spacing-small * 2;
   }
 
