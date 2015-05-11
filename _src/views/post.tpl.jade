@@ -1,6 +1,10 @@
 extends skel.jade
 
 
+block title
+  | {{ post.attrs.title }} - {{ blog_title }}
+
+
 block content
   article.post-article
     header.article__header

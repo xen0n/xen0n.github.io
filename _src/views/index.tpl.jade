@@ -1,6 +1,10 @@
 extends skel.jade
 
 
+block title
+  | {{ blog_title }}
+
+
 block content
   section.posts
     | {% for article in post.attrs.posts %}
