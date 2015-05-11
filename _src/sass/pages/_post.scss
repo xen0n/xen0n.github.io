@@ -111,6 +111,22 @@
     font-weight: bold;
   }
 
+  & a {
+    color: $blue-500;
+    // border-bottom: 1px dashed $blue-500;
+    // text-decoration: underline;
+
+    &:hover {
+      background-color: $grey-200;
+    }
+
+    &:after {
+      @include fa-inplace($fa-var-external-link, 1rem);
+
+      margin-left: 0.25em;
+    }
+  }
+
   & ul,
   & ol {
     margin-left: $spacing-small * 2;
