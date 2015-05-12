@@ -87,9 +87,165 @@ CSS 的感觉一样. 那么我们的想法就是:</p>
 
 <h2>实现</h2>
 
-<p>Node.js 生成模板的方面, 并没有什么有趣的内容, 不提了.</p>
+<h3>Node.js 生成模板</h3>
 
-<p><strong>TODO: Python 部分的内容, 今天有点晚了先坑着吧 ;-)</strong></p>
+<p>并没有什么有趣的内容, 在此基本略过. 这部分代码位于博客 repo 的 <code>_src/</code> 目录下,
+编译结果输出到 <code>_templates/</code> 目录 (被 .gitignore 了), 又加了个 BrowserSync
+调试的功能, 其他的确实没什么了.</p>
+
+<h3>Python 静态网页生成器</h3>
+
+<p>这是主要工作; 代码在 <code>_generator/</code> 目录里, 实际上是个独立的项目, 只不过暂且没什么闲情逸致推到 PyPI 上而已...
+项目名字叫 Pybble (发音若 pebble), 是 <code>py-blog</code> 简化发音而来的.</p>
+
+<p>Pybble 的架构是受 Gulp 启发的, 也是基于流的结构. 处理流程放在 <code>pybble.process</code> 包里 (<code>process</code> 这个名字也许会换掉, 不过先这么用着好了):</p>
+
+<div class="codehilite"><pre><code><span class="c"># process/base.py</span>
+<span class="kn">from</span> <span class="nn">..stream</span> <span class="kn">import</span> <span class="n">SkipFile</span>
+
+
+<span class="k">class</span> <span class="nc">BaseProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Base class for process passes.&#39;&#39;&#39;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">anticausal</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Process a stream of StreamedFiles.&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_iter</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">run_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># we&#39;re source</span>
+            <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_source</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="n">sf</span>
+
+            <span class="k">return</span>
+
+        <span class="c"># buffer input if we&#39;re anticausal</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anticausal</span><span class="p">:</span>
+            <span class="n">input_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_buffered</span><span class="p">(</span><span class="n">input_files</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">sf</span>
+
+            <span class="k">return</span>
+
+        <span class="c"># stream from the previous process</span>
+        <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev</span><span class="o">.</span><span class="n">run_iter</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_file</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">SkipFile</span><span class="p">:</span>
+                <span class="c"># skip this file</span>
+                <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">process_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sf</span><span class="p">):</span>
+        <span class="c"># base impl does nothing</span>
+        <span class="k">return</span> <span class="n">sf</span>
+
+    <span class="k">def</span> <span class="nf">process_buffered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">files</span>
+
+    <span class="k">def</span> <span class="nf">stream_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Provide the stream source if asked to be the source process.&#39;&#39;&#39;</span>
+
+        <span class="c"># base impl returns empty iterable</span>
+        <span class="k">return</span> <span class="p">[]</span>
+</code></pre></div>
+
+<p>核心思路就是这样, 由多个 processes 相互连接构成一条流, 其中也允许一些 processes
+看到所有文件而非流式处理, 就可以实现一些生成目录、标签这样的需要预先读取所有输入的功能了.
+具体的实现都在 <code>pybble.process</code> 包里, 这里就不摘抄了... 比起具体流程的实现,
+我们更关心这些流程是如何串起来的, 在 Pybble 里我们是通过配置文件来控制数据流的.
+从命令行入口 (<code>pybble.cli</code>) 调用 <code>build</code> 命令时, 我们通过 <code>pybble.conf</code> 包加载
+YAML 格式的配置文件, 里面就包含了 0 或多条流的定义; 这些定义将由 <code>pybble.driver</code>
+包转化为相应的一串 process 类实例:</p>
+
+<div class="codehilite"><pre><code><span class="c"># driver/__init__.py</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">process</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+
+<span class="k">def</span> <span class="nf">stream_from_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Instantiate linked processes from a stream config.&#39;&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">_process_from_config</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_process_from_config</span><span class="p">(</span><span class="n">sofar</span><span class="p">,</span> <span class="n">process_decl</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Instantiate a process with the given config.&#39;&#39;&#39;</span>
+
+    <span class="n">name</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">process_decl</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span> <span class="n">process_decl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="n">process</span><span class="o">.</span><span class="n">get_process</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">sofar</span><span class="p">)</span>
+
+
+<span class="c"># process/__init__.py</span>
+<span class="k">def</span> <span class="nf">get_process</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">prev_process</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_KNOWN_PROCESSES</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">prev_process</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+</code></pre></div>
+
+<p>这里略去了注册流程类的内容... 如你所见, 就是一个实例化 processes 并相互连接的过程.</p>
+
+<div class="codehilite"><pre><code><span class="c"># driver/__init__.py (continued)</span>
+<span class="k">class</span> <span class="nc">StreamDriver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Stream driver driving one or more streams.&#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streams</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">streams</span> <span class="o">=</span> <span class="n">streams</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_config</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">stream_from_config</span><span class="p">(</span><span class="n">stream_decl</span><span class="p">)</span> <span class="k">for</span> <span class="n">stream_decl</span> <span class="ow">in</span> <span class="n">config</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nb_streams</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
+        <span class="n">result_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">nb_streams</span><span class="p">)</span>
+        <span class="n">threads</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">StreamDriverThread</span><span class="p">(</span><span class="n">process</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="n">result_queue</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">process</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
+                <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+            <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_streams</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="c"># this shouldn&#39;t be necessary but do it anyway</span>
+        <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+            <span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</code></pre></div>
+
+<p>多线程执行, 一个线程对应一条流, 于是我们可以实现很多条流同时运行了. 这里暂时无视掉
+Python 的 GIL... 所幸 Python 在进行 I/O 操作时会释放 GIL, 对于 I/O-bound 的
+Pybble 而言, 只能单线程跑 CPU-bound 的渲染过程对性能的影响应该并不大.</p>
+
+<p>关于 Pybble 的配置, 文件名我参考了 Travis CI 的 <code>.travis.yml</code> 和 Jekyll 的
+<code>_config.yml</code>, 取了一个十分山寨的 <code>_pybble.yml</code>, 在里头跑了两条流, 一条是编译 HTML 页面,
+一条是拷贝静态 assets. 至于为什么不直接让 Gulp 输出成品的静态 assets 到 <code>static/</code>
+目录呢? 这是考虑万一有需要再次预处理 assets 中的内容 (比如在 CSS 里注入点生成内容什么的),
+就不必改目录结构了.</p>
+
+<h3>Wrapping it up</h3>
+
+<p>为了少打字, 我又写了一个简单的 Makefile, 这样就可以打 <code>make</code> 构建整个站点啦.
+当然, 相比 Jekyll 的服务器端自动运行, Pybble 只能在本地运行, 相应地每次更新完内容都要多做一次 commit,
+显得十分不优雅; 但毕竟这一点无法 work around, 就忍了吧. 至于为什么我没有放一个
+<code>.nojekyll</code> 完全禁用 Jekyll? 我测试过, 显然禁用了 Jekyll 会造成所有跟内容无关的文件都出现在网站目录下,
+包括所有的配置文件和构建系统相关的内容... 出于强迫症, 我觉得留着 Jekyll 让它实现一个选择性拷贝的功能还是不错的, 所以就把 <code>.nojekyll</code> 给 revert 掉了.</p>
+
+<h2>后记</h2>
+
+<p>其实这一套系统还可以做到更多, 比如支持个标签啦分类什么的, 本质上跟实现首页文章索引没什么区别;
+加个评论模块也很方便, 实际上评论模块对站点生成器而言就是一段静态代码, 直接写进模板就好.
+不过目前来看, 先做这么多吧, 还有很多事情要做呢, 知乎上好像还有好多坑没填呢... (逃</p>
 </div>
         </article>
       </div>
