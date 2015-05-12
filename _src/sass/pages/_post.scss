@@ -2,6 +2,10 @@
   @include outer-container;
 }
 
+.post-comments {
+  @include outer-container;
+}
+
 .article__header {
   font-size: 150%;
 
