@@ -89,13 +89,13 @@ CSS 的感觉一样. 那么我们的想法就是:</p>
 
 <h3>Node.js 生成模板</h3>
 
-<p>并没有什么有趣的内容, 在此基本略过. 这部分代码位于博客 repo 的 <code>_src/</code> 目录下,
+<p>并没有什么有趣的内容, 在此基本略过. 这部分代码位于博客 repo 的 <a href="https://github.com/xen0n/xen0n.github.io/tree/master/_src"><code>_src/</code></a> 目录下,
 编译结果输出到 <code>_templates/</code> 目录 (被 .gitignore 了), 又加了个 BrowserSync
 调试的功能, 其他的确实没什么了.</p>
 
 <h3>Python 静态网页生成器</h3>
 
-<p>这是主要工作; 代码在 <code>_generator/</code> 目录里, 实际上是个独立的项目, 只不过暂且没什么闲情逸致推到 PyPI 上而已...
+<p>这是主要工作; 代码在 <a href="https://github.com/xen0n/xen0n.github.io/tree/master/_generator"><code>_generator/</code></a> 目录里, 实际上是个独立的项目, 只不过暂且没什么闲情逸致推到 PyPI 上而已...
 项目名字叫 Pybble (发音若 pebble), 是 <code>py-blog</code> 简化发音而来的.</p>
 
 <p>Pybble 的架构是受 Gulp 启发的, 也是基于流的结构. 处理流程放在 <code>pybble.process</code> 包里 (<code>process</code> 这个名字也许会换掉, 不过先这么用着好了):</p>
