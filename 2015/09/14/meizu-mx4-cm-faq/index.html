@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>CyanogenMod for 魅族 MX4: 常见问题解答 #1 - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">CyanogenMod for 魅族 MX4: 常见问题解答 #1</h1>
+          </header>
+          <div class="article__content"><h2>BL 锁规避进度</h2>
+
+<p>你应该已经知道了, 安卓版的 MX4 有 BL 锁, 只能跑 Flyme. 由于 MTK
+的<s>安全</s>受限引导特性, 有分区通不过 RSA 签名校验的话, 手机会硬变砖,
+充电都充不进去, 因为锁执行得比其他组件的初始化都早. 而且因为引导 ROM (BROM)
+是硬件层面上锁的, 用 SP Flash Tools 也不能救砖.</p>
+
+<p>尽管如此, 我们还是可以往 MX4 上移植第三方安卓系统. 这里我们要感谢魅族的工程师,
+Flyme 的启动过程没有与 AOSP 产生太大差异, 这意味着我们可以混搭 Flyme 的 <code>boot</code>
+分区和第三方的 <code>system</code> 分区 (尽管会失去一些功能, 比如需要修改 init 脚本的功能).</p>
+
+<p>另一种思路是向原版内核移植 <code>kexec</code> 功能, 在原版内核载入后, 以它为跳板,
+接着载入一个相同的内核和我们的 initramfs. 因为魅族没有将内核开源,
+所以我们只能用相同的内核, 然而他们并没有关掉内核的模块支持, 这很关键.</p>
+
+<p>目前进度:</p>
+
+<ul>
+<li><p>不可行: <strong>不要尝试</strong> 用从 Ubuntu 版提取的分区映像直接刷掉对应分区</p>
+
+<ul>
+<li><code>preloader</code> (<code>/dev/block/mmcblk0boot0</code>)</li>
+<li><code>lk</code></li>
+<li><code>seccfg</code></li>
+<li><code>secro</code></li>
+<li><code>flashinfo</code></li>
+</ul>
+
+<p>这种思路尽管理论上完全可行 (因为它 <strong>看起来</strong> 换掉了引导过程涉及的所有代码),
+实际上还是会硬变砖, 这可能是因为我们从 Linux 无法访问到 BROM,
+而其中存放了另外一部分的加密信息. 访问 BROM 的唯一方法也许是特殊的硬件调试设备,
+然而获取这种设备并做破解工作可能有法律风险.
+我测试这个思路前后砖了两台微博招募的小白鼠机器, 所以劝各位不要尝试.
+我要让你们知道我刷了是这个样子, 你们刷了也是这个样子 (作劈砖状)</p></li>
+<li><p>可行: 修改系统底层使其能在 MTK/Flyme <code>boot.img</code> 上完成引导</p>
+
+<p>这个思路主要就是观察 AOSP 和 MTK 的 <code>boot.img</code> 组件 (<code>init</code>, init 脚本和
+<code>healthd</code> 等等) 在行为上的差异, 并且在我们可以自由修改的系统代码中弥补这种差异.
+然而因为 <code>boot.img</code> 我们并没有去修改, 有些功能会比较难实现, 尤其是依赖
+<code>init</code> 服务的功能. 比方说 CM 的超级用户权限管理就是一个十分明显的例子,
+所有刷了第一版封测包的小白鼠都失去了 root 权限, 然而我甚至明确启动了 <code>su</code>
+服务! (通过一个以 <code>root</code> 身份运行而在 CM 上不存在的服务.)</p>
+
+<p>因为这个思路要求修改系统底层, 也不是很优雅, 所以我们有第三个思路 --</p></li>
+<li><p>未知: <code>kexec</code> 另一个内核换掉 initramfs</p>
+
+<p><p><a href="http://forum.xda-developers.com/showthread.php?t=2495152">我在 XDA 上找到了一个实现</a>, 然而它貌似是基于 Code Aurora Forum
+(一个高通维护的分支) 的 3.4 版本内核构建的, 在我们的 MTK 3.10 内核上完全就不能用.
+一大波代码之后模块终于能成功编译并载入了, 然后内核跟着也 panic 了.
+接下来的几天我尝试基于开源的 MX4 Ubuntu 版内核代码从头进行这个思路,
+看看到底可不可行.</p></li>
+</ul></p>
+
+<h2>安卓版 MX4 刷 Ubuntu Touch 的可行性</h2>
+
+<p>Ubuntu 版 MX4 的 <code>lk</code> 比安卓版的要多传几个内核参数. 你可能觉得这无所谓,
+然而这几个参数是这样的:</p>
+
+<pre><code>systempart=/dev/disk/by-partlabel/system datapart=/dev/disk/by-partlabel/userdata fixrtc
+
+(系统分区=... 数据分区=... 修复硬件时钟)
+</code></pre>
+
+<p>额...</p>
+
+<p>不光是 <code>lk</code> 差异, Ubuntu Touch 还有自己不同的内核和启动序列, 想在安卓版 MX4
+上启动它实质上就相当于要求我们破掉 BL!</p>
+
+<p>哎... 反正如果 <code>kexec</code> 绕过 BL 的方案成功的话, Ubuntu Touch 就能移植到安卓版
+MX4, 否则的话恐怕就有点困难了.</p>
+
+<h2>YunOS 版 MX4 的兼容性</h2>
+
+<p>硬件几乎是一样的, 这个问题从一开始就不存在... 然而有听说 YunOS 版和通用版
+Flyme 互刷变砖的事例, 我不能 100% 确信两个版本是兼容的, 还需要进一步研究.</p>
+
+<!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
+</div>
+        </article>
+        <section class="post-comments">
+          <div data-thread-key="2015/09/14/meizu-mx4-cm-faq" data-title="CyanogenMod for 魅族 MX4: 常见问题解答 #1" data-url="http://blog.xen0n.name/2015/09/14/meizu-mx4-cm-faq/" class="ds-thread"></div>
+          <script type="text/javascript">
+            var duoshuoQuery = {short_name:"xen0nblog"};
+            (function() {
+              var ds = document.createElement('script');
+              ds.type = 'text/javascript';ds.async = true;
+              ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
+              ds.charset = 'UTF-8';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+          </script>
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
