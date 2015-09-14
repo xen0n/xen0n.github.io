@@ -43,7 +43,7 @@ Progress so far:
 
 *   Working: modifying base system to get it to boot on MTK/Flyme `boot.img`
 
-    This is mainly about noticing the differences between stock and MTK
+    This is mainly about noticing the differences between AOSP and MTK
     `boot.img` components (`init`, init scripts, `healthd`), and working
     around the differences in base system, which we can freely modify.
     However, because the `boot.img` is left untouched, some features may be
