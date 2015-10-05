@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 'CyanogenMod for 魅族 MX4: CM12.1 20151005 测试包发布'
-date: 2015-10-05 17:00:00
+title: 'CyanogenMod for Meizu MX4: CM12.1 20150930 out for testing'
+date: 2015-09-30 21:14:00
 ---
 
 
-## 声明
+## Disclaimer
 
 **刷机需要打开 root 并进行危险操作, 鉴于魅族设备的特性, 有使您的手机变砖的风险.
 您选择刷机并使用本 ROM 即意味着您接受由此行为可能带来的一切后果,
@@ -21,24 +21,26 @@ date: 2015-10-05 17:00:00
 
 ## 文章更新记录
 
-* 2015/09/30 17:00 首次发布
+* 2015/09/30 21:30 首次发布
 
 
 ## 较上一版修复的问题
 
-* 新增增量包, 未大幅度修改系统分区内容的同学请下载 `ota` 前缀的包刷入
-* 部分联通/移动用户无法识别 SIM 卡及连接移动网络
-* WiFi 热点无法初始化 (修复方式错误; 下一版纠正)
-* 网络名为 `UNICOM` 的中国联通网络未显示为中文名
-* 未安装谷歌应用时启动器应用列表界面长按应用图标崩溃
-* 设置界面无法设置首选网络类型为 LTE
+* 录音
+* 振动
+* 部分应用无法安装
+* 中国大陆地区网络连接显示感叹号
+* 录像分辨率不能调节
+* 电池电压报告被错误地多除以 1000
+* 关机状态充电界面无响应
+* 小圆圈呼吸灯提示通知
 
 
 ## 已知未修复的 bugs
 
-* FDD 基带 (联通等) 无法连接 3G 制式网络
-* 通话界面距离传感器失效
+* 部分联通/移动用户无法连接移动网络
 * 设置 USB 连接功能为 "仅充电" 后无法修改
+* WiFi 热点无法初始化
 * 蓝牙耳机连接不会自动修改音频路由
 * 部分蓝牙设备无法连接
 * FLAC 格式音乐无法播放
@@ -47,40 +49,32 @@ date: 2015-10-05 17:00:00
 
 ## 下载
 
-* [百度网盘下载链接][baidupan]
-* [360 云盘下载链接][360-yunpan] 提取码：`待上传`
+[百度网盘下载链接][baidupan], 安卓版 MX4 用户请下载 `mx4` 目录下的内容.
+Ubuntu 版 MX4 的包晚些时候放出.
 
-安卓版 MX4 用户请下载 `mx4` 目录下的内容, Ubuntu 版 MX4 的包晚些时候放出.
-
-[baidupan]: http://pan.baidu.com/s/1kTAMznp
-<!-- [360-yunpan]: -->
-
+[baidupan]: http://pan.baidu.com/s/1c016P80
 
 给有需求用户的校验和:
 
 ```
 # MD5
 5a48edf754f88edd20dd22abd66f518b  ApkIDE_MX4_Unlock_BL.apk
-acb1a59defa33c675d5f6ae7ffdf6b8e  cm-12.1-20151005-UNOFFICIAL-mx4-fixedboot-signed.zip
-14c2f1c6725c077d5e42d33384600a74  ota-mx4-20150930-20151005-fixedscript-signed.zip
+5554fb82823e27db4d38e5a38180ef63  cm-12.1-20150930-UNOFFICIAL-mx4-fixedboot-signed.zip
 
 
 # SHA-1
 399167bb7fcdf61de397b85b96ec95934e0ab1c8  ApkIDE_MX4_Unlock_BL.apk
-c6087bcef198d43a6f5d82ffe14d0f5e6f203610  cm-12.1-20151005-UNOFFICIAL-mx4-fixedboot-signed.zip
-36abce0adfc89d497f2c2f1245724468be09b85a  ota-mx4-20150930-20151005-fixedscript-signed.zip
+52c113fd68238f2f49a847a8fd66f2b0fed3c8a2  cm-12.1-20150930-UNOFFICIAL-mx4-fixedboot-signed.zip
 
 
 # SHA-256
 efaf514f8a5429198d2c394ac24becbef959f06933bdb82b00a16812752f8a47  ApkIDE_MX4_Unlock_BL.apk
-2ab8dc425a0efc9bceb3159695ca24ab4bc258f6b4d38c69fe6d60c248876cd8  cm-12.1-20151005-UNOFFICIAL-mx4-fixedboot-signed.zip
-3a1d80beace4ad74564fcdc5850a1c6d0a92cc551e208dc8b46946e6eb86cffc  ota-mx4-20150930-20151005-fixedscript-signed.zip
+43c464126ffb69ba9b8dbd1fb711cadde0dfcbfbe26eda0746e9d059ccf9a380  cm-12.1-20150930-UNOFFICIAL-mx4-fixedboot-signed.zip
 
 
 # SHA-512
 2b1af3ee839190092c75a08a0091ab4b79b7e069534c7004fb8a7dfea1bdc4e25cd3d0da50541f8853387f18a0aeae106c808c91f3bd3e187be9b6033b1d73b5  ApkIDE_MX4_Unlock_BL.apk
-f23864225f2a98f326040cea86572fae94b27f6f8a7b6b283a44dcf5cb6daf4d4e7fd28fb80d249ab4ff9c35714ab54f72642afeead04f8c889f6a4bc5802840  cm-12.1-20151005-UNOFFICIAL-mx4-fixedboot-signed.zip
-4be527b5e96f0cae07c9f110612045a79291e304c07f37c1c745d719afc83bf0a19e218b7bf36c67f0ad12791ebc3f754db309ecccd16b7a4355981dc9e800cd  ota-mx4-20150930-20151005-fixedscript-signed.zip
+644b8e2444ec708e3cd9bc4391b3fff3ce7375db4feb7ed85b3a8b3a730836e036b9e4b48a9376697b372371a35317dbc73efa977ba5f91a6a4238d813f9e7d5  cm-12.1-20150930-UNOFFICIAL-mx4-fixedboot-signed.zip
 ```
 
 
@@ -90,10 +84,8 @@ f23864225f2a98f326040cea86572fae94b27f6f8a7b6b283a44dcf5cb6daf4d4e7fd28fb80d249a
 
 ### 已刷入本 ROM 前一版本的用户
 
-**某些用户自行替换了前一版本的启动器文件, 这些用户将无法刷入增量包, 请换回原版文件, 重刷上一版完整包后再刷入增量包, 或选择完整包刷入!**
-
 * 无需双清, 将刷机包放入手机内部存储之后可直接进入 recovery 模式
-* 直接刷入即可
+* 格式化 system 分区后刷入即可
 
 
 ### 从 Flyme 刷入本 ROM 的用户
@@ -117,6 +109,7 @@ f23864225f2a98f326040cea86572fae94b27f6f8a7b6b283a44dcf5cb6daf4d4e7fd28fb80d249a
 * **注意**: 每次进入 Flyme 系统都会自动恢复 recovery 分区到官方 recovery, 因此如果解锁 BL 后重启了 Flyme, 需要重新解锁并进入.
 * 进入恢复模式, 操作方法是音量加减选择, 电源键确定
 * 双清 (恢复出厂设置), 这一步会持续 5 到 15 分钟, 请耐心等待
+* 做 `挂载及 U 盘设置 - 格式化 /system 分区` 这个操作以确保没有 Flyme 系统残留
 * 正常卡刷刷入
 * 重启
 
@@ -127,9 +120,13 @@ f23864225f2a98f326040cea86572fae94b27f6f8a7b6b283a44dcf5cb6daf4d4e7fd28fb80d249a
     - 最好跳过 WiFi 连接步骤, 进到桌面再连. 在那个界面连的话下一步可能会卡住, 反正也需要跳过
     - 可以把使用情况统计关掉
     - 进入系统之后可以去 `设置-关于手机-CyanogenMod 更新` 把 CM 自动更新检查关掉, 在修复所有 bug 之前不会提交官方的 (CM 官方政策) 不会有自动更新
-* **手机网络**:
-    - 第一次开机很可能没有信号, 请进入桌面之后**打开飞行模式再关闭**, 让电话组件重新初始化
-    - 开 4G 网络的方法: 现已修复设置页面不显示 LTE 网络的问题, 现在只需要进入 `设置 - 移动网络 - 首选网络设置` 即可选择首选网络制式了
+* **手机网络**: 只测试了中国移动卡, **联通网络有已知问题, 暂时请不要尝试**
+    - 移动用户第一次开机很可能没有信号, 请进入桌面之后**打开飞行模式再关闭**, 让电话组件重新初始化
+    - 开 4G 网络的方法: (只需要操作一次, 之后都不需要)
+        - 先进入拨号盘, 拨 `*#*#4636#*#*`, 进入 `手机信息` 界面
+        - 翻到 `设置首选网络类型`, 点开
+        - 中国移动: 往下翻, 选择 `LTE/GSM auto (PRL)`
+        - 退出, 这时候你应该看见数据网络重新连接了, 也能看到 LTE 标识了
 * 想起来了我会来更新的
 
 
