@@ -18,8 +18,8 @@ def post_object_from_sf(sf):
 class IndexProcess(base.BaseProcess):
     '''Index generation pass.
 
-    Buffers all of input; aggregates all files with attribute ``layout`` set to
-    ``post``, writing to attribute of the index page (whose `layout`` is
+    Buffers all of input; aggregates all files with attribute ``layout`` having
+    a ``post`` prefix, writing to attribute of the index page (whose `layout`` is
     ``index``.)
 
     '''
@@ -43,7 +43,7 @@ class IndexProcess(base.BaseProcess):
                 index_file = sf
                 continue
 
-            if layout == 'post':
+            if layout.startswith('post'):
                 # time-descending order
                 posts_indexed.append((-sf.attrs.get('date').timestamp(), sf, ))
 
