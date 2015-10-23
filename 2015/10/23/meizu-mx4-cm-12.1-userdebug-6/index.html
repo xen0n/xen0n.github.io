@@ -43,6 +43,7 @@
 <li>2015/10/23 03:45 首次发布</li>
 <li>2015/10/23 04:10 新增一些坑的说明</li>
 <li>2015/10/23 04:21 微调刷机步骤前小白声明的措辞</li>
+<li>2015/10/23 14:23 更新内核单刷包说明, 更新 SIM 卡识别问题解决状态为已验证</li>
 </ul>
 
 <h2>较上一版的改动</h2>
@@ -52,18 +53,21 @@
 <li><strong>新增</strong> 闭源组件与内核同步至 Flyme 4.5.7A D 轮内测版本</li>
 <li><strong>新增</strong> 双击唤醒屏幕与防止意外唤醒 (在 <code>显示 &amp; 指示灯</code> 中配置)</li>
 <li><strong>新增</strong> 内置 Xposed 框架 v75 alpha 4 (但仍然需要手工安装 Xposed 安装器来管理模块)</li>
-<li><strong>新增</strong> 满足部分用户需求, 提供 20151005 版 (第三版) 内核单刷包 (<code>mx4</code> 目录下 <code>boot</code> 打头的卡刷包)</li>
+<li><strong>新增</strong> 满足部分用户需求, 提供 20151005 版 (第三版) 内核单刷包及回滚包 (<code>kernel</code> 打头的卡刷包)</li>
+<li><strong>修复</strong> 解决部分用户的 SIM 卡识别问题</li>
 <li><strong>修复</strong> 某些视频无法播放</li>
 <li><strong>修复</strong> 蓝牙音频</li>
 <li><strong>修复</strong> 部分蓝牙设备无法连接</li>
 <li><strong>修复</strong> 某些应用无法正确调用计步器</li>
 <li><strong>修复</strong> 无法读取内核唤醒锁 (wakelocks) 统计信息</li>
-<li><strong>修复</strong> 可能解决一小部分用户的 SIM 卡识别问题 (未测试)</li>
 </ul>
 
 <p>由于内核暂时无法自行编译替换, 刷入第三版内核之后会重现之前的低电流充电缓慢问题,
 正常使用时也不会启用 CPU 大核, 然而据反映续航比之后的版本有所增强,
-请自行斟酌是否刷入.</p>
+请自行斟酌是否刷入. <strong>更换第三版内核请刷相应目录下名字带 <code>4.5.5A</code> (对应 Flyme 版本)
+的卡刷包, 回刷最新版内核请刷名字带 <code>4.5.7A-D</code> 的包. 必须在 20151022 版基础上刷入,
+如您出于续航原因仍未升级, 推荐先刷 20151022 版本再刷内核单刷包, 这样您既可享受更多功能与
+bug 修复, 又可保证之前版本的续航体验.</strong></p>
 
 <p>出于现实生活原因, 此版本发布之后暂停新功能适配, 只会跟随 CM 上游发布每月一次的安全补丁,
 或跟随 Flyme 上游更新闭源组件. Bug 修复速度也放缓, 只会修复能够重现的 bugs,
@@ -79,7 +83,6 @@ SIM 卡等) 以便跟进.</p>
 <li><strong>严重</strong> 系统内恢复出厂设置会清空内部存储</li>
 <li><strong>严重</strong> 设置 USB 连接功能为 "仅充电" 后没有简单方法回复</li>
 <li>部分用户最小音量过大</li>
-<li>仍有部分用户无法识别 SIM 卡</li>
 <li>部分用户系统重启后需较长时间才能连接移动网络, 甚至需要开关飞行模式</li>
 <li>部分用户无法自动配置短信中心 (SMSC) 号码</li>
 <li>部分大型应用无法安装</li>
@@ -94,59 +97,71 @@ SIM 卡等) 以便跟进.</p>
 </ul>
 
 <p>安卓版 MX4 用户请下载 <code>mx4</code> 目录下的内容, Ubuntu 版 MX4 用户请下载 <code>arale</code>
-目录下的内容. 内核单刷包在 <code>mx4</code> 目录下, 两种版本通用.</p>
+目录下的内容.</p>
 
 <p>给有需求用户的校验和:</p>
 
 <pre><code># MD5
 # MX4
 5a48edf754f88edd20dd22abd66f518b  mx4/ApkIDE_MX4_Unlock_BL.apk
-f0220b635e6832af89cb43c60d7b2a6d  mx4/boot-mx4-kernel-prebuilt-4.5.5A-signed.zip
 9056bf4bb2f7780c0441e63f011b5c0c  mx4/cm-12.1-20151022-UNOFFICIAL-mx4.zip
+5bb2be88f3a89a0a4f76ac79dacbe6c2  mx4/kernel-mx4-4.5.5A.zip
+f6460c0a3ec746a7f66df25c74465a7e  mx4/kernel-mx4-4.5.7A-D.zip
 6e37604de4ad6ab7ca6bedeff6538f45  mx4/ota-mx4-20151015-20151022-fixedscript-signed.zip
 
 # arale
 85dac8bc934a5c7d2d15e8ab809e3e04  arale/recovery-arale-20151022.img
 dfdea423aef4e0380024babfada067e3  arale/cm-12.1-20151022-UNOFFICIAL-arale.zip
+5c62c70d5cbd3492e6eef21cc1084f96  arale/kernel-arale-4.5.5A.zip
+3af8165e75b5189838904298754726af  arale/kernel-arale-4.5.7A-D.zip
 d9793b5900d33dfbad1c6f50c586d95e  arale/ota-arale-20151015-20151022.zip
 
 
 # SHA-1
 # MX4
 399167bb7fcdf61de397b85b96ec95934e0ab1c8  mx4/ApkIDE_MX4_Unlock_BL.apk
-5e7ccc383ecd91d294c0bbe5fe8d9b202107ac5e  mx4/boot-mx4-kernel-prebuilt-4.5.5A-signed.zip
 2e93c8d3aa9d5ca943dc1a437f2a32aca7b87da1  mx4/cm-12.1-20151022-UNOFFICIAL-mx4.zip
+267ec76dc72cd867c4f36fe5a5c8dbc4c1073a0f  mx4/kernel-mx4-4.5.5A.zip
+49d2748123b10d7c5040c6dc50a86fe1c2cebf9c  mx4/kernel-mx4-4.5.7A-D.zip
 320f6438d5dbbe14ca8d54d84d81666ef2090d69  mx4/ota-mx4-20151015-20151022-fixedscript-signed.zip
 
 # arale
 f34b40a725514bfcae0d2d04e2975c62cb2458a8  arale/recovery-arale-20151022.img
 fa443871354b7add9b97f5a9dd1677694ff3fcc6  arale/cm-12.1-20151022-UNOFFICIAL-arale.zip
+43efe98110e2668b3deab87a8b1ed795f2124569  arale/kernel-arale-4.5.5A.zip
+df07043eff596af626aa396de8ee5770f8fd36f0  arale/kernel-arale-4.5.7A-D.zip
 96895ffa7bbc09ff6f0a0ccf1f8278110f9d0a4f  arale/ota-arale-20151015-20151022.zip
 
 
 # SHA-256
 # MX4
 efaf514f8a5429198d2c394ac24becbef959f06933bdb82b00a16812752f8a47  mx4/ApkIDE_MX4_Unlock_BL.apk
-a975693a09b9cd780e598f9b64bf851c23da94e324fd79c88a5e1225ba6824b5  mx4/boot-mx4-kernel-prebuilt-4.5.5A-signed.zip
 7cf842dfa469a2c0fa4e6cf1e5e69faf18e154c38257044f5ddb2274439c6ac9  mx4/cm-12.1-20151022-UNOFFICIAL-mx4.zip
+ddcebe7dce29064e5a05faba815e8122b0fff2b8a091bd301e40cb07bd12993c  mx4/kernel-mx4-4.5.5A.zip
+047a87c96a27ab1236a08934402b76d4def0a062f3d367d6aab5a64661c15e73  mx4/kernel-mx4-4.5.7A-D.zip
 795979f5c51991489fb746dd551c9a27f80550efe1c9a335dcf763e81a24695d  mx4/ota-mx4-20151015-20151022-fixedscript-signed.zip
 
 # arale
 5396923e960f2f4ccb7d98d04fd7c21a82976f31421d3aa2d179664bc1202b85  arale/recovery-arale-20151022.img
 5bc2fde7a402de149d4074d90effe0bfd8e02a2cdabb96291d675259e496a1aa  arale/cm-12.1-20151022-UNOFFICIAL-arale.zip
+92d7d9b57ba627afdae7c24c9a848c520379f6f40335ca5d838e94e9c549dc32  arale/kernel-arale-4.5.5A.zip
+35b22a75ab66286b593a5941bd4f0774603951f1f3f74bf34c85decc49679e0a  arale/kernel-arale-4.5.7A-D.zip
 944fff1a597cb4c04ccd1b91738cd275e69d1c7539dd9492730cc1063c9ef18b  arale/ota-arale-20151015-20151022.zip
 
 
 # SHA-512
 # MX4
 2b1af3ee839190092c75a08a0091ab4b79b7e069534c7004fb8a7dfea1bdc4e25cd3d0da50541f8853387f18a0aeae106c808c91f3bd3e187be9b6033b1d73b5  mx4/ApkIDE_MX4_Unlock_BL.apk
-ff212453c32ab077e920fe8137afedc8f907d717c0300cd2cd76220c010c4c184c39fb4bc635d526a8fd559d1f1578865af7435172d6373bab53273200eb757a  mx4/boot-mx4-kernel-prebuilt-4.5.5A-signed.zip
 f33b1a9671ccd0a29359f0089b6e1461362b09b68fc54d5811cc0b6bdeb222a2a03f1f40d71e79177c5ce5a00bda18329ac62e27770ae4d1674386ab5005a926  mx4/cm-12.1-20151022-UNOFFICIAL-mx4.zip
+e31875f16fc21ba8170f63be9d46e628473a48316500afc563503825b03b219b1d35932f154eeafea1ae90a68ddcd187afcdb3cdbbcba52344e7d29ce688dbdd  mx4/kernel-mx4-4.5.5A.zip
+3c5f347e148b60dc04dbfea5da38b457382eb65e243f91d1d767406409db907c8202b4725fce5f69e45f5ee0a5f8e5ecb2f873abc3d5d1512d1cf9a16843c907  mx4/kernel-mx4-4.5.7A-D.zip
 1885dac379a053e138fc6ca109fa98c090b60258b0f6dddf025c12535f974f79f312e1139ef7ba13fbe2cacb62efa204ed2607c8e8dd1f8b94f53ef2855e5207  mx4/ota-mx4-20151015-20151022-fixedscript-signed.zip
 
 # arale
 6a95178b0cdf3a44d28fc897d30f916ac9d10645b484c5ade31f502e5ba5b207684e87be0dbd776bcd7cd8e74fc824de336bb076c358fd577a977bf1a329d790  arale/recovery-arale-20151022.img
 f9ed492e308f9c4feb77f7c22e9da737994a01ea4c8fdbede12d23eb3b52b96234dafa612ffc5bce63ffb53e4e0b2ab151cca1239f2e01b3ce580af0265aceee  arale/cm-12.1-20151022-UNOFFICIAL-arale.zip
+47964f6c9caf3424d6630873ccac7adf520f77105529c605b1dde6c553a9b6c5ad40d50e50dd1e2b7812aa207928d9e636d8ce89b2d5bdd5c0ade26d19d2d0be  arale/kernel-arale-4.5.5A.zip
+7b4b5be80490eac7649784d241f8b9d58cef0209c30885de4ea1ea9118690d9001186c8eceba2a6d0e4f2946c4cd8cb747eefad4fbb77cfd2f9871fee57f133c  arale/kernel-arale-4.5.7A-D.zip
 cee298ec1c71935a6353f42be86e4f4ca2d4938a99217debdb6a73e05849ef8d74a455687608408e71d4780f0382ad5a3de551e9d3123d2fa298eed617cd39f4  arale/ota-arale-20151015-20151022.zip
 </code></pre>
 
