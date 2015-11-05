@@ -165,6 +165,13 @@
     background-color: $grey-200;
   }
 
+  & p,
+  & li {
+    & code {
+      line-height: 1;
+    }
+  }
+
   & .codehilite {
     @include code-block-common;
 
