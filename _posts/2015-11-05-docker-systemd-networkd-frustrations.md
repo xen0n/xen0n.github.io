@@ -115,7 +115,7 @@ target     prot opt source               destination
 
 我编译了很多次内核, 打出更多的调试信息, 到意识到真正问题为止我做了如下的改动:
 
-```patch
+```diff
 diff -ur a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
 --- a/net/ipv4/ip_input.c	2015-10-31 17:10:54.000000000 +0800
 +++ b/net/ipv4/ip_input.c	2015-11-05 10:48:11.713066532 +0800
@@ -259,7 +259,7 @@ diff -ur a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
 
 ## 最后知道真相的我眼泪掉下来
 
-```patch
+```diff
 diff -ur a/net/ipv4/route.c b/net/ipv4/route.c
 --- a/net/ipv4/route.c	2015-10-31 17:10:54.000000000 +0800
 +++ b/net/ipv4/route.c	2015-11-05 10:48:11.713066532 +0800
@@ -373,7 +373,7 @@ systemd-networkd 的状态同步代码. 在 systemd 源码里简单 `grep` 了�
 就没有继续挖掘下去了, 而是写了这篇分析文章. 希望对各位都有帮助!
 
 
-network-link.c: https://github.com/systemd/systemd/blob/master/src/network/networkd-link.c#L1802
+[network-link.c]: https://github.com/systemd/systemd/blob/master/src/network/networkd-link.c#L1802
 
 
 <!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
