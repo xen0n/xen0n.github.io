@@ -223,6 +223,16 @@
       text-align: right;
     }
   }
+
+  & blockquote {
+    background-color: $grey-200;
+    border-left: $spacing-small solid $grey-300;
+    padding: $spacing-small;
+
+    & p:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 
