@@ -291,9 +291,14 @@ diff -ur a/net/ipv4/route.c b/net/ipv4/route.c
 
 ```
 
-其实在写完这个更改之后我已经意识到问题了, 因为我中间搜索了很多内容, 其中包括观察到
+其实在写完这个更改之后我已经意识到问题了, 因为我[中间][link-1][搜索了][link-2][很多][link-3][内容][link-4], 其中包括观察到
 `/proc/net/snmp` 里 `InAddrErrors` 会随着丢掉的包数量增加, 而这个量对应的内核状态
 `IPSTATS_MIB_INADDRERRORS` 只在一个地方增加:
+
+[link-1]: http://serverfault.com/q/653636
+[link-2]: https://lists.netfilter.org/pipermail/netfilter/2005-November/063703.html
+[link-3]: https://github.com/docker/docker/issues/15172
+[link-4]: https://github.com/docker/docker/issues/13381
 
 ```c
 /* net/ipv4/route.c */
