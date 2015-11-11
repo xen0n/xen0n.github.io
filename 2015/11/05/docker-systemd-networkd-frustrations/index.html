@@ -292,7 +292,7 @@ target     prot opt source               destination
  out:   return err;
 </code></pre></div>
 
-<p>其实在写完这个更改之后我已经意识到问题了, 因为我中间搜索了很多内容, 其中包括观察到
+<p>其实在写完这个更改之后我已经意识到问题了, 因为我<a href="http://serverfault.com/q/653636">中间</a><a href="https://lists.netfilter.org/pipermail/netfilter/2005-November/063703.html">搜索了</a><a href="https://github.com/docker/docker/issues/15172">很多</a><a href="https://github.com/docker/docker/issues/13381">内容</a>, 其中包括观察到
 <code>/proc/net/snmp</code> 里 <code>InAddrErrors</code> 会随着丢掉的包数量增加, 而这个量对应的内核状态
 <code>IPSTATS_MIB_INADDRERRORS</code> 只在一个地方增加:</p>
 
