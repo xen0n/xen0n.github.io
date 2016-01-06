@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>CyanogenMod for 魅族 MX4: CM12.1 20160106 测试包发布 - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">CyanogenMod for 魅族 MX4: CM12.1 20160106 测试包发布</h1>
+          </header>
+          <div class="article__content"><h2>声明</h2>
+
+<p><strong>刷机需要打开 root 并进行危险操作, 鉴于魅族设备的特性, 有使您的手机变砖的风险.
+您选择刷机并使用本 ROM 即意味着您接受由此行为可能带来的一切后果,
+本 ROM 作者概不负责.</strong></p>
+
+<p><strong>本人开发此 ROM 完全出于个人需求及兴趣, 如在使用过程中碰到 bug 等问题请理性反馈,
+本人有决定是否修复及修复方式, 时间等的权利.</strong></p>
+
+<p>本 ROM 系基于 CyanogenMod 12.1 编译, 使用了大量开源社区的成果. 这些资源包括但不限于:</p>
+
+<ul>
+<li><a href="http://4pda.ru/forum/index.php?showuser=4461476">kirill8000</a> 和 <a href="http://4pda.ru/forum/index.php?showuser=610367">kkk4</a> 的 MX4 BL 解锁工作</li>
+<li><a href="https://github.com/axet">@axet</a> 和 <a href="https://github.com/fire855">@fire855</a> 的 MTK 移植工作</li>
+<li><a href="https://github.com/DerTeufel">@DerTeufel</a> 提供的关于 MTK GPS 的信息</li>
+<li>cofface 的 CWM recovery</li>
+<li>阿木大神 的一键解锁工具制作</li>
+</ul>
+
+<h2>文章更新记录</h2>
+
+<ul>
+<li>2016/01/06 22:30 首次发布</li>
+</ul>
+
+<h2>较上一版的改动</h2>
+
+<ul>
+<li><strong>新增</strong> 闭源组件与内核同步至 Flyme 5.6.1.5 beta 版本</li>
+<li><strong>新增</strong> 代码同步至 2015/01/05 版本</li>
+<li><strong>修复</strong> USB 连接 "仅充电" 开关已正常; 经测试, 可能从仅充电切换回其他模式时会卡住, 此时重新插拔 USB 连接即可. 感谢 @ccfxny(<a href="http://weibo.com/ccfxny">微博</a>, <a href="https://github.com/ccfxny">GitHub</a>) 的修复!</li>
+<li><strong>修复</strong> 打开双击唤醒之后通话中对方先挂机造成双击唤醒失效或距离传感失效的 bug 已修复; 感谢 @ccfxny 的处理方案!</li>
+<li><strong>移除</strong> 由于一些用户反应稳定性下降, 不再内置 Xposed, 取而代之将随包转载亲测可用的 Xposed 卡刷包, 请<strong>刷入系统包之后马上刷入 Xposed</strong></li>
+</ul>
+
+<p>注意: 刷入 @ccfxny 之前的 SM 包会出现无法录音, 部分应用 (如网易云音乐) 播放音频无声音等现象; 导致问题的代码改动在我的版本中并不存在, 维护者也已经修复. 请等待维护者更新.</p>
+
+<h2>已知未修复的 bugs</h2>
+
+<p>严重 bug 不代表马上会修复, 实际上存留时间长的 bug 无非两种原因, 一是机制复杂,
+二是无法重现. 请参见上文关于 bug 修复的声明.</p>
+
+<ul>
+<li><strong>严重</strong> 系统内恢复出厂设置会清空内部存储</li>
+<li>部分用户最小音量过大</li>
+<li>部分用户系统重启后需较长时间才能连接移动网络, 甚至需要开关飞行模式</li>
+<li>部分用户无法自动配置短信中心 (SMSC) 号码</li>
+<li>部分大型应用无法安装</li>
+<li>待补充</li>
+</ul>
+
+<h2>下载</h2>
+
+<ul>
+<li><a href="https://yunpan.cn/cutLXewBzqUKp">360 云盘下载链接</a> 提取码：<code>d4cc</code></li>
+</ul>
+
+<p>安卓版 MX4 用户请下载 <code>mx4</code> 目录下的内容, Ubuntu 版之后放包. 时间比较紧就不生成校验和了;-)</p>
+
+<!-- [baidupan]: -->
+
+<h2>刷机方法</h2>
+
+<p>请根据自己当前的系统选择相应的方法操作.</p>
+
+<p><strong>如您不能理解此教程, 说明您是小白, 建议不要刷入! 第三方系统不同于官方系统, 后续您会遇到更多使用和维护上的挑战. 请自行权衡您的恐惧感和好奇心.</strong></p>
+
+<h3>已刷入本 ROM 前一版本的用户</h3>
+
+<p>由于时间紧迫加上大部分用户会 root 后对系统文件做出修改, 该版本只有完整包提供, 没有增量包, 不好意思;-)</p>
+
+<ul>
+<li>无需双清, 将刷机包放入手机内部存储之后可直接进入 recovery 模式</li>
+<li>直接刷入即可</li>
+</ul>
+
+<h3>从 Ubuntu 版 MX4 首次刷入本 ROM 的用户</h3>
+
+<ul>
+<li>Ubuntu 版 MX4 没有 bootloader 锁, 请直接关机后同时按住电源键和音量下键, 进入 fastboot 模式, 刷入 recovery (cofface 版 recovery 暂时有兼容问题, 换成了 CM 自带的)</li>
+<li>按住音量上键, 在电脑上 <code>fastboot reboot</code> 使手机进入恢复模式</li>
+<li>格式化 data 分区后用 adb 推入卡刷包</li>
+<li>正常卡刷 (Apply update 之后选第二个选项), 重启</li>
+</ul>
+
+<h3>从 Flyme 刷入本 ROM 的用户</h3>
+
+<p>请严格按照指令操作, 尤其是 bootloader 解锁, 否则一定变砖!
+魅族机器变砖无法自行救砖, 如果变砖请自行前往当地服务点或返厂救砖, 本人概不负责.
+不过一般是免费的 (本人体验; 您的体验可能不同).</p>
+
+<h4>未解锁 BL 用户</h4>
+
+<ul>
+<li>用官方方法安装 Flyme 4.2.8.2A 系统, 必须是 <code>4.2.8.2</code> 系列</li>
+<li>把两个下载的文件放进手机内部存储</li>
+<li>安装下载的 <code>ApkIDE_MX4_Unlock_BL.apk</code></li>
+<li>进入应用, 阅读它的说明文字, 选择一键解锁 BL</li>
+<li>做下边的操作</li>
+</ul>
+
+<h4>已解锁 BL 用户</h4>
+
+<ul>
+<li><strong>注意</strong>: 每次进入 Flyme 系统都会自动恢复 recovery 分区到官方 recovery, 因此如果解锁 BL 后重启了 Flyme, 需要重新解锁并进入.</li>
+<li>进入恢复模式, 操作方法是音量加减选择, 电源键确定</li>
+<li>双清 (恢复出厂设置), 这一步会持续 5 到 15 分钟, 请耐心等待</li>
+<li>正常卡刷刷入</li>
+<li>重启</li>
+</ul>
+
+<h2>一些使用方面的说明</h2>
+
+<ul>
+<li><strong>首次开机设置</strong>
+<ul>
+<li>最好跳过 WiFi 连接步骤, 进到桌面再连. 在那个界面连的话下一步可能会卡住, 反正也需要跳过</li>
+<li>可以把使用情况统计关掉</li>
+<li>进入系统之后可以去 <code>设置-关于手机-CyanogenMod 更新</code> 把 CM 自动更新检查关掉, 在修复所有 bug 之前不会提交官方的 (CM 官方政策) 不会有自动更新</li>
+</ul></li>
+<li><strong>手机网络</strong>:
+<ul>
+<li>第一次开机很可能没有信号, 请进入桌面之后<strong>打开飞行模式再关闭</strong>, 让电话组件重新初始化</li>
+<li>FDD 基带 (如联通) 用户可能在重启系统之后出现无 SIM 卡的情况, 解决办法同上</li>
+<li>开 4G 网络的方法: 现已修复设置页面不显示 LTE 网络的问题, 现在只需要进入 <code>设置 - 移动网络 - 首选网络设置</code> 即可选择首选网络制式了</li>
+</ul></li>
+<li><strong>小圆圈相关</strong>
+<ul>
+<li>我尝试了在 CM 代码基础上复刻小圆圈功能, 然而可用性不如 Flyme 的实现, 因此这个版本没有放出. 主体实现在 <code>xen0n/android_frameworks_base_mtk</code> 这个库的 <code>cm-12.1-mx-circle</code> 分支下, 欢迎吐槽</li>
+<li>启用扩展桌面来隐藏虚拟键会造成大部分国产汉语输入法的输入框偏移, 请自行安装相应 Xposed 插件实现小圆圈策略并修改 <code>/system/build.prop</code> 禁用虚拟键 (找到 <code>qemu.hw.mainkeys</code> 把 0 改成 1 或者删除该行)</li>
+</ul></li>
+<li>想起来了我会来更新的</li>
+</ul>
+
+<h2>开发者捐赠渠道</h2>
+
+<ul>
+<li>支付宝账号：<code>idontknw.wang@gmail.com</code></li>
+</ul>
+
+<p>如果您觉得我制作的 ROM/Recovery 对您有帮助, 您可以进行捐赠.
+捐赠多少没关系, 您的支持是对我最大的鼓励.</p>
+
+<!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
+</div>
+        </article>
+        <section class="post-comments">
+          <div data-thread-key="2016/01/06/meizu-mx4-cm-12.1-userdebug-7" data-title="CyanogenMod for 魅族 MX4: CM12.1 20160106 测试包发布" data-url="http://blog.xen0n.name/2016/01/06/meizu-mx4-cm-12.1-userdebug-7/" class="ds-thread"></div>
+          <script type="text/javascript">
+            var duoshuoQuery = {short_name:"xen0nblog"};
+            (function() {
+              var ds = document.createElement('script');
+              ds.type = 'text/javascript';ds.async = true;
+              ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
+              ds.charset = 'UTF-8';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+          </script>
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
