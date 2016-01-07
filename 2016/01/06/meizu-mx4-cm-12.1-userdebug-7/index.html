@@ -2,7 +2,7 @@
 <html lang="cmn" class="browser-modern">
   <head>
     <meta charset="utf-8">
-    <title>CyanogenMod for 魅族 MX4: CM12.1 20160106 测试包发布 - write(2)</title>
+    <title>CyanogenMod for 魅族 MX4: CM12.1 20160107 测试包发布 - write(2)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="/static/css/app.css">
   </head>
@@ -16,7 +16,7 @@
         </header>
         <article class="post-article">
           <header class="article__header">
-            <h1 class="article__header__title">CyanogenMod for 魅族 MX4: CM12.1 20160106 测试包发布</h1>
+            <h1 class="article__header__title">CyanogenMod for 魅族 MX4: CM12.1 20160107 测试包发布</h1>
           </header>
           <div class="article__content"><h2>声明</h2>
 
@@ -40,17 +40,29 @@
 <h2>文章更新记录</h2>
 
 <ul>
+<li>2016/01/08 00:15 添加 20160107 更新内容</li>
 <li>2016/01/06 22:30 首次发布</li>
 </ul>
 
 <h2>较上一版的改动</h2>
+
+<p><strong>新发布了 20160107 增量包, 以下是增量包内含更新内容:</strong> (请下载分享页面中的 <code>ota-mx4-20160107.zip</code> 包刷入)</p>
+
+<ul>
+<li><strong>说明</strong> 由于操作失误, 这次发布的包实际上仍然内置了 Xposed v79 版本, 该问题将在下一次带整包的更新解决</li>
+<li><strong>修复</strong> 内核降回 Flyme 4.5.7.1A 版本, 修复某些用户遭遇的部分界面 (如拨号盘弹出) 掉帧问题</li>
+<li><strong>修复</strong> 关机充电动画显示不正常的问题</li>
+<li><strong>修复</strong> 仍有偶尔通话结束后双击唤醒或距离传感失效的问题; 现在每次挂断电话 (无论谁先挂断) 都会触发距离传感器重新校准, 请不要在电话挂断时用任何部位若即若离地贴着手机听筒 (完全贴上或者完全不贴上都可以的)</li>
+</ul>
+
+<p><strong>以下为 20160106 更新内容:</strong></p>
 
 <ul>
 <li><strong>新增</strong> 闭源组件与内核同步至 Flyme 5.6.1.5 beta 版本</li>
 <li><strong>新增</strong> 代码同步至 2015/01/05 版本</li>
 <li><strong>修复</strong> USB 连接 "仅充电" 开关已正常; 经测试, 可能从仅充电切换回其他模式时会卡住, 此时重新插拔 USB 连接即可. 感谢 @ccfxny(<a href="http://weibo.com/ccfxny">微博</a>, <a href="https://github.com/ccfxny">GitHub</a>) 的修复!</li>
 <li><strong>修复</strong> 打开双击唤醒之后通话中对方先挂机造成双击唤醒失效或距离传感失效的 bug 已修复; 感谢 @ccfxny 的处理方案!</li>
-<li><strong>移除</strong> 由于一些用户反应稳定性下降, 不再内置 Xposed, 取而代之将随包转载亲测可用的 Xposed 卡刷包, 请<strong>刷入系统包之后马上刷入 Xposed</strong></li>
+<li><strong>见上文说明</strong> <s><strong>移除</strong> 由于一些用户反应稳定性下降, 不再内置 Xposed, 取而代之将随包转载亲测可用的 Xposed 卡刷包, 请<strong>刷入系统包之后马上刷入 Xposed</strong></s></li>
 </ul>
 
 <p>注意: 刷入 @ccfxny 之前的 SM 包会出现无法录音, 部分应用 (如网易云音乐) 播放音频无声音等现象; 导致问题的代码改动在我的版本中并不存在, 维护者也已经修复. 请等待维护者更新.</p>
@@ -165,7 +177,7 @@
 </div>
         </article>
         <section class="post-comments">
-          <div data-thread-key="2016/01/06/meizu-mx4-cm-12.1-userdebug-7" data-title="CyanogenMod for 魅族 MX4: CM12.1 20160106 测试包发布" data-url="http://blog.xen0n.name/2016/01/06/meizu-mx4-cm-12.1-userdebug-7/" class="ds-thread"></div>
+          <div data-thread-key="2016/01/06/meizu-mx4-cm-12.1-userdebug-7" data-title="CyanogenMod for 魅族 MX4: CM12.1 20160107 测试包发布" data-url="http://blog.xen0n.name/2016/01/06/meizu-mx4-cm-12.1-userdebug-7/" class="ds-thread"></div>
           <script type="text/javascript">
             var duoshuoQuery = {short_name:"xen0nblog"};
             (function() {
