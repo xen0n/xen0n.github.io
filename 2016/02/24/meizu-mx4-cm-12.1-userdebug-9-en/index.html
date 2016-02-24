@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>CyanogenMod for Meizu MX4: CM12.1 20150218 testing release - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">CyanogenMod for Meizu MX4: CM12.1 20150218 testing release</h1>
+          </header>
+          <div class="article__content"><h2>Disclaimer and acknowledgements</h2>
+
+<p><strong>All your actions with your phone are at your own risk; the author of this
+ROM is not liable.</strong></p>
+
+<p>This ROM is compiled from CyanogenMod 12.1 sources with own modifications
+(which are open-sourced on GitHub). I'd like to acknowledge the following
+people for their respective efforts:</p>
+
+<ul>
+<li><a href="http://4pda.ru/forum/index.php?showuser=4461476">kirill8000</a> and <a href="http://4pda.ru/forum/index.php?showuser=610367">kkk4</a> for unlocking bootloader of ordinary MX4's</li>
+<li><a href="https://github.com/axet">@axet</a> and <a href="https://github.com/fire855">@fire855</a> for the general MTK porting efforts</li>
+<li><a href="https://github.com/DerTeufel">@DerTeufel</a> for the information regarding to the MTK GPS implementation</li>
+<li>cofface's CWM recovery</li>
+<li>Daxiaamu's one-key bootloader unlocking app (in Chinese)</li>
+<li>Bugfixes and various contributions from @ccfxny (<a href="http://weibo.com/ccfxny">Weibo</a>, <a href="https://github.com/ccfxny">GitHub</a>)</li>
+</ul>
+
+<h2>Announcement changelog</h2>
+
+<p><em>NOTE: All times in this announcement are UTC+8.</em></p>
+
+<ul>
+<li>2016/02/25 05:00 First (translated) release</li>
+</ul>
+
+<h2>Changes since last release</h2>
+
+<p>This is a fairly small release with only blob updates and upstream framework
+updates; however it's been a long time since the last English post, so I'd
+introduce the changes in the meantime also.</p>
+
+<ul>
+<li><strong>Add</strong> Synced with upstream sources as of 2016/02/18</li>
+<li><strong>Add</strong> Blobs and prebuilt kernel synced to Flyme 5.6.2.16 (thanks to @ccfxny)</li>
+</ul>
+
+<p>(20151023)</p>
+
+<ul>
+<li><strong>Add</strong> Double-tap to wake and Prevent accidental wake-up (find under <code>Display &amp; lights</code>)</li>
+<li><strong>Fix</strong> Some SIM cards not being recognized</li>
+<li><strong>Fix</strong> Some videos crashing app when played</li>
+<li><strong>Fix</strong> Bluetooth audio</li>
+<li><strong>Fix</strong> Unable to connect with some Bluetooth devices</li>
+<li><strong>Fix</strong> Step counter couldn't be accessed sometimes</li>
+<li><strong>Fix</strong> Wakelocks statistics not available</li>
+</ul>
+
+<p>(20160106)</p>
+
+<ul>
+<li><strong>Fix</strong> Power-off charging animation not displaying correctly</li>
+<li><strong>Fix</strong> Proximity sensor and tap-to-wake broken after ending a call; fixed by re-calibrating proximity sensor every time a call ends. Please don't cover the proximity sensor or otherwise put anything close to the sensor at the end of a call.</li>
+<li><strong>Fix</strong> USB "only charging" option is fixed. According to test, the UI may get stuck if you switch back from only charging; re-plugging would fix it. Thanks to @ccfxny for the fix!</li>
+</ul>
+
+<p>(20160112)</p>
+
+<ul>
+<li><strong>Fix</strong> Bluetooth regression (thanks to @ccfxny!)</li>
+<li><strong>Fix</strong> Intermittent DHCP failures over WiFi</li>
+<li><strong>Fix</strong> Factory reset no longer wipes internal storage; actually this got fixed some time ago but not tested until this version</li>
+<li><strong>Add</strong> Switched <code>libui.so</code> to compiled version</li>
+<li><strong>Remove</strong> No longer integrating Xposed due to some users reporting decreased stability. Please flash it yourself if you truly feel the need.</li>
+</ul>
+
+<h2>Known bugs and limitations</h2>
+
+<ul>
+<li>Some people may find the minimum volume to be too high. This is due to bad defaults pre-set by MTK; you can fix it yourself by entering MTK's engineer mode (dialing <code>*#*#ENGMODE#*#*</code>) <strong>in Flyme</strong> (the engineer mode is too invasive to be ported), swiping to the <code>Hardware</code> tab then <code>Audio</code> item, after that select the <code>Media</code> mode and manually toggle each level's hardware output level. Pretty terrible UI but at least things can be fixed.)</li>
+<li>Some users may have to toggle flight mode to restore cellular connectivity on reboot</li>
+<li>Some users are unable to auto-configure their SMSC numbers</li>
+<li>Some large apps can't be installed causing crash</li>
+<li>etc.</li>
+</ul>
+
+<h2>Downloading</h2>
+
+<ul>
+<li><a href="https://mega.nz/#F!1p1kkBZT!wqml0aCll14yA3E4JlMPwg">MEGA</a></li>
+</ul>
+
+<p>Checksums:</p>
+
+<pre><code>
+</code></pre>
+
+<h2>Flashing</h2>
+
+<p>For MX4 Ubuntu Edition users, your bootloaders are already unlocked, so just flash the stock recovery provided and proceed. (3rd-party recoveries may be provided by some other people; I myself have no time for that. Graphics was broken at my last attempt to do this.)</p>
+
+<p>For users of ordinary version of Meizu MX4, you need to have your bootloader unlocked, the tutorial can be found <a href="http://forum.xda-developers.com/meizu-mx/general/tutorial-bootloader-unlocking-mx4-m1-t3201715)">here</a>.
+After unlocking just flash as usual; remember to wipe your <code>/data</code> partition if
+you're coming from Flyme or Ubuntu Touch or generally any incompatible system.</p>
+
+<h2>Notes</h2>
+
+<ul>
+<li><strong>Cellular network</strong>
+<ul>
+<li>There may well be no signal at first boot, please <strong>toggle on and off flight mode</strong> for the telephony component to re-initialize itself.</li>
+<li>SIM card may also go unrecognized after reboot, just do the same and the problem should hopefully disappear.</li>
+</ul></li>
+<li>more to come later</li>
+</ul>
+
+<h2>Supporting</h2>
+
+<p>I do Android porting mainly for personal use and fun, but as a matter of fact
+I sometimes find myself struggling to achieve the standards I strive for, as
+a graduate student still learning his way into the industry and having things
+to take care of besides coding. If you appreciate my work, please kindly
+consider donating something equivalent to a beer or two. I will use the
+donations to support my porting work and studies. PayPal and Alipay payments are
+accepted:</p>
+
+<ul>
+<li>PayPal/Alipay: <code>idontknw.wang@gmail.com</code></li>
+</ul>
+
+<!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
+</div>
+        </article>
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_shortname = 'write2';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+          <noscript>Please enable JavaScript to view the<a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
