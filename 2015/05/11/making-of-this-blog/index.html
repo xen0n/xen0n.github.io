@@ -100,7 +100,7 @@ CSS 的感觉一样. 那么我们的想法就是:</p>
 
 <p>Pybble 的架构是受 Gulp 启发的, 也是基于流的结构. 处理流程放在 <code>pybble.process</code> 包里 (<code>process</code> 这个名字也许会换掉, 不过先这么用着好了):</p>
 
-<div class="codehilite"><pre><code><span class="c"># process/base.py</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># process/base.py</span>
 <span class="kn">from</span> <span class="nn">..stream</span> <span class="kn">import</span> <span class="n">SkipFile</span>
 
 
@@ -119,13 +119,13 @@ CSS 的感觉一样. 那么我们的想法就是:</p>
 
     <span class="k">def</span> <span class="nf">run_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># we&#39;re source</span>
+            <span class="c1"># we&#39;re source</span>
             <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_source</span><span class="p">():</span>
                 <span class="k">yield</span> <span class="n">sf</span>
 
             <span class="k">return</span>
 
-        <span class="c"># buffer input if we&#39;re anticausal</span>
+        <span class="c1"># buffer input if we&#39;re anticausal</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anticausal</span><span class="p">:</span>
             <span class="n">input_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_buffered</span><span class="p">(</span><span class="n">input_files</span><span class="p">):</span>
@@ -133,16 +133,16 @@ CSS 的感觉一样. 那么我们的想法就是:</p>
 
             <span class="k">return</span>
 
-        <span class="c"># stream from the previous process</span>
+        <span class="c1"># stream from the previous process</span>
         <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev</span><span class="o">.</span><span class="n">run_iter</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_file</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">SkipFile</span><span class="p">:</span>
-                <span class="c"># skip this file</span>
+                <span class="c1"># skip this file</span>
                 <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">process_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sf</span><span class="p">):</span>
-        <span class="c"># base impl does nothing</span>
+        <span class="c1"># base impl does nothing</span>
         <span class="k">return</span> <span class="n">sf</span>
 
     <span class="k">def</span> <span class="nf">process_buffered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">):</span>
@@ -151,7 +151,7 @@ CSS 的感觉一样. 那么我们的想法就是:</p>
     <span class="k">def</span> <span class="nf">stream_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Provide the stream source if asked to be the source process.&#39;&#39;&#39;</span>
 
-        <span class="c"># base impl returns empty iterable</span>
+        <span class="c1"># base impl returns empty iterable</span>
         <span class="k">return</span> <span class="p">[]</span>
 </code></pre></div>
 
@@ -163,7 +163,7 @@ CSS 的感觉一样. 那么我们的想法就是:</p>
 YAML 格式的配置文件, 里面就包含了 0 或多条流的定义; 这些定义将由 <code>pybble.driver</code>
 包转化为相应的一串 process 类实例:</p>
 
-<div class="codehilite"><pre><code><span class="c"># driver/__init__.py</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># driver/__init__.py</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">process</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
@@ -178,18 +178,18 @@ YAML 格式的配置文件, 里面就包含了 0 或多条流的定义; 这些�
 <span class="k">def</span> <span class="nf">_process_from_config</span><span class="p">(</span><span class="n">sofar</span><span class="p">,</span> <span class="n">process_decl</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Instantiate a process with the given config.&#39;&#39;&#39;</span>
 
-    <span class="n">name</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">process_decl</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span> <span class="n">process_decl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">process_decl</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">process_decl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">,</span> <span class="p">{})</span>
     <span class="k">return</span> <span class="n">process</span><span class="o">.</span><span class="n">get_process</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">sofar</span><span class="p">)</span>
 
 
-<span class="c"># process/__init__.py</span>
+<span class="c1"># process/__init__.py</span>
 <span class="k">def</span> <span class="nf">get_process</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">prev_process</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_KNOWN_PROCESSES</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">prev_process</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
 </code></pre></div>
 
 <p>这里略去了注册流程类的内容... 如你所见, 就是一个实例化 processes 并相互连接的过程.</p>
 
-<div class="codehilite"><pre><code><span class="c"># driver/__init__.py (continued)</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># driver/__init__.py (continued)</span>
 <span class="k">class</span> <span class="nc">StreamDriver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Stream driver driving one or more streams.&#39;&#39;&#39;</span>
 
@@ -218,7 +218,7 @@ YAML 格式的配置文件, 里面就包含了 0 或多条流的定义; 这些�
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
-        <span class="c"># this shouldn&#39;t be necessary but do it anyway</span>
+        <span class="c1"># this shouldn&#39;t be necessary but do it anyway</span>
         <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
             <span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 </code></pre></div>
