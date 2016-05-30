@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>跟 ujson 玩符号捉迷藏 - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">跟 ujson 玩符号捉迷藏</h1>
+          </header>
+          <div class="article__content"><h2>tl;dr</h2>
+
+<p>Python 的 高性能 JSON 库 <code>ujson</code> 截至目前在 Gentoo (GCC 5.3.0) 与
+<a href="https://github.com/esnme/ultrajson/issues/180">FreeBSD 10</a> 上使用时都可能碰到 <code>ImportError</code> 错误.
+该错误的修复补丁已经<a href="https://github.com/esnme/ultrajson/pull/222">提交上游</a>, 估计过一阵子就能用上了!</p>
+
+<h2>问题</h2>
+
+<p>高高兴兴地开了一个新坑, 初始化了虚拟环境, 因为马上要处理一个巨大的 JSON
+所以装上了 <code>ujson</code>. 开始干活!</p>
+
+<pre><code>In [1]: import ujson
+---------------------------------------------------------------------------
+ImportError                               Traceback (most recent call last)
+&lt;ipython-input-1-580339775a25&gt; in &lt;module&gt;()
+----&gt; 1 import ujson
+
+ImportError: /.../ujson.so: undefined symbol: Buffer_AppendShortHexUnchecked
+</code></pre>
+
+<p>(文件路径很长, 编辑掉了大部分)</p>
+
+<h2>解决</h2>
+
+<p>这是什么情况? 搜索了一圈, 果然我<a href="https://archives.gentoo.org/gentoo-user/message/a17dc1393d347a89f63d8e0db4734e6e">不是</a><a href="https://github.com/esnme/ultrajson/issues/180">一个人</a>,
+不过看起来应该挺简单的样子因为 Gentoo 邮件列表的那个人机器上虚拟环境外的安装是正常的?!
+再加上这个问题之前我在很多 Gentoo 系统上也从来没有遇到, 这就说明问题应该局限在
+Python 包里面, 而且跟具体系统配置应该也有关系.</p>
+
+<p>因为 <code>ujson</code> 是一个纯 C 写成的 Python 扩展, 本身也支持 Python 3 (我使用的是
+Python 3.5 创建虚拟环境), 所以问题应该跟 Python 的 ABI 无关. 经过简单的网络搜索和
+grep, 出问题的函数是 <code>ujson</code> 的一个内部 helper 函数, 这就 10000% 确定是 <code>ujson</code>
+本身的 bug 了. 我们来看一下这个函数的声明:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cm">/* 为了清晰, 换行是我加的 */</span>
+<span class="n">FASTCALL_ATTR</span> <span class="n">INLINE_PREFIX</span>
+<span class="kt">void</span>
+<span class="n">FASTCALL_MSVC</span>
+<span class="nf">Buffer_AppendShortHexUnchecked</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">outputOffset</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">value</span><span class="p">);</span>
+</code></pre></div>
+
+<p>还有 FreeBSD issue 中提到的 <code>strreverse</code> 的:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="n">FASTCALL_ATTR</span> <span class="n">INLINE_PREFIX</span>
+<span class="kt">void</span>
+<span class="n">FASTCALL_MSVC</span>
+<span class="nf">strreverse</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">begin</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">end</span><span class="p">);</span>
+</code></pre></div>
+
+<p>摘抄下这里的宏定义, 可以看到这些定义比较简陋 (平台跟编译器是平行的概念,
+比方说并不是所有 Windows 程序都是用 MSVC 编译的,
+完整文件的 Windows 部分里还有 <code>__declspec(dllexport)</code> 这种东西,
+这种代码放到 MinGW GCC 下就要编译错误了), 不过并不影响阅读:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cp">#ifdef _WIN32</span>
+
+<span class="cp">#define FASTCALL_MSVC __fastcall</span>
+<span class="cp">#define FASTCALL_ATTR</span>
+<span class="cp">#define INLINE_PREFIX __inline</span>
+
+<span class="cp">#else</span>
+
+<span class="cp">#define FASTCALL_MSVC</span>
+
+<span class="cp">#if !defined __x86_64__</span>
+<span class="cp">#define FASTCALL_ATTR __attribute__((fastcall))</span>
+<span class="cp">#else</span>
+<span class="cp">#define FASTCALL_ATTR</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#define INLINE_PREFIX inline</span>
+
+<span class="cp">#endif</span>
+</code></pre></div>
+
+<p>其他函数的声明都没有这些 fastcall 和内联的标记, 因此问题就出在 fastcall 或者内联上.
+不过 fastcall 是 <a href="https://en.wikipedia.org/wiki/X86_calling_conventions#Microsoft_fastcall">x86-32 的一种调用约定</a>, 在 AMD64 上并不存在,
+那么问题只能是因为内联了.</p>
+
+<p>各位还记得 C 内联函数使用的小细节吗? (此处可以暂停下来 Google 或者翻书哦)</p>
+
+<p>没错, <code>inline</code> 只是给编译器的<strong>建议</strong>而不是<strong>命令</strong>, 到底是否内联编译器完全可以自行决定.
+一般情况下编译器比人要聪明, 所以这样的设定并不会产生问题;
+问题在于有些时候人类确实明白自己在做的事情,
+尤其是编译器反对人的想法之后自己做的事情却不一定正确 (因为编译器也是人写的, 会有 bug 啊)...
+因为很久之前并没有这样的问题, 最近两年 (2015-08 之后) 才开始出现,
+所以用系统上的两个 gcc 版本测试了一下:</p>
+
+<pre><code>$ nm ujson.gcc-4.9.3.so | grep 'strreverse\|Buffer_AppendShortHex'
+0000000000007557 T Buffer_AppendShortHexUnchecked
+0000000000007557 t Buffer_AppendShortHexUnchecked.localalias.1
+000000000000805d T strreverse
+000000000000805d t strreverse.localalias.0
+$ nm ujson.gcc-5.3.0.so | grep 'strreverse\|Buffer_AppendShortHex'
+                 U Buffer_AppendShortHexUnchecked
+                 U strreverse
+</code></pre>
+
+<p>果然! 那我们把两个函数标记成强制内联就好了:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="gh">diff --git a/lib/ultrajson.h b/lib/ultrajson.h</span>
+<span class="gh">index 6b1fb85..894f367 100644</span>
+<span class="gd">--- a/lib/ultrajson.h</span>
+<span class="gi">+++ b/lib/ultrajson.h</span>
+<span class="gu">@@ -115,7 +115,11 @@ typedef uint32_t JSUINT32;</span>
+ #define FASTCALL_ATTR
+ #endif
+
+<span class="gi">+#ifdef __GNUC__</span>
+<span class="gi">+#define INLINE_PREFIX __attribute__((always_inline)) inline</span>
+<span class="gi">+#else</span>
+ #define INLINE_PREFIX inline
+<span class="gi">+#endif</span>
+
+ typedef uint8_t JSUINT8;
+ typedef uint16_t JSUTF16;
+</code></pre></div>
+
+<p>因为没有用过别的编译器, 所以我只添加了 GCC 的判断和相应代码,
+不过自然会有人来添加其他的所以就无所谓了...
+测试一下:</p>
+
+<pre><code>$ nm ujson.gcc-5.3.0-always_inline.so | grep 'strreverse\|Buffer_AppendShortHex'
+$
+</code></pre>
+
+<p>两个函数名已经不存在了, 这很正常, 因为它们都被内联了啊, <code>import</code> 看看:</p>
+
+<pre><code>In [1]: import ujson
+
+In [2]:
+</code></pre>
+
+<p>好!</p>
+
+<h2>附: ujson 版权声明</h2>
+
+<p>本文引用了 <code>ujson</code> 项目的代码, 因此需要附上它的 BSD 协议:</p>
+
+<pre><code>Developed by ESN, an Electronic Arts Inc. studio.
+Copyright (c) 2014, Electronic Arts Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+* Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+* Neither the name of ESN, Electronic Arts Inc. nor the
+names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL ELECTRONIC ARTS INC. BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Portions of code from MODP_ASCII - Ascii transformations (upper/lower, etc)
+http://code.google.com/p/stringencoders/
+Copyright (c) 2007  Nick Galbreath -- nickg [at] modp [dot] com. All rights reserved.
+
+Numeric decoder derived from from TCL library
+http://www.opensource.apple.com/source/tcl/tcl-14/tcl/license.terms
+ * Copyright (c) 1988-1993 The Regents of the University of California.
+ * Copyright (c) 1994 Sun Microsystems, Inc.
+</code></pre>
+
+<!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
+</div>
+        </article>
+        <section class="post-comments">
+          <div data-thread-key="2016/05/30/ujson-symbol-chasing" data-title="跟 ujson 玩符号捉迷藏" data-url="http://blog.xen0n.name/2016/05/30/ujson-symbol-chasing/" class="ds-thread"></div>
+          <script type="text/javascript">
+            var duoshuoQuery = {short_name:"xen0nblog"};
+            (function() {
+              var ds = document.createElement('script');
+              ds.type = 'text/javascript';ds.async = true;
+              ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
+              ds.charset = 'UTF-8';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+          </script>
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
