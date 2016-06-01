@@ -100,7 +100,8 @@
   }
 
   & p,
-  & .codehilite,
+  & .codehilite,  // highlighted code blocks
+  & > pre > code,  // non-highlighted code blocks
   & ul,
   & ol,
   & table {
