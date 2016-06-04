@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>Python 奇技淫巧: 一种简单的 Python / Shell 双语程序 - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">Python 奇技淫巧: 一种简单的 Python / Shell 双语程序</h1>
+          </header>
+          <div class="article__content"><p>最近经常见到 <code>:</code> 这个 Shell built-in, 比较好奇, 于是 StackOverflow 了一下.
+过程中偶然看到了<a href="http://stackoverflow.com/a/34534006">这个技巧</a>, 为了阅读方便把代码转载了过来,
+有少许改动 (让程序实际可执行):</p>
+
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env sh</span>
+<span class="s1">&#39;:&#39;</span> //<span class="p">;</span> <span class="nb">exec</span> <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span> -v node<span class="k">)</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+~function<span class="o">()</span> <span class="o">{</span> console.log<span class="o">(</span><span class="s1">&#39;hello world&#39;</span><span class="o">)</span><span class="p">;</span> <span class="o">}</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env sh</span>
+<span class="s1">&#39;:&#39;</span> <span class="c1">//; exec &quot;$(command -v node)&quot; &quot;$0&quot; &quot;$@&quot;</span>
+<span class="o">~</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span> <span class="p">}</span>
+</code></pre></div>
+
+<p>如你所见, 这段代码既是合法的 Shell 程序又是合法的 JS 程序, 把它当作 Shell
+程序执行的话它的唯一功能是用 Node.js 重新执行一遍自己, 于是以下调用它的方式都能正常工作:</p>
+
+<ul>
+<li><code>./foo</code></li>
+<li><code>sh ./foo</code></li>
+<li><code>node ./foo</code></li>
+</ul>
+
+<p>结合语法高亮的提示, 不难发现其中关键在于 <code>:</code> 相当于一个 <code>true</code> 即空操作,
+因为 <code>//</code> 不是 Shell 的注释所以 Shell 会直接去执行 <code>exec</code> 然后自己就变成 Node
+了. 而 Node 会无视 shebang 行 (即使 <code>#</code> 不是合法的 JS), <code>//</code> 又是 JS 注释,
+这样 <code>':'</code> 就相当于一个它不认识的 <code>use strict</code> 一样的东西了, 也被无视.
+于是剩下的内容就是一个 IIFE 了, 会被立即执行, 整体的流程比较简单.</p>
+
+<p>那么我们来写一个 Python 版的吧!</p>
+
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="s1">&#39;:&#39;</span> <span class="c1">#; exec &quot;$(command -v python)&quot; &quot;$0&quot; &quot;$@&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>嗯... 这样不太合适, 因为 <code>#</code> 既是 Python 注释也是 Shell 注释, 这样整个第一行在
+Shell 看来就没有 <code>exec</code> 了! 但是 Python 只有 <code>#</code> 一种注释,
+用字符串的话因为引号数量要平衡, 也不能让这一行在 Python 和 Shell 解释不一致,
+那怎么办呢?</p>
+
+<p>有没有想到一种同样经常使用在文件开头的 Python 字符串?</p>
+
+<p>对了! 就是它! 文档字符串!</p>
+
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;:&#39; ; exec &quot;$(command -v python)&quot; &quot;$0&quot; &quot;$@&quot;</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="s1">&#39;&#39;&#39;:&#39;</span> <span class="p">;</span> <span class="nb">exec</span> <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span> -v python<span class="k">)</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="s1">print(&#39;</span>hello world<span class="err">&#39;</span><span class="o">)</span>
+</code></pre></div>
+
+<p>Shell 没有三撇的说法, <code>''':'</code> 在 Shell 看来是两撇 <code>''</code> 加上一个 <code>':'</code>,
+于是我们同样成功地让 Shell 在第一行就把自己换成 Python 了. 而在 Python 看来,
+整个第一行到下一行的三撇都是一整个字符串, 直接无视, 于是我们达到了同样的效果!</p>
+
+<!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
+</div>
+        </article>
+        <section class="post-comments">
+          <div data-thread-key="2016/06/04/simple-polyglot-python-trick" data-title="Python 奇技淫巧: 一种简单的 Python / Shell 双语程序" data-url="http://blog.xen0n.name/2016/06/04/simple-polyglot-python-trick/" class="ds-thread"></div>
+          <script type="text/javascript">
+            var duoshuoQuery = {short_name:"xen0nblog"};
+            (function() {
+              var ds = document.createElement('script');
+              ds.type = 'text/javascript';ds.async = true;
+              ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
+              ds.charset = 'UTF-8';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+          </script>
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
