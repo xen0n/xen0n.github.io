@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>CyanogenMod for 魅族 MX4: CM13.0 20160703 测试包发布 - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">CyanogenMod for 魅族 MX4: CM13.0 20160703 测试包发布</h1>
+          </header>
+          <div class="article__content"><h2>声明</h2>
+
+<p><strong>刷机需要打开 root 并进行危险操作, 鉴于魅族设备的特性, 有使您的手机变砖的风险.
+您选择刷机并使用本 ROM 即意味着您接受由此行为可能带来的一切后果,
+本 ROM 作者概不负责.</strong></p>
+
+<p><strong>本人开发此 ROM 完全出于个人需求及兴趣, 如在使用过程中碰到 bug 等问题请理性反馈,
+本人有决定是否修复及修复方式, 时间等的权利.</strong></p>
+
+<p>本 ROM 系基于 CyanogenMod 13.0 编译, 使用了大量开源社区的成果. 这些资源包括但不限于:</p>
+
+<ul>
+<li><a href="http://4pda.ru/forum/index.php?showuser=4461476">kirill8000</a> 和 <a href="http://4pda.ru/forum/index.php?showuser=610367">kkk4</a> 的 MX4 BL 解锁工作</li>
+<li>cofface 的 CWM recovery</li>
+<li>阿木大神 的一键解锁工具制作</li>
+<li>代码方面的完整致谢请见<a href="https://github.com/xen0n/android_device_meizu_arale">项目页面</a></li>
+</ul>
+
+<h2>文章更新记录</h2>
+
+<ul>
+<li>2016/07/03 21:18 首次发布</li>
+</ul>
+
+<h2>较上一版的改动</h2>
+
+<p><strong>注意: 升级之后降级必须双清, 升级前请务必做好备份工作并阅读指示!</strong></p>
+
+<ul>
+<li><strong>新增</strong> 代码同步至 2016/07/03 版本</li>
+<li><strong>修复</strong> 双击唤醒功能; 唤醒前检查距离传感器</li>
+<li><strong>修复</strong> 关机充电动画</li>
+<li><strong>修复</strong> 视频硬解码 (感谢 @aiden09 帮助解决!)</li>
+<li><strong>修复</strong> 内置屏录功能; 第一次录制的片段可能无法播放, 但之后即正常, 重启手机亦不会影响</li>
+<li><strong>修复</strong> 手机进入休眠一段时间后屏幕旋转失效 (感谢 @fire855 @aiden09!)</li>
+<li><strong>修复</strong> GPS 辅助导航数据无法下载</li>
+<li><strong>修复</strong> (部分解决) 系统日志进程电池消耗过大</li>
+<li><strong>说明</strong> 拨号盘声音有一定可能过大且无法调节——该 bug 不存在</li>
+</ul>
+
+<h2>已知未修复的 bugs</h2>
+
+<p>严重 bug 不代表马上会修复, 实际上存留时间长的 bug 无非两种原因, 一是机制复杂,
+二是无法重现. 请参见上文关于 bug 修复的声明.</p>
+
+<ul>
+<li>忘记将闭源组件升级至 5.1.7.0A (等下个版本)</li>
+<li>遮住距离传感器进行双击唤醒之后双击唤醒直到下次点亮屏幕之前失效 (长期存在, 原因至今不明)</li>
+<li>Wi-Fi 偶现断流 (调试不便)</li>
+<li>蓝牙设备偶现连接不稳定 (调试不便)</li>
+<li>系统日志依然稍显过多 (下个版本修复)</li>
+<li>部分用户最小音量过大 (请在 Flyme 下使用 MTK 工程模式自行设置音量, 搜索 <code>mx4 最小音量过大</code> 等关键字可找到教程)</li>
+<li>无法使用彩信 (修复优先级很低)</li>
+<li>待补充</li>
+</ul>
+
+<h2>下载</h2>
+
+<p>MEGA 链接随后放出. 魅族现已不提供 Flyme 4.2.8.2A 下载,
+这个版本的下载链接也一并放出, 方便从 Flyme 刷入的用户选择.</p>
+
+<p>CM13.0:</p>
+
+<ul>
+<li><a href="http://pan.baidu.com/s/1slCbn5N">百度云</a></li>
+<li><a href="https://yunpan.cn/cBjxsrBYfRsXU">360 云盘</a> 提取码：<code>18fa</code></li>
+</ul>
+
+<!--
+* [MEGA][mega]
+-->
+
+<p>安卓版 MX4 用户请下载 <code>mx4</code> 目录下的内容, Ubuntu 版请下载 <code>arale</code> 目录下的内容.</p>
+
+<!--
+-->
+
+<p>Flyme 4.2.8.2A:</p>
+
+<ul>
+<li><a href="http://pan.baidu.com/s/1c2a764S">百度云</a></li>
+<li><a href="https://yunpan.cn/cBjraLvzNF9Tf">360 云盘</a> 提取码: <code>4ef5</code></li>
+</ul>
+
+<p>给有需求用户的校验和:</p>
+
+<pre><code># MD5
+# MX4
+5a48edf754f88edd20dd22abd66f518b  mx4/ApkIDE_MX4_Unlock_BL.apk
+a54375e2761c8bf12e1db34e206636ae  mx4/cm-13.0-20160703-UNOFFICIAL-mx4.zip
+7ff821c9c916622206862170a4c0c197  mx4/XposedInstaller_3.0_alpha4.apk
+b3d4b0fc69193a91d60d4daa4823361e  mx4/xposed-v85-sdk23-arm.zip
+
+# arale
+d76a49e5248d2eaa79f7507639dc254a  arale/cm-13.0-20160703-UNOFFICIAL-arale.zip
+7ff821c9c916622206862170a4c0c197  arale/XposedInstaller_3.0_alpha4.apk
+b3d4b0fc69193a91d60d4daa4823361e  arale/xposed-v85-sdk23-arm.zip
+
+
+# SHA-1
+# MX4
+399167bb7fcdf61de397b85b96ec95934e0ab1c8  mx4/ApkIDE_MX4_Unlock_BL.apk
+b050752cfa693662913d8be7b53fdd7cab93e01c  mx4/cm-13.0-20160703-UNOFFICIAL-mx4.zip
+3e84a3895a8c0e812bad85b98e5f176266215fb4  mx4/XposedInstaller_3.0_alpha4.apk
+67af897d749a5645a46dcceb4011a92e60162b1e  mx4/xposed-v85-sdk23-arm.zip
+
+# arale
+8253ce102e4cbb0ec924f99b00ce40a72cf2cb31  arale/cm-13.0-20160703-UNOFFICIAL-arale.zip
+3e84a3895a8c0e812bad85b98e5f176266215fb4  arale/XposedInstaller_3.0_alpha4.apk
+67af897d749a5645a46dcceb4011a92e60162b1e  arale/xposed-v85-sdk23-arm.zip
+
+
+# SHA-256
+# MX4
+efaf514f8a5429198d2c394ac24becbef959f06933bdb82b00a16812752f8a47  mx4/ApkIDE_MX4_Unlock_BL.apk
+66fce3e2d1d7d411561c3dfac981f1b809b97eb3a7d7550e8441240668809bec  mx4/cm-13.0-20160703-UNOFFICIAL-mx4.zip
+835fdfd6244e4981818d2e44ad525575fe24772c5574c639c60cc3c48ba085fe  mx4/XposedInstaller_3.0_alpha4.apk
+f6a66672eb4f06a2c43e159d1eb9c700b2325a5a5274d1a76f481ef3f4677312  mx4/xposed-v85-sdk23-arm.zip
+
+# arale
+ba5c2428d7f7be708c59f2fa64f67e36be8a9811bfedc25d0549fe72c097d9fb  arale/cm-13.0-20160703-UNOFFICIAL-arale.zip
+835fdfd6244e4981818d2e44ad525575fe24772c5574c639c60cc3c48ba085fe  arale/XposedInstaller_3.0_alpha4.apk
+f6a66672eb4f06a2c43e159d1eb9c700b2325a5a5274d1a76f481ef3f4677312  arale/xposed-v85-sdk23-arm.zip
+
+
+# SHA-512
+# MX4
+2b1af3ee839190092c75a08a0091ab4b79b7e069534c7004fb8a7dfea1bdc4e25cd3d0da50541f8853387f18a0aeae106c808c91f3bd3e187be9b6033b1d73b5  mx4/ApkIDE_MX4_Unlock_BL.apk
+ab22448aea4067a6b7d1f22bbd50bad3219a99a9c4f063efaef028d826c2277a79fa90a4f73ef8b8bd624449528436976f866f21a6d9dd3339698017155ba12e  mx4/cm-13.0-20160703-UNOFFICIAL-mx4.zip
+1d5fa5c37005ec0fa48cd41358bf60515a6ac44d04136f07f9ba8dda322c46b24abc608e78ba8180486978eb731e2d612a22be6a01f6bf765e9b1eb3f065b391  mx4/XposedInstaller_3.0_alpha4.apk
+d18ac51be67b226e1434a5e398912b27eec932f6ee3d78d48ae94a30bad5bcf43c9180e37ab8228c60d7d9acaf8f74a9d0fcc446c74d27bd2eb965b72ec94d17  mx4/xposed-v85-sdk23-arm.zip
+
+# arale
+6f7cb872beecd7463bac62c61a6e3196f133349518ccbfabf31591fde64372ee5ddf44e1a041b790bd4176ee0b2c3a00fbcf06e413a33af19d786ca8dfa4e70d  arale/cm-13.0-20160703-UNOFFICIAL-arale.zip
+1d5fa5c37005ec0fa48cd41358bf60515a6ac44d04136f07f9ba8dda322c46b24abc608e78ba8180486978eb731e2d612a22be6a01f6bf765e9b1eb3f065b391  arale/XposedInstaller_3.0_alpha4.apk
+d18ac51be67b226e1434a5e398912b27eec932f6ee3d78d48ae94a30bad5bcf43c9180e37ab8228c60d7d9acaf8f74a9d0fcc446c74d27bd2eb965b72ec94d17  arale/xposed-v85-sdk23-arm.zip
+</code></pre>
+
+<h2>刷机方法</h2>
+
+<p>请根据自己当前的系统选择相应的方法操作.</p>
+
+<p><strong>如您不能理解此教程, 说明您是小白, 建议不要刷入! 第三方系统不同于官方系统, 后续您会遇到更多使用和维护上的挑战. 请自行权衡您的恐惧感和好奇心.</strong></p>
+
+<h3>从 CM12.1 升级</h3>
+
+<ul>
+<li>进入 <code>设置 - 应用</code>, 将 "SD 卡" 中的应用都移动到手机中. 这是由于解决当时的少部分应用无法安装 bug 时使用了猥琐的修复方式而造成的, 如不事先移动回手机会造成这些应用升级后神秘消失</li>
+<li><strong>备份 备份 备份</strong> 重要的事情说三遍!</li>
+<li>将刷机包放入系统</li>
+<li>进入恢复模式</li>
+<li>(可选) 清空 /system</li>
+<li>(可选) 双清, <strong>如果打算更换由不同项目提供的谷歌框架则必须双清, 否则可能造成谷歌应用崩溃!</strong></li>
+<li>刷!</li>
+</ul>
+
+<p><strong>注意</strong> 钛备份用户在双清刷入系统之后可能发现备份文件夹为空. 这是由于钛备份非要在 <code>/storage/emulated/legacy</code> 寻找备份导致的.
+请在设置中更改备份文件夹为 <code>/sdcard/TitaniumBackup</code> 即可. (如果使用 <code>/storage/emulated/0/TitaniumBackup</code> 这个正常路径的话你会发现设置神奇般地无法保留!)</p>
+
+<h3>从 Ubuntu 版 MX4 首次刷入本 ROM 的用户</h3>
+
+<ul>
+<li>Ubuntu 版 MX4 没有 bootloader 锁, 请直接关机后同时按住电源键和音量下键, 进入 fastboot 模式, 刷入 recovery (未编译 CM13.0 的工程模式 recovery, 您可使用 <a href="https://emmaus.pro">@aiden09</a> 的 recovery)</li>
+<li>按住音量上键, 在电脑上 <code>fastboot reboot</code> 使手机进入恢复模式</li>
+<li>格式化 data 分区后用 adb 推入卡刷包</li>
+<li>正常卡刷 (Apply update 之后选第二个选项), 重启</li>
+</ul>
+
+<h3>从 Flyme 或其他第三方 ROM 刷入本 ROM 的用户</h3>
+
+<p>请严格按照指令操作, 尤其是 bootloader 解锁, 否则一定变砖!
+魅族机器变砖无法自行救砖, 如果变砖请自行前往当地服务点或返厂救砖, 本人概不负责.
+不过一般是免费的 (本人体验; 您的体验可能不同).</p>
+
+<p>如果您已经处于其他第三方系统, 请直接跳过解锁步骤, 双清刷入即可. 否则请首先做解锁操作.</p>
+
+<h4>未解锁 BL 用户</h4>
+
+<ul>
+<li>用官方方法安装 Flyme 4.2.8.2A 系统, 必须是 <code>4.2.8.2</code> 系列</li>
+<li>把两个下载的文件放进手机内部存储</li>
+<li>安装下载的 <code>ApkIDE_MX4_Unlock_BL.apk</code></li>
+<li>进入应用, 阅读它的说明文字, 选择一键解锁 BL</li>
+<li>做下边的操作</li>
+</ul>
+
+<h4>已解锁 BL 用户</h4>
+
+<ul>
+<li><strong>注意</strong>: 每次进入 Flyme 系统都会自动恢复 recovery 分区到官方 recovery, 因此如果解锁 BL 后重启了 Flyme, 需要重新解锁并进入. 其他第三方系统基本不用担心此类问题.</li>
+<li>进入恢复模式, 操作方法是音量加减选择, 电源键确定</li>
+<li>双清 (恢复出厂设置), 不使用 TWRP recovery 的话这一步会持续 5 到 15 分钟, 请耐心等待</li>
+<li>正常卡刷刷入</li>
+<li>重启</li>
+</ul>
+
+<h2>一些使用方面的说明</h2>
+
+<ul>
+<li><strong>首次开机设置</strong>
+<ul>
+<li>最好跳过 WiFi 连接步骤, 进到桌面再连. 在那个界面连的话下一步可能会卡住, 反正也需要跳过</li>
+<li>可以把使用情况统计关掉</li>
+<li>进入系统之后可以去 <code>设置-关于手机-CyanogenMod 更新</code> 把 CM 自动更新检查关掉, 在修复所有 bug 之前不会提交官方的 (CM 官方政策) 不会有自动更新</li>
+</ul></li>
+<li><strong>手机网络</strong>:
+<ul>
+<li>如果等待 40 秒之后还没有搜到运营商信号, 请进入桌面之后<strong>打开飞行模式再关闭</strong>, 让电话组件重新初始化</li>
+<li>开 4G 网络的方法: 现已修复设置页面不显示 LTE 网络的问题, 现在只需要进入 <code>设置 - 移动网络 - 首选网络设置</code> 即可选择首选网络制式了</li>
+</ul></li>
+<li><strong>小圆圈相关</strong>
+<ul>
+<li>我尝试了在 CM 代码基础上复刻小圆圈功能, 然而可用性不如 Flyme 的实现, 因此没有放出. 主体实现在 <code>xen0n/android_frameworks_base_mtk</code> 这个库的 <code>cm-12.1-mx-circle</code> 分支下, 欢迎吐槽</li>
+<li>启用扩展桌面来隐藏虚拟键会造成大部分国产汉语输入法的输入框偏移, 请自行安装相应 Xposed 插件实现小圆圈策略并修改 <code>/system/build.prop</code> 禁用虚拟键 (找到 <code>qemu.hw.mainkeys</code> 把 0 改成 1 或者删除该行)</li>
+</ul></li>
+<li>想起来了我会来更新的</li>
+</ul>
+
+<h2>开发者捐赠渠道</h2>
+
+<ul>
+<li>支付宝账号：<code>idontknw.wang@gmail.com</code></li>
+</ul>
+
+<p>如果您觉得我制作的 ROM/Recovery 对您有帮助, 您可以进行捐赠.
+捐赠多少没关系, 您的支持是对我最大的鼓励.</p>
+
+<!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
+</div>
+        </article>
+        <section class="post-comments">
+          <div data-thread-key="2016/07/03/meizu-mx4-cm-13.0-userdebug-2" data-title="CyanogenMod for 魅族 MX4: CM13.0 20160703 测试包发布" data-url="http://blog.xen0n.name/2016/07/03/meizu-mx4-cm-13.0-userdebug-2/" class="ds-thread"></div>
+          <script type="text/javascript">
+            var duoshuoQuery = {short_name:"xen0nblog"};
+            (function() {
+              var ds = document.createElement('script');
+              ds.type = 'text/javascript';ds.async = true;
+              ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
+              ds.charset = 'UTF-8';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+          </script>
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
