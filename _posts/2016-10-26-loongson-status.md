@@ -18,6 +18,10 @@ date: 2016-10-26 15:44:00
 
 那我们开始吧，从代码开始.
 
+**勘误**
+
+* 结语中原关于 POWER8 与龙芯 3A4000/5000 同时研制的说法系措辞错误，实际要表达的意思是 PowerPC 标准开放不久因此同时经历生态系统建设. 与龙芯 3A4000/5000 同步研制的型号是 POWER10/11. 感谢 [@meJustPlay](http://tieba.baidu.com/home/main?un=meJustPlay&ie=utf-8) 的指正！
+
 
 ## 代码
 
@@ -188,7 +192,7 @@ MIPS 作为整个阵营的竞争力没有太大帮助.
 [2f-pixman]: http://mattst88.com/blog/2012/05/17/Optimizing_pixman_for_Loongson:_Process_and_Results/
 [loongson-firmware-intf]: http://www.loongnix.org/index.php/%E5%9B%BA%E4%BB%B6%E4%B8%8E%E5%86%85%E6%A0%B8%E6%8E%A5%E5%8F%A3%E8%A7%84%E8%8C%83
 
-龙芯 3A4000 乃至 3A5000 生产研发之际，IBM POWER8 产品也在开发中，AArch64 的生态系统也在迅猛成长，谷歌大小设备通吃的 Fuchsia 也在逐渐凝固下来……
+龙芯 3A4000 乃至 3A5000 生产研发之际，业已开放的 PowerPC 与新生事物 AArch64 的生态系统也在迅猛成长，谷歌大小设备通吃的 Fuchsia 也在逐渐凝固下来……
 而 MIPS 阵营依然面临着碎片化，君正主打低功耗，而其指令集覆盖不如龙芯；龙芯支持自主指令集扩展，而自己不开放，别家又不支持（想支持也不知道怎么支持啊）；
 MIPS 东家 Imagination 带着一帮小弟搞 MIPS64r6，microMIPS，龙芯和君正又都不支持……
 
