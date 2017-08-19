@@ -290,7 +290,7 @@ normalize_codeset (const char *codeset, size_t name_len);
 
 [locale-keng]: https://stackoverflow.com/q/9991603/596531
 
-```patch
+```diff
 --- a/liblightdm-gobject/language.c	2017-08-19 18:02:33.773661324 +0800
 +++ b/liblightdm-gobject/language.c	2017-08-19 18:09:08.886669723 +0800
 @@ -96,8 +96,18 @@
