@@ -284,4 +284,42 @@ normalize_codeset (const char *codeset, size_t name_len);
 * macOS 的 libc 炸裂了。
 
 
+## 解决
+
+按照把问题解决在最上游的原则，我们应该在哪里解决问题呢？显然我们不能修改 macOS 系统，因为它很封闭，[locale 相关部分巨坑][locale-keng]，并且我不熟悉；也显然不能在 glibc 层面，因为可能有很多应用都依赖 glibc 的这一“feature”了，那么就只能在 LightDM 一层动手了。
+
+[locale-keng]: https://stackoverflow.com/q/9991603/596531
+
+```patch
+--- a/liblightdm-gobject/language.c	2017-08-19 18:02:33.773661324 +0800
++++ b/liblightdm-gobject/language.c	2017-08-19 18:09:08.886669723 +0800
+@@ -96,8 +96,18 @@
+             if (strcmp (command, "locale -a") == 0 && !g_strrstr (code, ".utf8"))
+                 continue;
+
+-            language = g_object_new (LIGHTDM_TYPE_LANGUAGE, "code", code, NULL);
++            /* Use the correct spelling of "UTF-8". */
++            size_t len_head = strlen (code) - 4;
++            size_t len_result = len_head + 6;
++            gchar *fixed_code = (gchar *) g_malloc (sizeof(gchar) * len_result);
++            strncpy (fixed_code, code, len_head);
++            strncpy (fixed_code + len_head, "UTF-8", 5);
++            *(fixed_code + len_result - 1) = '\0';
++
++            language = g_object_new (LIGHTDM_TYPE_LANGUAGE, "code", fixed_code, NULL);
+             languages = g_list_append (languages, language);
++
++            g_free (fixed_code);
+         }
+
+         g_strfreev (tokens);
+```
+
+可见就是很蠢的字符串末尾暴力替换……
+
+还有一段小插曲，重新编译 lightdm 之后怎么注销重新登陆都没用，一度非常沮丧，最后发现 lightdm 主进程从开机之后就没有死过，相反它注视着 X server 来来去去，并随时生出一个子进程指定进去……这么做的一个副作用是任何 greeter 界面里的配置更改都要等到 lightdm 服务重启之后才能生效，导致我试图从 `zh_CN.UTF-8` 临时切换走时发现不能切换，又费了一番周折。
+
+总之，在 `systemctl restart lightdm` 之后，一切重归平静……
+
+
 <!-- vim:set ai et ts=4 sw=4 sts=4 fenc=utf-8: -->
