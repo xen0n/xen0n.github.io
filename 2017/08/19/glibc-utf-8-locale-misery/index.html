@@ -283,29 +283,29 @@ ja_JP.UTF-8 UTF-8
 
 <p>按照把问题解决在最上游的原则，我们应该在哪里解决问题呢？显然我们不能修改 macOS 系统，因为它很封闭，<a href="https://stackoverflow.com/q/9991603/596531">locale 相关部分巨坑</a>，并且我不熟悉；也显然不能在 glibc 层面，因为可能有很多应用都依赖 glibc 的这一“feature”了，那么就只能在 LightDM 一层动手了。</p>
 
-<pre><code>--- a/liblightdm-gobject/language.c 2017-08-19 18:02:33.773661324 +0800
-+++ b/liblightdm-gobject/language.c 2017-08-19 18:09:08.886669723 +0800
-@@ -96,8 +96,18 @@
-             if (strcmp (command, "locale -a") == 0 &amp;&amp; !g_strrstr (code, ".utf8"))
+<div class="codehilite"><pre><span></span><code><span class="gd">--- a/liblightdm-gobject/language.c 2017-08-19 18:02:33.773661324 +0800</span>
+<span class="gi">+++ b/liblightdm-gobject/language.c 2017-08-19 18:09:08.886669723 +0800</span>
+<span class="gu">@@ -96,8 +96,18 @@</span>
+             if (strcmp (command, &quot;locale -a&quot;) == 0 &amp;&amp; !g_strrstr (code, &quot;.utf8&quot;))
                  continue;
 
--            language = g_object_new (LIGHTDM_TYPE_LANGUAGE, "code", code, NULL);
-+            /* Use the correct spelling of "UTF-8". */
-+            size_t len_head = strlen (code) - 4;
-+            size_t len_result = len_head + 6;
-+            gchar *fixed_code = (gchar *) g_malloc (sizeof(gchar) * len_result);
-+            strncpy (fixed_code, code, len_head);
-+            strncpy (fixed_code + len_head, "UTF-8", 5);
-+            *(fixed_code + len_result - 1) = '\0';
-+
-+            language = g_object_new (LIGHTDM_TYPE_LANGUAGE, "code", fixed_code, NULL);
+<span class="gd">-            language = g_object_new (LIGHTDM_TYPE_LANGUAGE, &quot;code&quot;, code, NULL);</span>
+<span class="gi">+            /* Use the correct spelling of &quot;UTF-8&quot;. */</span>
+<span class="gi">+            size_t len_head = strlen (code) - 4;</span>
+<span class="gi">+            size_t len_result = len_head + 6;</span>
+<span class="gi">+            gchar *fixed_code = (gchar *) g_malloc (sizeof(gchar) * len_result);</span>
+<span class="gi">+            strncpy (fixed_code, code, len_head);</span>
+<span class="gi">+            strncpy (fixed_code + len_head, &quot;UTF-8&quot;, 5);</span>
+<span class="gi">+            *(fixed_code + len_result - 1) = &#39;\0&#39;;</span>
+<span class="gi">+</span>
+<span class="gi">+            language = g_object_new (LIGHTDM_TYPE_LANGUAGE, &quot;code&quot;, fixed_code, NULL);</span>
              languages = g_list_append (languages, language);
-+
-+            g_free (fixed_code);
+<span class="gi">+</span>
+<span class="gi">+            g_free (fixed_code);</span>
          }
 
          g_strfreev (tokens);
-</code></pre>
+</code></pre></div>
 
 <p>可见就是很蠢的字符串末尾暴力替换……</p>
 
