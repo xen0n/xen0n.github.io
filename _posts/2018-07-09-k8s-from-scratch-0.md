@@ -11,11 +11,11 @@ date: 2018-07-09 19:38:00
 不定期更新（操作多少更新多少），目标是搭建一个如下的集群：
 
 * Gentoo、Ubuntu 两种宿主发行版
-* Docker 最新 ce 版本（反正跟 [rkt] 都是 Go 写的，没什么区别，现在还没见过 Rust 的 OCI runtime 实现）
+* Docker 最新 ce 版本（反正跟 [rkt][] 都是 Go 写的，没什么区别，现在还没见过 Rust 的 OCI runtime 实现）
 * Kubernetes 最新稳定版本（截至写作时为 1.11）
-* [CNI-Genie] + [Calico] IPv6-only 内网，同时为个别节点提供 IPv4 连通性（通过网关什么的）
+* [CNI-Genie][] + [Calico][] IPv6-only 内网，同时为个别节点提供 IPv4 连通性（通过网关什么的）
 * 存储还没想好，估计先放在某台机器上
-* 加入一个 GPU 节点，[支持 CUDA]
+* 加入一个 GPU 节点，[支持 CUDA][]
 * （理想状态）支持 amd64/mips64el 双架构，如果能做到的话考虑找台 arm64 设备来凑凑热闹
 
 [rkt]: https://github.com/rkt/rkt
