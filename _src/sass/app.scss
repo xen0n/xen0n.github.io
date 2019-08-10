@@ -2,7 +2,6 @@
 @import 'base/reset';
 
 @import 'bourbon';
-@import 'neat';
 
 // fa black magic; see https://gitcafe.com/PyConChina/staticpycon for details
 // @import 'font-awesome';
@@ -11,6 +10,7 @@
 @import 'helpers/fontawesome-mixin';
 
 @import 'helpers/list-functions';
+@import 'helpers/outer-container';
 
 @import 'colors';
 @import 'dimens';

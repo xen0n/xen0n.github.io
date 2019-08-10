@@ -2,7 +2,7 @@ $body-font-size: 16px !default;
 $body-font-weight: 200 !default;
 $body-line-height: 1.5 !default;
 
-$helvetica-without-fallback: remove-last($helvetica);
+$font-stack-helvetica-without-fallback: remove-last($font-stack-helvetica);
 
 $sans-prefer-font-family-western: (
   "Source Sans Pro"
@@ -10,7 +10,7 @@ $sans-prefer-font-family-western: (
 
 $sans-font-family-western: join(
   $sans-prefer-font-family-western,
-  $helvetica-without-fallback,
+  $font-stack-helvetica-without-fallback,
   'comma'
   ) !default;
 
