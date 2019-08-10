@@ -27,13 +27,13 @@
     "font-awesome": "^4.7.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.6.9",
-    "gulp": "^3.8.11",
-    "gulp-changed": "^1.2.1",
-    "gulp-jade": "^1.0.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-run": "^1.6.8",
-    "gulp-sass": "^2.0.0",
-    "gulp-sourcemaps": "^1.5.2"
+    "browser-sync": "^2.26.7",
+    "gulp": "^4.0.2",
+    "gulp-changed": "^4.0.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-run": "^1.7.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5"
   }
 }
