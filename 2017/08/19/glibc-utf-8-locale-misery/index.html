@@ -119,7 +119,7 @@ LC_ALL=
 <div class="codehilite"><pre><span></span><code><span class="k">for</span> i in <span class="sb">`</span>ps -ef --no-headers <span class="p">|</span> awk <span class="s1">&#39;{ print $2; }&#39;</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
     sudo cat /proc/<span class="nv">$i</span>/environ <span class="p">|</span> <span class="se">\</span>
         tr <span class="s1">&#39;\0&#39;</span> <span class="s1">&#39;\n&#39;</span> <span class="p">|</span>
-        grep <span class="s1">&#39;\.utf8$&#39;</span> &gt; /dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nv">$i</span>
+        grep <span class="s1">&#39;\.utf8$&#39;</span> &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nv">$i</span>
 <span class="k">done</span> &gt; /tmp/123
 
 ps -ef <span class="p">|</span> grep -P <span class="s2">&quot;</span><span class="k">$(</span>tr <span class="s1">&#39;\n&#39;</span> <span class="s1">&#39;|&#39;</span> &lt; /tmp/123 <span class="p">|</span> sed <span class="s1">&#39;s/\|$//&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
@@ -317,17 +317,7 @@ ja_JP.UTF-8 UTF-8
 </div>
         </article>
         <section class="post-comments">
-          <div data-thread-key="2017/08/19/glibc-utf-8-locale-misery" data-title="glibc 的 UTF-8 locale 惨剧" data-url="http://blog.xen0n.name/2017/08/19/glibc-utf-8-locale-misery/" class="ds-thread"></div>
-          <script type="text/javascript">
-            var duoshuoQuery = {short_name:"xen0nblog"};
-            (function() {
-              var ds = document.createElement('script');
-              ds.type = 'text/javascript';ds.async = true;
-              ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
-              ds.charset = 'UTF-8';
-              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-            })();
-          </script>
+          
         </section>
       </div>
     </div>

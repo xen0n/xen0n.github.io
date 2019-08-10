@@ -110,7 +110,7 @@ CSS 的感觉一样. 那么我们的想法就是:</p>
     <span class="n">name</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">anticausal</span> <span class="o">=</span> <span class="bp">False</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -193,14 +193,14 @@ YAML 格式的配置文件, 里面就包含了 0 或多条流的定义; 这些�
 <span class="k">class</span> <span class="nc">StreamDriver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Stream driver driving one or more streams.&#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streams</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streams</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">streams</span> <span class="o">=</span> <span class="n">streams</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_config</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">stream_from_config</span><span class="p">(</span><span class="n">stream_decl</span><span class="p">)</span> <span class="k">for</span> <span class="n">stream_decl</span> <span class="ow">in</span> <span class="n">config</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">nb_streams</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
@@ -249,17 +249,7 @@ Pybble 而言, 只能单线程跑 CPU-bound 的渲染过程对性能的影响应
 </div>
         </article>
         <section class="post-comments">
-          <div data-thread-key="2015/05/11/making-of-this-blog" data-title="这个博客是怎样搭建的" data-url="http://blog.xen0n.name/2015/05/11/making-of-this-blog/" class="ds-thread"></div>
-          <script type="text/javascript">
-            var duoshuoQuery = {short_name:"xen0nblog"};
-            (function() {
-              var ds = document.createElement('script');
-              ds.type = 'text/javascript';ds.async = true;
-              ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
-              ds.charset = 'UTF-8';
-              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-            })();
-          </script>
+          
         </section>
       </div>
     </div>
