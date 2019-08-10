@@ -21,6 +21,12 @@
     "url": "https://github.com/xen0n/xen0n.github.io/issues"
   },
   "homepage": "https://github.com/xen0n/xen0n.github.io",
+  "dependencies": {
+    "normalize.css": "^3.0.3",
+    "bourbon": "^4.2.2",
+    "bourbon-neat": "^1.7.2",
+    "font-awesome": "^4.3.0"
+  },
   "devDependencies": {
     "browser-sync": "^2.6.9",
     "gulp": "^3.8.11",

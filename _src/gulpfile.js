@@ -32,9 +32,9 @@ gulp.task('sass', function() {
   var sassOptions = {
     outputStyle: 'compressed',
     includePaths: [
-      'bower_components/bourbon/app/assets/stylesheets',
-      'bower_components/neat/app/assets/stylesheets',
-      'bower_components/font-awesome/scss'
+      'node_modules/bourbon/app/assets/stylesheets',
+      'node_modules/bourbon-neat/app/assets/stylesheets',
+      'node_modules/font-awesome/scss'
     ]
   };
 
