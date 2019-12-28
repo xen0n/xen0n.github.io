@@ -242,6 +242,11 @@
     & p {
       margin-bottom: $spacing-small * 0.75;
     }
+
+    & code {
+      margin: 0 0.2rem;
+      padding: 0 0.2rem;
+    }
   }
 }
 
