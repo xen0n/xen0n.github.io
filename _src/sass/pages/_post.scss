@@ -234,6 +234,14 @@
       margin-bottom: 0;
     }
   }
+
+  & .smallfont {
+    font-size: 12px;
+
+    & p {
+      margin-bottom: $spacing-small * 0.75;
+    }
+  }
 }
 
 
