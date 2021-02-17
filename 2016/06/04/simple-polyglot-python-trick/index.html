@@ -51,7 +51,7 @@
 
 <div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="s1">&#39;:&#39;</span> <span class="c1">#; exec &quot;$(command -v python)&quot; &quot;$0&quot; &quot;$@&quot;</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>嗯... 这样不太合适, 因为 <code>#</code> 既是 Python 注释也是 Shell 注释, 这样整个第一行在
@@ -69,7 +69,7 @@ Shell 看来就没有 <code>exec</code> 了! 但是 Python 只有 <code>#</code>
 <span class="sd">&#39;&#39;&#39;:&#39; ; exec &quot;$(command -v python)&quot; &quot;$0&quot; &quot;$@&quot;</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/sh</span>

@@ -298,13 +298,13 @@ target     prot opt source               destination
 
 <div class="codehilite"><pre><span></span><code><span class="cm">/* net/ipv4/route.c */</span>
 
-<span class="k">static</span> <span class="kt">int</span> <span class="nf">ip_error</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">)</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="n">ip_error</span><span class="p">(</span><span class="k">struct</span> <span class="nc">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">)</span>
 <span class="p">{</span>
-        <span class="k">struct</span> <span class="n">in_device</span> <span class="o">*</span><span class="n">in_dev</span> <span class="o">=</span> <span class="n">__in_dev_get_rcu</span><span class="p">(</span><span class="n">skb</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span>
-        <span class="k">struct</span> <span class="n">rtable</span> <span class="o">*</span><span class="n">rt</span> <span class="o">=</span> <span class="n">skb_rtable</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
-        <span class="k">struct</span> <span class="n">inet_peer</span> <span class="o">*</span><span class="n">peer</span><span class="p">;</span>
+        <span class="k">struct</span> <span class="nc">in_device</span> <span class="o">*</span><span class="n">in_dev</span> <span class="o">=</span> <span class="n">__in_dev_get_rcu</span><span class="p">(</span><span class="n">skb</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span>
+        <span class="k">struct</span> <span class="nc">rtable</span> <span class="o">*</span><span class="n">rt</span> <span class="o">=</span> <span class="n">skb_rtable</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
+        <span class="k">struct</span> <span class="nc">inet_peer</span> <span class="o">*</span><span class="n">peer</span><span class="p">;</span>
         <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">now</span><span class="p">;</span>
-        <span class="k">struct</span> <span class="n">net</span> <span class="o">*</span><span class="n">net</span><span class="p">;</span>
+        <span class="k">struct</span> <span class="nc">net</span> <span class="o">*</span><span class="n">net</span><span class="p">;</span>
         <span class="kt">bool</span> <span class="n">send</span><span class="p">;</span>
         <span class="kt">int</span> <span class="n">code</span><span class="p">;</span>
 

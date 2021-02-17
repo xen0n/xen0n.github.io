@@ -56,7 +56,7 @@ grep, 出问题的函数是 <code>ujson</code> 的一个内部 helper 函数, �
 <span class="n">FASTCALL_ATTR</span> <span class="n">INLINE_PREFIX</span>
 <span class="kt">void</span>
 <span class="n">FASTCALL_MSVC</span>
-<span class="nf">Buffer_AppendShortHexUnchecked</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">outputOffset</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">value</span><span class="p">);</span>
+<span class="n">Buffer_AppendShortHexUnchecked</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">outputOffset</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">value</span><span class="p">);</span>
 </code></pre></div>
 
 <p>还有 FreeBSD issue 中提到的 <code>strreverse</code> 的:</p>
@@ -64,7 +64,7 @@ grep, 出问题的函数是 <code>ujson</code> 的一个内部 helper 函数, �
 <div class="codehilite"><pre><span></span><code><span class="n">FASTCALL_ATTR</span> <span class="n">INLINE_PREFIX</span>
 <span class="kt">void</span>
 <span class="n">FASTCALL_MSVC</span>
-<span class="nf">strreverse</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">begin</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">end</span><span class="p">);</span>
+<span class="n">strreverse</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">begin</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">end</span><span class="p">);</span>
 </code></pre></div>
 
 <p>摘抄下这里的宏定义, 可以看到这些定义比较简陋 (平台跟编译器是平行的概念,

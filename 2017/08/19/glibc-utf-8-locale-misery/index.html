@@ -30,7 +30,7 @@
 
 <div class="codehilite"><pre><span></span><code><span class="nb">local</span> <span class="nv">is_darwin</span><span class="o">=</span><span class="nb">false</span>
 <span class="nb">local</span> <span class="nv">is_linux</span><span class="o">=</span><span class="nb">false</span>
-<span class="k">case</span> <span class="sb">`</span>uname -s<span class="sb">`</span> in
+<span class="k">case</span> <span class="sb">`</span>uname -s<span class="sb">`</span> <span class="k">in</span>
     Darwin<span class="o">)</span> <span class="nv">is_darwin</span><span class="o">=</span><span class="nb">true</span> <span class="p">;;</span>
     Linux<span class="o">)</span>  <span class="nv">is_linux</span><span class="o">=</span><span class="nb">true</span> <span class="p">;;</span>
 <span class="k">esac</span>
@@ -116,7 +116,7 @@ LC_ALL=
 
 <p>既然正确的 locale 设置了也没用，但 <a href="https://github.com/systemd/systemd/blob/v234/src/core/locale-setup.c#L62">systemd 源码</a>却不这么认为（它忠实地转达了我们的设置），我们不妨来看一下有多少进程受到了影响：</p>
 
-<div class="codehilite"><pre><span></span><code><span class="k">for</span> i in <span class="sb">`</span>ps -ef --no-headers <span class="p">|</span> awk <span class="s1">&#39;{ print $2; }&#39;</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span> i <span class="k">in</span> <span class="sb">`</span>ps -ef --no-headers <span class="p">|</span> awk <span class="s1">&#39;{ print $2; }&#39;</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
     sudo cat /proc/<span class="nv">$i</span>/environ <span class="p">|</span> <span class="se">\</span>
         tr <span class="s1">&#39;\0&#39;</span> <span class="s1">&#39;\n&#39;</span> <span class="p">|</span>
         grep <span class="s1">&#39;\.utf8$&#39;</span> &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nv">$i</span>
@@ -153,7 +153,7 @@ xenon     7427  7384  0 15:16 ?        00:00:09 xfce4-session
 <div class="codehilite"><pre><span></span><code><span class="cm">/* lightdm-1.22.0/liblightdm-gobject/language.c:60 */</span>
 
 <span class="k">static</span> <span class="kt">void</span>
-<span class="nf">update_languages</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="n">update_languages</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">gchar</span> <span class="o">*</span><span class="n">command</span> <span class="o">=</span> <span class="s">&quot;locale -a&quot;</span><span class="p">;</span>
     <span class="n">gchar</span> <span class="o">*</span><span class="n">stdout_text</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">*</span><span class="n">stderr_text</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
@@ -184,7 +184,7 @@ xenon     7427  7384  0 15:16 ?        00:00:09 xfce4-session
 <div class="codehilite"><pre><span></span><code><span class="cm">/* lightdm-1.22.0/src/seat.c:1000 */</span>
 
 <span class="k">static</span> <span class="kt">void</span>
-<span class="nf">configure_session</span> <span class="p">(</span><span class="n">Session</span> <span class="o">*</span><span class="n">session</span><span class="p">,</span> <span class="n">SessionConfig</span> <span class="o">*</span><span class="n">config</span><span class="p">,</span> <span class="k">const</span> <span class="n">gchar</span> <span class="o">*</span><span class="n">session_name</span><span class="p">,</span> <span class="k">const</span> <span class="n">gchar</span> <span class="o">*</span><span class="n">language</span><span class="p">)</span>
+<span class="n">configure_session</span> <span class="p">(</span><span class="n">Session</span> <span class="o">*</span><span class="n">session</span><span class="p">,</span> <span class="n">SessionConfig</span> <span class="o">*</span><span class="n">config</span><span class="p">,</span> <span class="k">const</span> <span class="n">gchar</span> <span class="o">*</span><span class="n">session_name</span><span class="p">,</span> <span class="k">const</span> <span class="n">gchar</span> <span class="o">*</span><span class="n">language</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="cm">/* ... */</span>
 
@@ -199,7 +199,7 @@ xenon     7427  7384  0 15:16 ?        00:00:09 xfce4-session
 <span class="cm">/* xfce4-session@989cb9b83e xfce4-session/main.c:88 */</span>
 
 <span class="k">static</span> <span class="kt">void</span>
-<span class="nf">setup_environment</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="n">setup_environment</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="cm">/* ... */</span>
 
@@ -257,7 +257,7 @@ ja_JP.UTF-8 UTF-8
 <span class="cm">   names.  Normalization allows the user to use any of the common</span>
 <span class="cm">   names.  */</span>
 <span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span>
-<span class="nf">normalize_codeset</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">codeset</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">name_len</span><span class="p">);</span>
+<span class="n">normalize_codeset</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">codeset</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">name_len</span><span class="p">);</span>
 </code></pre></div>
 
 <p>原来是 glibc 为了让用户不用死记硬背各种字符集名称的字母大小写、连字符加在哪，自己做了一层标准化，反正“字符集名称没有标准规定”……</p>
