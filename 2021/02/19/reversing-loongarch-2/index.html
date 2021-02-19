@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第二回 ELF - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">《开局一个二进制，从零开始的 LoongArch 指令集推导》——第二回 ELF</h1>
+          </header>
+          <div class="article__content"><blockquote>
+  <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p>
+  
+  <p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p>
+  
+  <p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p>
+</blockquote>
+
+<p>上回我们讲到，拿到了 <code>libpython2.7</code> 和 <code>libpython2.7-dbg</code> 的包，接下来的事情自然是“开箱验货”——成品 LoongArch 二进制的真容终于要一见天日了！</p>
+
+<p>Debian <code>.deb</code> 软件包的格式和静态库 <code>.a</code> 文件一样，都是 <code>ar</code> 生成的归档文件，使用 <code>ar x</code> 命令解压就好了。</p>
+
+<p>解开之后有几个文件，其中 <code>data.tar.xz</code> 就是这个包的真正文件内容了（实际压缩格式可能会有不同，目前拿到的这些包都是 <code>xz</code>），再次 <code>tar xf</code> 解压之后，一个 <code>usr</code> 目录就出现在我们眼前……</p>
+
+<pre><code>$ tree usr
+usr
+├── lib
+│   ├── loongarch64-linux-gnu
+│   │   ├── libpython2.7.so.1 -&gt; libpython2.7.so.1.0
+│   │   └── libpython2.7.so.1.0
+│   └── python2.7
+│       └── config-loongarch64-linux-gnu
+│           └── libpython2.7.so -&gt; ../../loongarch64-linux-gnu/libpython2.7.so.1
+└── share
+    ├── doc
+    │   └── libpython2.7 -&gt; libpython2.7-stdlib
+    └── lintian
+        └── overrides
+            └── libpython2.7
+
+8 directories, 5 files
+</code></pre>
+
+<p><code>/usr/lib</code> 下是标准的 Debian multiarch 结构，当中坐着一个动态链接库，我们来看看它大概长啥样：</p>
+
+<pre><code>$ file usr/lib/loongarch64-linux-gnu/libpython2.7.so.1.0
+usr/lib/loongarch64-linux-gnu/libpython2.7.so.1.0: ELF 64-bit LSB shared object, *unknown arch 0x102* version 1 (SYSV), dynamically linked, BuildID[sha1]=003ad73232b08c258e5cb383207119da9f1ab05f, stripped
+</code></pre>
+
+<p>哦，我的老朋友！瞧瞧我们都看到了什么，<code>*unknown arch 0x102*</code>！</p>
+
+<div class="codehilite"><pre><span></span><code><span class="c1">// binutils-gdb</span>
+<span class="c1">// include/elf/common.h</span>
+<span class="cp">#define EM_LOONGARCH    258     </span><span class="cm">/* Loongson Loongarch */</span><span class="cp"></span>
+</code></pre></div>
+
+<p>我们真的拿到了 LoongArch 的成品二进制！</p>
+
+<p>这是一个打开优化的生产二进制，性能想必是高，使用指令种类多，体积也瘦小。</p>
+
+<p>但我们同时也看到了一个逆向工程师不喜欢的 <code>stripped</code> 单词——当然这也是常规操作——意思是说，这个文件被一个叫 <code>strip</code> 的程序“脱”掉了一层皮，没有了调试信息和符号表。</p>
+
+<p>对于 <code>stripped</code> 二进制，我们只能方便地访问公有符号，也就是 C 语言中没有声明为 <code>static</code> 的函数和数据。</p>
+
+<p>鉴于 CPython 代码的组织形式（或者任何架构合理、可维护的 C/C++ 项目都差不多），可以说绝大部分符号都被脱掉了，大部分函数都不便找到源码相互对照。</p>
+
+<p>不过，不用慌张，我们还有一个 <code>dbg</code> 包！</p>
+
+<p>我们再用相同方法解开 <code>libpython2.7-dbg</code>，看一看这份二进制如何，是不是能方便我们的工作：</p>
+
+<pre><code>$ file usr/lib/loongarch64-linux-gnu/libpython2.7_d.so.1.0
+usr/lib/loongarch64-linux-gnu/libpython2.7_d.so.1.0: ELF 64-bit LSB shared object, *unknown arch 0x102* version 1 (SYSV), dynamically linked, BuildID[sha1]=19d5a4d6d6752b4201edae4bd9571d15e33a87ad, with debug_info, not stripped
+</code></pre>
+
+<p>这就很舒服了！</p>
+</div>
+        </article>
+        <section class="post-comments">
+          
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
