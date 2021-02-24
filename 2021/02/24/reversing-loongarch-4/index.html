@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第四回 把大象放进冰箱 - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">《开局一个二进制，从零开始的 LoongArch 指令集推导》——第四回 把大象放进冰箱</h1>
+          </header>
+          <div class="article__content"><blockquote>
+  <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p>
+  
+  <p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p>
+  
+  <p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p>
+</blockquote>
+
+<p>上一回我们已经找到了 <code>libpython</code> 的代码段，并且成功看到了最初的一些指令。接下来的工作说简单也不简单；简单是因为 Python 这个软件是有源码的，不简单是因为指令格式、含义都要一点点从头猜起。</p>
+
+<p>鉴于接下来的情节展开，对欠缺相关训练、实践的读者一定会造成困扰甚至误导，还是插入一段对汇编语言、指令集的简单科普好了。</p>
+
+<blockquote>
+  <p>Q: 把大象放进冰箱要几个步骤？</p>
+  
+  <p>A: 两步：打开冰箱；把大象放进去。</p>
+</blockquote>
+
+<p>生活中有许多类似的场合，需要按一定的步骤顺次完成一系列动作；有时还会涉及简单的判断，这种情况下做这几步，那种情况跳过哪几步，诸如此类。菜谱、乐谱、棋谱、说明书，都是一系列动作的记录。</p>
+
+<p>所谓“汇编语言”也是这样的一种记录，使用特定的记录方式，记录人们希望处理器执行的一系列动作。如果我们用汇编的方式描述“把大象放进冰箱”，可能会变成如下的形式：</p>
+
+<pre><code>打开 冰箱
+放   大象，冰箱
+</code></pre>
+
+<p>如果使用英语，可能又会是这样的形式：</p>
+
+<pre><code>open fridge
+put  elephant, fridge
+</code></pre>
+
+<p>虽然语言不同，但照着做之后的效果是一样的。这是由于两种语言在这方面表达力相同。在各自的母语使用者看来，其实就是用几种固定格式去书写这些动作，而背后表达的含义则无关语言。</p>
+
+<p>其实，真正的汇编语言也大同小异，请看示例：</p>
+
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">b</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="o">*</span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>这段简单的 C 程序，如果用 MIPS 汇编，可以写成这样：</p>
+
+<pre><code>lw      t0, 0(a0)
+lw      t1, 0(a1)
+addu    t0, t0, t1
+sw      t0, 0(a2)
+</code></pre>
+
+<p>表达的意思无非是：</p>
+
+<pre><code>取 32 位，符号扩展           临时寄存器 0，基地址 第 0 入参，偏移量 0
+取 32 位，符号扩展           临时寄存器 1，基地址 第 1 入参，偏移量 0
+32 位加法，不检查符号位溢出  临时寄存器 0 = 临时寄存器 0 + 临时寄存器 1
+存 32 位                     临时寄存器 0，基地址 第 2 入参，偏移量 0
+</code></pre>
+
+<p>所谓汇编语言的学习，无非是去了解面前简洁的代码实际每一步的效果、副作用如何，最终能够在脑内完成类似上述的双向变换，以及每种芯片支持的不同操作。</p>
+
+<p>只要一个指令集支持相同的三种操作，这段代码的形状都会是一样的，只是具体语言不同。这就好像中国人看中文的操作说明，美国人看英文的操作说明，最终效果都是把大象放进了冰箱一样。</p>
+
+<p>同样的，LoongArch 作为一种懂行的人设计的现代精简指令集，不可避免地，会与其他现代精简指令集相似之处甚多。不相似是不可能做到的，因为完成一件事虽然有很多不同姿势，但通行的姿势往往是唯一的。设计人员犯不着为了不一样而不一样。</p>
+
+<p>那么从下一回开始，终于可以开始推导最初的指令含义了！敬请期待。</p>
+</div>
+        </article>
+        <section class="post-comments">
+          
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
