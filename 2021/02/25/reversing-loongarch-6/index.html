@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二） - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）</h1>
+          </header>
+          <div class="article__content"><blockquote>
+  <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p>
+  
+  <p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p>
+  
+  <p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p>
+</blockquote>
+
+<p>前面我们搞了个土办法，已经能借助 MIPS 的工具链方便地检查单个函数的代码了。现在找两个小函数开刀：</p>
+
+<div class="codehilite"><pre><span></span><code><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span>
+<span class="n">_Py_gitversion</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">GITVERSION</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<pre><code>0000000000052b94 &lt;_Py_gitversion&gt;:
+   52b94:       02ffc063        0x2ffc063
+   52b98:       29c02076        slti    zero,t2,8310
+   52b9c:       02c04076        0x2c04076
+   52ba0:       1c004b6c        bgtz    zero,65954 &lt;_PyObject_CallMethod_SizeT+0x60&gt;
+   52ba4:       02fb418c        syscall 0xbed06
+   52ba8:       00150184        0x150184
+   52bac:       28c02076        slti    zero,a2,8310
+   52bb0:       02c04063        0x2c04063
+   52bb4:       4c000020        0x4c000020
+</code></pre>
+
+<p>以及这个也比较小：</p>
+
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span>
+<span class="nf">PyNode_ListTree</span><span class="p">(</span><span class="n">node</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">listnode</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<pre><code>0000000000053368 &lt;PyNode_ListTree&gt;:
+   53368:       02ff8063        0x2ff8063
+   5336c:       29c06061        slti    zero,t2,24673
+   53370:       29c04076        slti    zero,t2,16502
+   53374:       02c08076        0x2c08076
+   53378:       29ffa2c4        slti    ra,t3,-23868
+   5337c:       1c0076ac        bgtz    zero,70e30 &lt;stringlib_isspace+0xd8&gt;
+   53380:       28dab18c        slti    k0,a2,-20084
+   53384:       2600018c        addiu   zero,s0,396
+   53388:       28ffa2c5        slti    ra,a3,-23867
+   5338c:       00150184        0x150184
+   53390:       54001800        0x54001800
+   53394:       03400000        0x3400000
+   53398:       28c06061        slti    zero,a2,24673
+   5339c:       28c04076        slti    zero,a2,16502
+   533a0:       02c08063        0x2c08063
+   533a4:       4c000020        0x4c000020
+</code></pre>
+
+<p>这两个函数第一眼看上去，有什么相似之处？</p>
+
+<p>其实多看几个函数就会发现，好像所有函数都是以 <code>02ffxx63</code> 开头，以 <code>02c0xx63 4c000020</code> 结尾。</p>
+
+<p>还有，紧贴着开头和结尾，往往是相同数量的 <code>29c0xxxx</code> 和 <code>28c0xxxx</code>。</p>
+
+<p>根据一般的人类认知，很显然，<code>4c000020</code> 应该是从子程序调用返回的意思。而 <code>02</code> 开头的指令，更像是起到了调整栈指针——<code>sp</code> 的作用。</p>
+
+<p>我们把这三个指令用 LoongArch 的指令格式试着分析一下！</p>
+
+<pre><code>02ff8063 = 0000 0010 1111 1111 1000 0000 0110 0011
+         = 000000  1011111111100000   00011  00011
+
+02c08063 = 0000 0010 1100 0000 1000 0000 0110 0011
+         = 000000  1011000000100000   00011  00011
+
+4c000020 = 0100 1100 0000 0000 0000 0000 0010 0000
+         = 010011  0000000000000000   00001  00000
+</code></pre>
+
+<p>我们先来看前两条指令。看上去像是同一个操作，而且大量连续的 1 和 0，怎么看怎么像两个互为相反数的立即数！</p>
+
+<p>日常生活中常见架构的栈，无一例外都是往下增长的，要支持相反的增长方向，从工具链到内核到各种底层工具，需要填平相当大量的坑。因此我们有足够的理由相信 LoongArch 也不会例外。</p>
+
+<p>鉴于我们处理的会是栈指针 <code>sp</code> 的增减这样一件事，那么显然变化量不会很大。事实上，几百字节的栈帧对绝大多数函数来讲，已经算“巨大”了。这样的话，我们应该能精确“抠”出前两条指令的立即数域了。</p>
+
+<pre><code>000000 1011 111111100000 00011 00011
+OPC    OPC2 IMM          RJ    RD
+
+000000 1011 000000100000 00011 00011
+OPC    OPC2 IMM          RJ    RD
+</code></pre>
+
+<p>这是 LoongArch 的标准指令格式之一——双寄存器操作数 12 位立即数。两个寄存器都是 <code>r3</code>，两个立即数确实是相反数（正负 32，大家可以复习一下 2 的补码表示），第一个是负数。</p>
+
+<p>于是我们现在有足够的信息，假定这个指令就是 LoongArch 的立即数有符号 64 位加法了。为啥一定是 64 位呢？因为 <code>loongarch64</code> 剧透了啊 ;-)</p>
+
+<pre><code>000000 1011 IMM12 RJ RD  =&gt;  addi rd, rj, imm12
+</code></pre>
+
+<p>这里借用了 RISC-V 的指令名（所以以后发现的 32 位立即数加法会叫 <code>addiw</code>）。另外，<code>r3</code> 寄存器应该就是 LoongArch 约定的栈指针了。</p>
+
+<p>为了一篇文章不要太长，剩下的指令，就留到下回分解吧~</p>
+</div>
+        </article>
+        <section class="post-comments">
+          
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
