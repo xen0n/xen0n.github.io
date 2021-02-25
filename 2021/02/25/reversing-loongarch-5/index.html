@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第五回 序与跋（一） - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">《开局一个二进制，从零开始的 LoongArch 指令集推导》——第五回 序与跋（一）</h1>
+          </header>
+          <div class="article__content"><blockquote>
+  <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p>
+  
+  <p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p>
+  
+  <p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p>
+</blockquote>
+
+<p>上一回我们从“把大象放进冰箱”说起，科普了一下基本的汇编语言概念，认识到了 C 语言的“函数”到了汇编，就是一组操作步骤的集合；那么今天，我们就要运用相同的人类常识，搞明白最初的 LoongArch 指令了！</p>
+
+<p>首先，我们想知道，LoongArch 的函数大概长什么样子。但怎么知道一个函数从何处开始，到何处结束呢？</p>
+
+<p>其实，函数、数据的边界，这正是前面提到过的 ELF 符号表记录的东西——可以理解成，一个符号就对应一个地址。那么下一个符号开始，自然就意味着上一个符号结束。处理 ELF 的工具几乎一定会支持符号表，但自己写一个还是很麻烦的（你可以自己试一试），有没有现成可以展示各个符号分别包含代码的工具呢？</p>
+
+<p>当然有，<code>objdump</code> 是也。马上试一试：</p>
+
+<pre><code>$ objdump -dCw usr/lib/loongarch64-linux-gnu/libpython2.7_d.so.1.0
+usr/lib/loongarch64-linux-gnu/libpython2.7_d.so.1.0:     file format elf64-little
+
+objdump: can't disassemble for architecture UNKNOWN!
+</code></pre>
+
+<p>噢，我的上帝，不认识 <code>EM_LOONGARCH</code> 可执行文件，就拒绝解析……</p>
+
+<p>不过，倒是有一个土办法可以绕过一下，LoongArch 的指令不是跟小端 MIPS 一样，都是 32 位小端整数么？我们动一下这个文件，假装它是一个 MIPS 可执行文件，适用 MIPS 的 <code>objdump</code> 不就能读了么？</p>
+
+<p>我们先来找一下哪些字节代表架构类型：</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cm">/* Type for a 16-bit quantity.  */</span>
+<span class="k">typedef</span> <span class="kt">uint16_t</span> <span class="n">Elf32_Half</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="kt">uint16_t</span> <span class="n">Elf64_Half</span><span class="p">;</span>
+
+<span class="cp">#define EI_NIDENT (16)</span>
+
+<span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">e_ident</span><span class="p">[</span><span class="n">EI_NIDENT</span><span class="p">];</span>     <span class="cm">/* Magic number and other info */</span>
+  <span class="n">Elf64_Half</span>    <span class="n">e_type</span><span class="p">;</span>                 <span class="cm">/* Object file type */</span>
+  <span class="n">Elf64_Half</span>    <span class="n">e_machine</span><span class="p">;</span>              <span class="cm">/* Architecture */</span>
+<span class="p">}</span> <span class="n">Elf64_Ehdr</span><span class="p">;</span>
+</code></pre></div>
+
+<p>通过对 <code>/usr/include/elf.h</code> 的阅读，我们发现第 18、19 两个字节代表 <code>e_machine</code> 字段，是一个和 ELF 文件相同字节序的整数，正是我们要修改的位置。</p>
+
+<div class="codehilite"><pre><span></span><code><span class="cp">#define EM_MIPS          8      </span><span class="cm">/* MIPS R3000 big-endian */</span><span class="cp"></span>
+</code></pre></div>
+
+<p>由于历史原因，即便小端 MIPS 二进制，它的 machine number 也取 8。复制一份 <code>libpython2.7_d.so</code>，编辑文件的这两个字节，从 <code>02 01</code> 编辑成 <code>08 00</code>，保存，再来用 <code>mips64el-unknown-linux-gnu-objdump</code> 试试……</p>
+
+<pre><code>$ mips64el-unknown-linux-gnu-objdump -dCw ./libpython2.7_d-fakemips.so | less
+
+./libpython2.7_d-fakemips.so:     file format elf64-tradlittlemips
+
+
+Disassembly of section .plt:
+
+00000000000516c0 &lt;.plt&gt;:
+   516c0:       1c0076ce        bgtz    zero,6f1fc &lt;stringlib_split_whitespace+0x2d8&gt;
+   516c4:       0011bdad        0x11bdad
+   516c8:       28c341cf        slti    v1,a2,16847
+   516cc:       02ff61ad        0x2ff61ad
+   516d0:       02c341cc        syscall 0xb0d07
+   516d4:       004505ad        0x4505ad
+   516d8:       28c0218c        slti    zero,a2,8588
+   516dc:       4c0001e0        0x4c0001e0
+   516e0:       1c0076cf        bgtz    zero,6f220 &lt;stringlib_split_whitespace+0x2fc&gt;
+   516e4:       28c301ef        slti    v1,a2,495
+   516e8:       1c00000d        bgtz    zero,51720 &lt;.plt+0x60&gt;
+   516ec:       4c0001e0        0x4c0001e0
+   516f0:       1c0076cf        bgtz    zero,6f230 &lt;stringlib_split_whitespace+0x30c&gt;
+   516f4:       28c2e1ef        slti    v0,a2,-7697
+   516f8:       1c00000d        bgtz    zero,51730 &lt;.plt+0x70&gt;
+   516fc:       4c0001e0        0x4c0001e0
+(...)
+</code></pre>
+
+<p>看到东西了！右边的“MIPS 汇编”可以完全无视，毕竟根本就不是这个架构的指令，但左边也是一样可以看的，这样就省得一上来各种东西都要自己来一遍了。这个阶段的分析根本用不着这么麻烦。</p>
+</div>
+        </article>
+        <section class="post-comments">
+          
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
