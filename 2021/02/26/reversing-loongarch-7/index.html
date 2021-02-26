@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第七回 序与跋（三） - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">《开局一个二进制，从零开始的 LoongArch 指令集推导》——第七回 序与跋（三）</h1>
+          </header>
+          <div class="article__content"><blockquote>
+  <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p>
+  
+  <p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p>
+  
+  <p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p>
+</blockquote>
+
+<p>到上一回结束，我们对下面这个函数已经有了初步的理解：</p>
+
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span>
+<span class="nf">PyNode_ListTree</span><span class="p">(</span><span class="n">node</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">listnode</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<pre><code>0000000000053368 &lt;PyNode_ListTree&gt;:
+   53368:       02ff8063        addi    sp, sp, -32
+   5336c:       29c06061
+   53370:       29c04076
+   53374:       02c08076        addi    r22, sp, 32
+   53378:       29ffa2c4
+   5337c:       1c0076ac
+   53380:       28dab18c
+   53384:       2600018c
+   53388:       28ffa2c5
+   5338c:       00150184
+   53390:       54001800
+   53394:       03400000
+   53398:       28c06061
+   5339c:       28c04076
+   533a0:       02c08063        addi    sp, sp, 32
+   533a4:       4c000020        ret
+</code></pre>
+
+<p>在继续之前，先介绍一些背景吧。</p>
+
+<p>寄存器分两种，<strong>调用方保存</strong>（caller-saved）和<strong>被调用方保存</strong>（callee-saved）；调用方保存的寄存器也叫临时（temporary）寄存器，被调用方保存的寄存器也叫被保存（saved）寄存器。那么为何从这个角度划分呢？</p>
+
+<p>很多（不是全部）函数都会用到一些临时空间，而比较简单的函数往往不需要很多，只用几个寄存器就够了；因为临时空间的使用频率一般会比较高，而且用完就丢，人们自然不希望每次调用函数前，每个值都要无条件推到栈上保存，返回了还要弹出来。但与此同时，没被保存的寄存器就都可能被覆盖，如果大部分都给用作临时空间了，自己一直要用到的一些量还是不得不往栈上走一遭。于是人们便平衡了两种用途的寄存器数量，并且约定了各自的寄存器号范围。</p>
+
+<p>这一部分寄存器，每个函数都可以随便用，覆盖之前不用保存；相应的，如果这个寄存器的值我之后还要用，就由我在调用你之前负责存起来，要用的时候再自己从栈上找回来。所以我保存的寄存器就是临时寄存器。</p>
+
+<p>那一部分寄存器，约定是你返回之后，里面的值肯定不会变，这样我数据量小的话就不用去访问内存了；如果你要用，就由你负责在覆盖之前存起来，你返回前恢复原样就行。所以你保存的寄存器就是调用后也能保住内容的 saved 寄存器。</p>
+
+<p>这也就是许多 RISC 架构的 <code>sX</code> <code>tX</code> 寄存器序列的由来。特别地，传参和返回值占用的空间，性质上也属于临时空间，因此 <code>aX</code>（argument）和 <code>vX</code>（value）两个序列行为上和临时寄存器一样。有的架构如 AArch64 和 RISC-V 复用了 <code>aX</code> 的几个寄存器用作返回值，不像 MIPS 有 <code>v0 v1</code> 专门用来放返回值，这也是现代常见的做法了。</p>
+
+<p>还有一些特殊寄存器，比如栈指针 <code>sp</code>（stack pointer），帧指针 <code>fp</code>（frame pointer），返回地址寄存器 <code>ra</code>（return address）。<code>sp fp</code> 总是被调用方保存，<code>ra</code> 总是调用方保存。</p>
+
+<p><code>ra</code> 寄存器往往会被子程序调用指令隐式（例如 MIPS 的 <code>jal jalr</code>）或显式（RISC-V 的 <code>jalr</code>）修改，因此一个函数如果不在调用子程序前自己保存 <code>ra</code>，子程序就不可能看到上一个 <code>ra</code> 了，多层函数调用这么一件最基本的事情就无法实现了。</p>
+
+<p>还有一个顺带的好处，只要不调用任何子程序，<code>ra</code> 就不会变，就不需要保存。这是常见的“叶子函数”优化。</p>
+
+<p>至于 <code>sp fp</code>，道理更简单了：因为调用方不知道被调用方需要多大的栈空间（编译时往往是看不到被调用函数具体实现的，何况调用的函数本身也可以是动态的——函数指针），所以它们的调节只能由被调用方自己完成了。另外，帧指针只对可能动态调整栈空间占用的函数有用，或者用于调试，所以打开优化的二进制往往不会维护帧指针，它的 <code>fp</code> 其实就被当作多一个 saved register 来用了。这种往往就很难调试，无法区分栈上哪些空间是哪一层函数调用使用的了。</p>
+
+<p>那么终于可以回到开头的汇编代码，<code>r3</code> 已经用 <code>sp</code> 称呼了，进来先分配 32 字节的栈空间——接下来似乎 <code>r22</code> 又回到了刚进入函数时候的 <code>sp</code> 取值！</p>
+
+<p>这是没开优化的 Python 代码，那么 <code>r22</code> 就是帧指针！</p>
+
+<p>有了这个知识，应该进出函数前的相同数量的 <code>29xxxxxx</code> <code>28xxxxxx</code> 就能解析了。敬请期待下回分解 ;-)</p>
+</div>
+        </article>
+        <section class="post-comments">
+          
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
