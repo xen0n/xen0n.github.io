@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="cmn" class="browser-modern">
+  <head>
+    <meta charset="utf-8">
+    <title>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第八回 序与跋（四） - write(2)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <div class="page__wrap">
+      <div class="page__root">
+        <header class="page__header">
+          <div class="page__header__content">
+            <h1 class="header__title"><a href="/">write(2)</a></h1>
+          </div>
+        </header>
+        <article class="post-article">
+          <header class="article__header">
+            <h1 class="article__header__title">《开局一个二进制，从零开始的 LoongArch 指令集推导》——第八回 序与跋（四）</h1>
+          </header>
+          <div class="article__content"><blockquote>
+  <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p>
+  
+  <p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p>
+  
+  <p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p>
+</blockquote>
+
+<p>这一回我们接着折腾下面这个函数。</p>
+
+<pre><code>0000000000053368 &lt;PyNode_ListTree&gt;:
+   53368:       02ff8063        addi    sp, sp, -32
+   5336c:       29c06061
+   53370:       29c04076
+   53374:       02c08076        addi    r22, sp, 32
+   53378:       29ffa2c4
+   5337c:       1c0076ac
+   53380:       28dab18c
+   53384:       2600018c
+   53388:       28ffa2c5
+   5338c:       00150184
+   53390:       54001800
+   53394:       03400000
+   53398:       28c06061
+   5339c:       28c04076
+   533a0:       02c08063        addi    sp, sp, 32
+   533a4:       4c000020        ret
+</code></pre>
+
+<p>上一回我们提到，在函数头尾经常会有相同数量的 <code>29xxxxxx</code> 和 <code>28xxxxxx</code> 指令出现。这个函数很小，小归小，也有 2 对这玩意……我们就来分析一下。</p>
+
+<pre><code>29c06061 = 0010 1001 1100 0000 0110 0000 0110 0001
+         = 001010 0111000000011000 00011 00001
+         = 001010 0111000000011000 sp    ra
+
+29c04076 = 0010 1001 1100 0000 0100 0000 0111 0110
+         = 001010 0111000000010000 00011 10110
+         = 001010 0111000000010000 sp    fp
+
+28c06061 = 0010 1000 1100 0000 0110 0000 0110 0001
+         = 001010 0011000000011000 00011 00001
+         = 001010 0011000000000000 sp    ra
+
+28c04076 = 0010 1000 1100 0000 0100 0000 0111 0110
+         = 001010 0011000000010000 00011 10110
+         = 001010 0011000000010000 sp    fp
+</code></pre>
+
+<p>还是在上一回，我们讲到了进出函数时，要保存、恢复那些<strong>被调用方保存的寄存器</strong>，保存到哪里呢？当然是栈上咯，也就是基于 <code>sp</code> 的一个偏移量所指向的内存。</p>
+
+<p>那么这几条指令应该就是做这件事情的！</p>
+
+<p>回想一下几个经典的 RISC 指令集的访存指令都怎么安排操作数的，大多数都是 <code>内容寄存器, 偏移量(基址寄存器)</code> 的形式，那么我们有充足的理由相信 LoongArch 也不会例外，在上面找一找哪里是立即数？</p>
+
+<p>没错，至少那一长串的低几位肯定是立即数，那么立即数的边界在哪儿呢？好像从这四条指令看不出边界应该在哪两个 0 之间。</p>
+
+<p>但我们还看到紧接着又有一个 <code>28</code> 开头的指令！</p>
+
+<pre><code>28ffa2c5 = 0010 1000 1111 1111 1010 0010 1100 0101
+         = 001010 0011111111101000 10110 00101
+         = 001010 0011111111101000 fp    r5
+
+随便找个指令对比，例如 28c04076，可见立即数宽 12 位
+
+28ffa2c5 = 001010 0011 111111101000 fp    r5
+         = 001010 0011 r5, -24(fp)
+
+28c04076 = 001010 0011 000000010000 sp    fp
+         = 001010 0011 fp, 16(sp)
+</code></pre>
+
+<p>好样的！我们得到 LoongArch 的 64 位访存指令了。“序”与“跋”，分别负责保存和恢复，那么最前面两条肯定是存，最后两条肯定是取。</p>
+
+<p>至于为啥是 64 位，跟之前得到 <code>addi</code> 的逻辑一样：因为这里处理的数据是地址，又是个 64 位应用，显然完整的 64 位都是要保留的。</p>
+
+<pre><code>001010 0111 IMM12 RJ RD  =&gt;  sd rd, imm12(rj)  # 将 rd[63..0] 存入 *(rj + imm12) 开始的 8 字节
+001010 0011 IMM12 RJ RD  =&gt;  ld rd, imm12(rj)  # 从 *(rj + imm12) 读 8 字节存入 rd
+</code></pre>
+
+<p>我们对这个函数的理解前进了一大步！</p>
+
+<pre><code>0000000000053368 &lt;PyNode_ListTree&gt;:
+
+   53368:       02ff8063        addi    sp, sp, -32
+   5336c:       29c06061        sd      ra, 24(sp)
+   53370:       29c04076        sd      fp, 16(sp)
+   53374:       02c08076        addi    fp, sp, 32
+   53378:       29ffa2c4        sd      r4, -24(fp)
+   5337c:       1c0076ac
+   53380:       28dab18c        ld      r12, 1708(r12)
+   53384:       2600018c
+   53388:       28ffa2c5        ld      r5, -24(fp)
+   5338c:       00150184
+   53390:       54001800
+   53394:       03400000
+   53398:       28c06061        ld      ra, 24(sp)
+   5339c:       28c04076        ld      fp, 16(sp)
+   533a0:       02c08063        addi    sp, sp, 32
+   533a4:       4c000020        ret
+</code></pre>
+
+<p>那么新的问题来了，<code>r4 r5 r12</code> 都是什么鬼，为啥非要取这么几个序号呢？欲知此事为何，且听下回分解！</p>
+</div>
+        </article>
+        <section class="post-comments">
+          
+        </section>
+      </div>
+    </div>
+    <footer class="page__footer">
+      <div class="page__footer__content">&copy; 2015<span class="page__footer__author">xen0n</span><span class="page__footer__links"><a href="https://github.com/xen0n" class="page__footer__link--github">github</a></span></div>
+    </footer>
+  </body>
+</html>
