@@ -150,14 +150,14 @@
    5a498:       29c0407b        sd      r27, 16(sp)
 </code></pre>
 
-<p>这样我们就发现了，如果需要保存的寄存器不多，那么是轮不到 fp 上场的，虽然如果 fp 被用到了它会出现在 stack slot 最底下。整理一下：</p>
+<p>这样我们就发现了，如果需要保存的寄存器不多，那么是轮不到 fp 上场的，虽然如果 fp 被用到了它会出现在这一批寄存器最底下的 stack slot，只比 ra 高。整理一下：</p>
 
 <ul>
 <li>分配顺序（从先到后）：<code>r23-r31 fp</code></li>
 <li>栈上顺序（从底到顶）：<code>(ra) fp r23-r31</code></li>
 </ul>
 
-<p>按照分配顺序起名字，<code>r23-r31</code> 应该叫做 <code>s0-s8</code>。至于 <code>fp</code>，虽然可选它作为帧指针，但无奈并没有什么上苍的旨意强制所有程序都要正确维护帧指针，因此它正确的归宿仍然是 saved register 序列，<code>r22 = s9 = fp</code>。它与其他 saved registers 的唯一区别，也就是在栈上排在 <code>ra</code> 之后 <code>s0</code> 之前而已。</p>
+<p>按照分配顺序起名字，<code>r23-r31</code> 应该叫做 <code>s0-s8</code>。至于 fp，虽然可选它作为帧指针，但无奈并没有什么上苍的旨意强制所有程序都要正确维护帧指针，因此它正确的归宿仍然是 saved register 序列，<code>r22 = s9 = fp</code>。它与其他 saved registers 的唯一区别，也就是在栈上排在 ra 之后 s0 之前而已。</p>
 
 <p>我们的知识又扩充了一行！</p>
 
