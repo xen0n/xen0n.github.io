@@ -21,6 +21,17 @@ languageAltTitle = 'English (US)'
 weight = 2
 copyright = '© WANG Xuerui; licensed with cc-by-nc-sa 4.0'
 
+# menu
+[[languages.zh-cmn-hans-cn.menu.main]]
+name = '所有文章'
+url = 'archives'
+weight = 1
+
+[[languages.en.menu.main]]
+name = 'Archive'
+url = 'archives'
+weight = 1
+
 # theme
 [params]
 title = 'write(2)'
