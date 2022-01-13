@@ -1,7 +1,7 @@
 ---
 title: '《开局一个二进制，从零开始的 LoongArch 指令集推导》——第十一回 参数传递（一）'
 date: 2021-04-15T14:00:00+08:00
-draft: false
+draft: true
 ---
 
 > 本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。
