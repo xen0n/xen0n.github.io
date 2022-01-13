@@ -6,6 +6,15 @@ aliases:
     - /2015/05/11/making-of-this-blog/
 ---
 
+## 写给 2022 年点进这篇文章的人们
+
+本文描述的是本博客的第一版样式/生成器。
+
+由于时过境迁，作者已不再有足够时间、精力自行维护先前简陋的静态站点生成器与主题模板，使之满足作者的高标准严要求。
+目前本博客的技术栈已经更换成 [Hugo](https://gohugo.io)；本文中描述的内容都放在[本博客储存库的历史分支][historical-branch]了。
+
+[historical-branch]: https://github.com/xen0n/xen0n.github.io/tree/old-site
+
 ## 缘起
 
 实际上, 早在 2013 年我就产生了开博的打算, 当时 GitHub Pages 已经算是知名度相当高的服务了.
