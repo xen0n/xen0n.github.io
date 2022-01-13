@@ -1,7 +1,7 @@
 ---
-layout: post
 title: hello world
-date: 2015-05-04 11:11:11
+date: 2015-05-04T11:11:11+08:00
+draft: false
 ---
 
 坑了两年的博客终于开博啦, 以上~

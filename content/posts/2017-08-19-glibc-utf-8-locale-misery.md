@@ -1,7 +1,7 @@
 ---
-layout: post
 title: 'glibc 的 UTF-8 locale 惨剧'
-date: 2017-08-19 16:21:38
+date: 2017-08-19T16:21:38+08:00
+draft: false
 ---
 
 ## tl;dr

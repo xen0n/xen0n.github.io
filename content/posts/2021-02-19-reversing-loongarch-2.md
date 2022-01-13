@@ -1,7 +1,7 @@
 ---
-layout: post
 title: '《开局一个二进制，从零开始的 LoongArch 指令集推导》——第二回 ELF'
-date: 2021-02-19 11:30:00
+date: 2021-02-19T11:30:00+08:00
+draft: false
 ---
 
 > 本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。

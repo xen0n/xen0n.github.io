@@ -1,5 +1,4 @@
 ---
-layout: index
 title: 首页
 standalone: true
 ---

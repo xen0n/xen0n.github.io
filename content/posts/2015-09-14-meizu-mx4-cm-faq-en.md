@@ -1,7 +1,7 @@
 ---
-layout: post
 title: 'CyanogenMod for Meizu MX4: FAQ #1'
-date: 2015-09-14 16:35:00
+date: 2015-09-14T16:35:00+08:00
+draft: false
 ---
 
 ## Status on bootloader lock circumvention

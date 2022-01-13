@@ -1,7 +1,7 @@
 ---
-layout: post
 title: 'CyanogenMod for 魅族 MX4: 常见问题解答 #1'
-date: 2015-09-14 17:00:00
+date: 2015-09-14T17:00:00+08:00
+draft: false
 ---
 
 ## BL 锁规避进度
