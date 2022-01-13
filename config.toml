@@ -1,4 +1,16 @@
 baseURL = 'https://blog.xen0n.name/'
-languageCode = 'zh-cn'
 title = 'write(2)'
 theme = 'PaperMod'
+
+# languages
+hasCJKLanguage = true
+languageCode = 'zh-cmn-hans-cn'
+defaultContentLanguage = 'zh-cmn-hans-cn'
+
+[languages]
+[languages.zh-cmn-hans-cn]
+weight = 1
+copyright = '© WANG Xuerui; 以 cc-by-nc-sa 4.0 授权'
+[languages.en]
+weight = 2
+copyright = '© WANG Xuerui; licensed with cc-by-nc-sa 4.0'
