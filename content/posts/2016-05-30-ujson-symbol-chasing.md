@@ -2,6 +2,8 @@
 title: '跟 ujson 玩符号捉迷藏'
 date: 2016-05-30T19:16:51+08:00
 draft: false
+aliases:
+    - /2016/05/30/ujson-symbol-chasing/
 ---
 
 ## tl;dr

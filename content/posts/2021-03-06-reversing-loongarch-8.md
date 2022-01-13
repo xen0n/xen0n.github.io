@@ -2,6 +2,8 @@
 title: '《开局一个二进制，从零开始的 LoongArch 指令集推导》——第八回 序与跋（四）'
 date: 2021-03-06T21:12:00+08:00
 draft: false
+aliases:
+    - /2021/03/06/reversing-loongarch-8/
 ---
 
 > 本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。

@@ -2,6 +2,8 @@
 title: '这个博客是怎样搭建的'
 date: 2015-05-11T21:43:50+08:00
 draft: false
+aliases:
+    - /2015/05/11/making-of-this-blog/
 ---
 
 ## 缘起

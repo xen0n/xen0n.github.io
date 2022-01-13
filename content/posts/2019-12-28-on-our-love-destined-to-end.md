@@ -2,6 +2,8 @@
 title: '关于我们注定会结束的爱情'
 date: 2019-12-28T21:31:00+08:00
 draft: false
+aliases:
+    - /2019/12/28/on-our-love-destined-to-end/
 ---
 
 是 2019 最后的周末了。

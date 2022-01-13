@@ -2,6 +2,8 @@
 title: '《开局一个二进制，从零开始的 LoongArch 指令集推导》——第四回 把大象放进冰箱'
 date: 2021-02-24T14:14:00+08:00
 draft: false
+aliases:
+    - /2021/02/24/reversing-loongarch-4/
 ---
 
 > 本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。

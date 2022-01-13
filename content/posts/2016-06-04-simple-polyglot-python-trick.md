@@ -2,6 +2,8 @@
 title: 'Python 奇技淫巧: 一种简单的 Python / Shell 双语程序'
 date: 2016-06-04T23:07:51+08:00
 draft: false
+aliases:
+    - /2016/06/04/simple-polyglot-python-trick/
 ---
 
 最近经常见到 `:` 这个 Shell built-in, 比较好奇, 于是 StackOverflow 了一下.

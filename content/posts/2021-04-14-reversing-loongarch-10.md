@@ -2,6 +2,8 @@
 title: '《开局一个二进制，从零开始的 LoongArch 指令集推导》——第十回 序与跋（六）'
 date: 2021-04-14T14:00:00+08:00
 draft: false
+aliases:
+    - /2021/04/14/reversing-loongarch-10/
 ---
 
 > 本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。
