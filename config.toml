@@ -2,6 +2,8 @@ baseURL = 'https://blog.xen0n.name/'
 title = 'write(2)'
 theme = 'PaperMod'
 
+enableEmoji = true
+
 # languages
 hasCJKLanguage = true
 languageCode = 'zh-cmn-hans-cn'
@@ -9,8 +11,47 @@ defaultContentLanguage = 'zh-cmn-hans-cn'
 
 [languages]
 [languages.zh-cmn-hans-cn]
+languageName = ':cn:'
+languageAltTitle = '简体中文（大陆普通话）'
 weight = 1
 copyright = '© WANG Xuerui; 以 cc-by-nc-sa 4.0 授权'
 [languages.en]
+languageName = ':us:'
+languageAltTitle = 'English (US)'
 weight = 2
 copyright = '© WANG Xuerui; licensed with cc-by-nc-sa 4.0'
+
+# theme
+[params]
+title = 'write(2)'
+keywords = ['blog', 'xen0n']
+author = ['WÁNG "xen0n" Xuěruì']
+displayFullLangName = true
+
+ShowReadingTime = true
+ShowShareButtons = false
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+
+[[params.socialIcons]]
+name = 'github'
+url = 'https://github.com/xen0n'
+
+[languages.zh-cmn-hans-cn.params]
+description = '漫步匠人的只言片语'
+DateFormat = '2006/01/02'
+
+[languages.zh-cmn-hans-cn.params.homeInfoParams]
+Title = 'write(2)'
+Content = """
+漫步匠人的只言片语。
+"""
+
+[languages.en.params]
+description = 'random thoughts from the wandering craftsman'
+
+[languages.en.params.homeInfoParams]
+Title = 'write(2)'
+Content = """
+Random thoughts from the wandering craftsman.
+"""
