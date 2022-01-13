@@ -1,0 +1,174 @@
+<!doctype html><html lang=zh-cmn-hans-cn dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二） | write(2)</title>
+<meta name=keywords content>
+<meta name=description content="本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。 本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式">
+<meta name=author content="WÁNG &#34;xen0n&#34; Xuěruì">
+<link rel=canonical href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-6/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.xen0n.name/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://blog.xen0n.name/favicon-16x16.png>
+<link rel=icon type=image/png sizes=32x32 href=https://blog.xen0n.name/favicon-32x32.png>
+<link rel=apple-touch-icon href=https://blog.xen0n.name/apple-touch-icon.png>
+<link rel=mask-icon href=https://blog.xen0n.name/safari-pinned-tab.svg>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.92.0">
+<link rel=alternate hreflang=zh-cmn-hans-cn href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-6/>
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript><meta property="og:title" content="《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）">
+<meta property="og:description" content="本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。 本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.xen0n.name/posts/old/reversing-loongarch/part-6/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-02-25T20:00:00+08:00">
+<meta property="article:modified_time" content="2021-02-25T20:00:00+08:00"><meta property="og:site_name" content="write(2)">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）">
+<meta name=twitter:description content="本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。 本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.xen0n.name/posts/"},{"@type":"ListItem","position":2,"name":"《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）","item":"https://blog.xen0n.name/posts/old/reversing-loongarch/part-6/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）","name":"《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）","description":"本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。 本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式","keywords":[],"articleBody":" 本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。\n本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。\n本研究属于个人行为，与本人雇主或任何其他主体无关。\n 前面我们搞了个土办法，已经能借助 MIPS 的工具链方便地检查单个函数的代码了。现在找两个小函数开刀：\nconst char * _Py_gitversion(void) { return GITVERSION; } 0000000000052b94 : 52b94: 02ffc063 0x2ffc063 52b98: 29c02076 slti zero,t2,8310 52b9c: 02c04076 0x2c04076 52ba0: 1c004b6c bgtz zero,65954  52ba4: 02fb418c syscall 0xbed06 52ba8: 00150184 0x150184 52bac: 28c02076 slti zero,a2,8310 52bb0: 02c04063 0x2c04063 52bb4: 4c000020 0x4c000020 以及这个也比较小：\nvoid PyNode_ListTree(node *n) { listnode(stdout, n); } 0000000000053368 : 53368: 02ff8063 0x2ff8063 5336c: 29c06061 slti zero,t2,24673 53370: 29c04076 slti zero,t2,16502 53374: 02c08076 0x2c08076 53378: 29ffa2c4 slti ra,t3,-23868 5337c: 1c0076ac bgtz zero,70e30  53380: 28dab18c slti k0,a2,-20084 53384: 2600018c addiu zero,s0,396 53388: 28ffa2c5 slti ra,a3,-23867 5338c: 00150184 0x150184 53390: 54001800 0x54001800 53394: 03400000 0x3400000 53398: 28c06061 slti zero,a2,24673 5339c: 28c04076 slti zero,a2,16502 533a0: 02c08063 0x2c08063 533a4: 4c000020 0x4c000020 这两个函数第一眼看上去，有什么相似之处？\n其实多看几个函数就会发现，好像所有函数都是以 02ffxx63 开头，以 02c0xx63 4c000020 结尾。\n还有，紧贴着开头和结尾，往往是相同数量的 29c0xxxx 和 28c0xxxx。\n根据一般的人类认知，很显然，4c000020 应该是从子程序调用返回的意思。而 02 开头的指令，更像是起到了调整栈指针——sp 的作用。\n我们把这三个指令用 LoongArch 的指令格式试着分析一下！\n02ff8063 = 0000 0010 1111 1111 1000 0000 0110 0011 = 000000 1011111111100000 00011 00011 02c08063 = 0000 0010 1100 0000 1000 0000 0110 0011 = 000000 1011000000100000 00011 00011 4c000020 = 0100 1100 0000 0000 0000 0000 0010 0000 = 010011 0000000000000000 00001 00000 我们先来看前两条指令。看上去像是同一个操作，而且大量连续的 1 和 0，怎么看怎么像两个互为相反数的立即数！\n日常生活中常见架构的栈，无一例外都是往下增长的，要支持相反的增长方向，从工具链到内核到各种底层工具，需要填平相当大量的坑。因此我们有足够的理由相信 LoongArch 也不会例外。\n鉴于我们处理的会是栈指针 sp 的增减这样一件事，那么显然变化量不会很大。事实上，几百字节的栈帧对绝大多数函数来讲，已经算“巨大”了。这样的话，我们应该能精确“抠”出前两条指令的立即数域了。\n000000 1011 111111100000 00011 00011 OPC OPC2 IMM RJ RD 000000 1011 000000100000 00011 00011 OPC OPC2 IMM RJ RD 中间一段的断句一定在 1011 处，不能更靠后，因为两个指令的相同前缀止于此；不能更靠前，因为否则下面这个数的最高位就会为 1，两个数就都变成负数了。\n那么这就是 LoongArch 的标准指令格式之一——双寄存器操作数 12 位立即数。两个寄存器都是 r3，两个立即数确实是相反数（正负 32，大家可以复习一下 2 的补码表示），第一个是负数。\n于是我们现在有足够的信息，假定这个指令就是 LoongArch 的立即数有符号 64 位加法了。为啥一定是 64 位呢？因为 loongarch64 剧透了啊 ;-)\n000000 1011 IMM12 RJ RD = addi rd, rj, imm12 这里借用了 RISC-V 的指令名（所以以后发现的 32 位立即数加法会叫 addiw）。另外，r3 寄存器应该就是 LoongArch 约定的栈指针了。\n为了一篇文章不要太长，剩下的指令，就留到下回分解吧~\n","wordCount":"1011","inLanguage":"zh-cmn-hans-cn","datePublished":"2021-02-25T20:00:00+08:00","dateModified":"2021-02-25T20:00:00+08:00","author":[{"@type":"Person","name":"WÁNG \"xen0n\" Xuěruì"}],"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.xen0n.name/posts/old/reversing-loongarch/part-6/"},"publisher":{"@type":"Organization","name":"write(2)","logo":{"@type":"ImageObject","url":"https://blog.xen0n.name/favicon.ico"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://blog.xen0n.name/ accesskey=h title="write(2) (Alt + H)">write(2)</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+<ul class=lang-switch><li>|</li>
+<li>
+<a href=https://blog.xen0n.name/en/ title="English (US)" aria-label=:us:>🇺🇸</a>
+</li>
+</ul>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://blog.xen0n.name/archives title=所有文章>
+<span>所有文章</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div>
+<h1 class=post-title>
+《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）
+</h1>
+<div class=post-meta><span title="2021-02-25 20:00:00 +0800 +0800">2021/02/25</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</div>
+</header>
+<div class=post-content><blockquote>
+<p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p>
+<p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p>
+<p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p>
+</blockquote>
+<p>前面我们搞了个土办法，已经能借助 MIPS 的工具链方便地检查单个函数的代码了。现在找两个小函数开刀：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>
+<span style=color:#a6e22e>_Py_gitversion</span>(<span style=color:#66d9ef>void</span>)
+{
+    <span style=color:#66d9ef>return</span> GITVERSION;
+}
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain>0000000000052b94 &lt;_Py_gitversion&gt;:
+   52b94:       02ffc063        0x2ffc063
+   52b98:       29c02076        slti    zero,t2,8310
+   52b9c:       02c04076        0x2c04076
+   52ba0:       1c004b6c        bgtz    zero,65954 &lt;_PyObject_CallMethod_SizeT+0x60&gt;
+   52ba4:       02fb418c        syscall 0xbed06
+   52ba8:       00150184        0x150184
+   52bac:       28c02076        slti    zero,a2,8310
+   52bb0:       02c04063        0x2c04063
+   52bb4:       4c000020        0x4c000020
+</code></pre></div><p>以及这个也比较小：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>void</span>
+<span style=color:#a6e22e>PyNode_ListTree</span>(node <span style=color:#f92672>*</span>n)
+{
+    listnode(stdout, n);
+}
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain>0000000000053368 &lt;PyNode_ListTree&gt;:
+   53368:       02ff8063        0x2ff8063
+   5336c:       29c06061        slti    zero,t2,24673
+   53370:       29c04076        slti    zero,t2,16502
+   53374:       02c08076        0x2c08076
+   53378:       29ffa2c4        slti    ra,t3,-23868
+   5337c:       1c0076ac        bgtz    zero,70e30 &lt;stringlib_isspace+0xd8&gt;
+   53380:       28dab18c        slti    k0,a2,-20084
+   53384:       2600018c        addiu   zero,s0,396
+   53388:       28ffa2c5        slti    ra,a3,-23867
+   5338c:       00150184        0x150184
+   53390:       54001800        0x54001800
+   53394:       03400000        0x3400000
+   53398:       28c06061        slti    zero,a2,24673
+   5339c:       28c04076        slti    zero,a2,16502
+   533a0:       02c08063        0x2c08063
+   533a4:       4c000020        0x4c000020
+</code></pre></div><p>这两个函数第一眼看上去，有什么相似之处？</p>
+<p>其实多看几个函数就会发现，好像所有函数都是以 <code>02ffxx63</code> 开头，以 <code>02c0xx63 4c000020</code> 结尾。</p>
+<p>还有，紧贴着开头和结尾，往往是相同数量的 <code>29c0xxxx</code> 和 <code>28c0xxxx</code>。</p>
+<p>根据一般的人类认知，很显然，<code>4c000020</code> 应该是从子程序调用返回的意思。而 <code>02</code> 开头的指令，更像是起到了调整栈指针——<code>sp</code> 的作用。</p>
+<p>我们把这三个指令用 LoongArch 的指令格式试着分析一下！</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain>02ff8063 = 0000 0010 1111 1111 1000 0000 0110 0011
+         = 000000  1011111111100000   00011  00011
+
+02c08063 = 0000 0010 1100 0000 1000 0000 0110 0011
+         = 000000  1011000000100000   00011  00011
+
+4c000020 = 0100 1100 0000 0000 0000 0000 0010 0000
+         = 010011  0000000000000000   00001  00000
+</code></pre></div><p>我们先来看前两条指令。看上去像是同一个操作，而且大量连续的 1 和 0，怎么看怎么像两个互为相反数的立即数！</p>
+<p>日常生活中常见架构的栈，无一例外都是往下增长的，要支持相反的增长方向，从工具链到内核到各种底层工具，需要填平相当大量的坑。因此我们有足够的理由相信 LoongArch 也不会例外。</p>
+<p>鉴于我们处理的会是栈指针 <code>sp</code> 的增减这样一件事，那么显然变化量不会很大。事实上，几百字节的栈帧对绝大多数函数来讲，已经算“巨大”了。这样的话，我们应该能精确“抠”出前两条指令的立即数域了。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain>000000 1011 111111100000 00011 00011
+OPC    OPC2 IMM          RJ    RD
+
+000000 1011 000000100000 00011 00011
+OPC    OPC2 IMM          RJ    RD
+</code></pre></div><p>中间一段的断句一定在 <code>1011</code> 处，不能更靠后，因为两个指令的相同前缀止于此；不能更靠前，因为否则下面这个数的最高位就会为 1，两个数就都变成负数了。</p>
+<p>那么这就是 LoongArch 的标准指令格式之一——双寄存器操作数 12 位立即数。两个寄存器都是 <code>r3</code>，两个立即数确实是相反数（正负 32，大家可以复习一下 2 的补码表示），第一个是负数。</p>
+<p>于是我们现在有足够的信息，假定这个指令就是 LoongArch 的立即数有符号 64 位加法了。为啥一定是 64 位呢？因为 <code>loongarch64</code> 剧透了啊 ;-)</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain>000000 1011 IMM12 RJ RD  =&gt;  addi rd, rj, imm12
+</code></pre></div><p>这里借用了 RISC-V 的指令名（所以以后发现的 32 位立即数加法会叫 <code>addiw</code>）。另外，<code>r3</code> 寄存器应该就是 LoongArch 约定的栈指针了。</p>
+<p>为了一篇文章不要太长，剩下的指令，就留到下回分解吧~</p>
+</div>
+<footer class=post-footer>
+<nav class=paginav>
+<a class=prev href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-7/>
+<span class=title>« </span>
+<br>
+<span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第七回 序与跋（三）</span>
+</a>
+<a class=next href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-5/>
+<span class=title> »</span>
+<br>
+<span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第五回 序与跋（一）</span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>© WANG Xuerui; 以 cc-by-nc-sa 4.0 授权</span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+</body>
+</html>
