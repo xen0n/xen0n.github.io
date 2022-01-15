@@ -9,6 +9,11 @@ hasCJKLanguage = true
 languageCode = 'zh-cmn-hans-cn'
 defaultContentLanguage = 'zh-cmn-hans-cn'
 
+# output format
+[outputs]
+home = ['HTML', 'RSS']
+
+# languages (cont.)
 [languages]
 [languages.zh-cmn-hans-cn]
 languageName = ':cn:'
