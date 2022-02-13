@@ -1,5 +1,5 @@
 ---
-title: "关于 LoongArch 的常见问题解答"
+title: "关于 LoongArch 的常见问题解答（2022.02.13 更新）"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
