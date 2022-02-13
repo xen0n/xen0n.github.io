@@ -25,7 +25,7 @@ TocOpen: true
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
-* 2022-02-13: 部分措辞调整。
+* 2022-02-13: 部分措辞调整；添加指令格式、LoongArch 汇编的信息。
 * 2022-02-12: 最初版本。
 
 ## 关于指令集
@@ -86,6 +86,180 @@ LoongArch 是一门：
 在基本操作的宽度定义上，LoongArch 遵循传统架构（如 x86、MIPS）做法：对于多数操作而言，某个特定操作码的宽度不随微架构、当前机器模式确定的寄存器宽度而改变。例如，使用 `add.d` 操作码的指令要么在当前模式或处理器核上非法，要么永远代表 64 位加法。
 
 注意这与 RISC-V 的做法不同：仍以加法操作为例，RISC-V 的 `add` 指令总是操作 XLEN 宽度，在 RV32 核上操作 32 位宽，在 RV64 核上就操作 64 位了。相应地，RV64 新增的 `addw` 指令只操作低 32 位，而这条指令在 RV32 不存在。
+
+### LoongArch 都有哪些指令格式？
+
+#### 一句话回答
+
+按照手册描述，LoongArch 有 9 种**典型**指令格式，而实际情况（按照基础软件移植的真实工作量）则有 39 种。
+
+#### 龙芯公司的“官方口径”
+
+按照《龙芯架构参考手册》卷一的描述，**LoongArch 有 9 种典型的指令编码格式**。
+
+|无立即数格式|有立即数格式|
+|:--------:|:--------:|
+|2R|2RI8|
+|3R|2RI12|
+|4R|2RI14|
+||2RI16|
+||1RI21|
+||I26|
+
+画出来是这样：
+
+<style>
+.loongarch-insn-formats {
+    table-layout: fixed !important;
+    font-family: "Fira Code", "Inziu Iosevka", "Source Code Pro", "Menlo", "Consolas", monospace;
+}
+
+.loongarch-insn-formats th,
+.loongarch-insn-formats td {
+    min-width: 1rem !important;
+    padding: 0.1rem !important;
+    border: 1px solid var(--border);
+    text-align: center !important;
+}
+
+.loongarch-insn-formats th {
+    background-color: var(--code-bg);
+}
+
+.loongarch-insn-formats th:first-child,
+.loongarch-insn-formats tbody td:first-child {
+    background-color: var(--code-bg);
+}
+
+.loongarch-insn-formats td {
+    font-size: 14px; /* same as th */
+}
+
+.loongarch-insn-formats .field-opcode {
+    background-color: var(--code-bg);
+}
+</style>
+<table class="loongarch-insn-formats">
+    <thead>
+        <tr>
+            <th rowspan="2">格式</th>
+            <th colspan="32">指令字</th>
+        </tr>
+        <tr>
+            <th>31</th><th>30</th><th>29</th><th>28</th><th>27</th><th>26</th><th>25</th><th>24</th>
+            <th>23</th><th>22</th><th>21</th><th>20</th><th>19</th><th>18</th><th>17</th><th>16</th>
+            <th>15</th><th>14</th><th>13</th><th>12</th><th>11</th><th>10</th><th>9</th><th>8</th>
+            <th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>2R</td><td class="field-opcode" colspan="22"></td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
+        <tr><td>3R</td><td class="field-opcode" colspan="17"></td><td colspan="5">rk</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
+        <tr><td>4R</td><td class="field-opcode" colspan="12"></td><td colspan="5">ra</td><td colspan="5">rk</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
+        <tr><td>2RI8</td><td class="field-opcode" colspan="14"></td><td colspan="8">立即数</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
+        <tr><td>2RI12</td><td class="field-opcode" colspan="10"></td><td colspan="12">立即数</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
+        <tr><td>2RI14</td><td class="field-opcode" colspan="8"></td><td colspan="14">立即数</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
+        <tr><td>2RI16</td><td class="field-opcode" colspan="6"></td><td colspan="16">立即数</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
+        <tr><td>1RI21</td><td class="field-opcode" colspan="6"></td><td colspan="16">立即数低位</td><td colspan="5">rj</td><td colspan="5">立即数高位</td></tr>
+        <tr><td>I26</td><td class="field-opcode" colspan="6"></td><td colspan="16">立即数低位</td><td colspan="10">立即数高位</td></tr>
+    </tbody>
+    <tfoot>
+        <tr><td colspan="33">注：指令字部分，深色背景的单元格意为该位属于操作码。</td></tr>
+    </tfoot>
+</table>
+
+> 需要指出的是，存在少数指令，其指令编码域并不完全等同于这 9 种典型指令编码格式，而是在其基础上略有变化。
+> 不过这种指令的数目并不多，且变化的幅度也不大，不会对于编译系统的开发人员带来不便。
+
+“略有变化” :smirk:
+
+#### 真实情况
+
+参照上一问的回答，LoongArch 实际上没有**固定划分**的指令格式、操作数槽。
+实际上，在真实汇编器开发实践中，由于机器并不会关心哪个格式比哪个格式更“典型”，不一样就是不一样，开发人员往往还是要把所有指令格式变体都单独定义出来。
+我们在大部分此类开源项目都可以看到这一现象：
+
+* binutils: [MIPS][b-mips]、[RISC-V][b-riscv]、[SPARC][b-sparc]，不一定明确描述指令格式，但一定明确描述操作数槽。
+* LLVM: [MIPS][l-mips]、[RISC-V][l-riscv]，实际定义的种类明显比这俩架构手册上的“基础指令格式”多得多。
+* QEMU: [HPPA][q-hppa]、[RISC-V][q-riscv]，同上。
+
+[b-mips]: https://github.com/bminor/binutils-gdb/blob/binutils-2_38/opcodes/mips-opc.c
+[b-riscv]: https://github.com/bminor/binutils-gdb/blob/binutils-2_38/opcodes/riscv-opc.c
+[b-sparc]: https://github.com/bminor/binutils-gdb/blob/binutils-2_38/opcodes/sparc-opc.c
+[l-mips]: https://github.com/llvm/llvm-project/blob/llvmorg-13.0.0/llvm/lib/Target/Mips/MipsInstrFormats.td
+[l-riscv]: https://github.com/llvm/llvm-project/blob/llvmorg-13.0.0/llvm/lib/Target/RISCV/RISCVInstrFormats.td
+[q-hppa]: https://gitlab.com/qemu-project/qemu/-/blob/v6.2.0/target/hppa/insns.decode
+[q-riscv]: https://gitlab.com/qemu-project/qemu/-/blob/v6.2.0/target/riscv/insn32.decode
+
+如果按照“位域不同即指令格式不同”的标准进行严格划分，**LoongArch 基础架构 v1.00 共有 39 种不同指令格式**。
+社区维护的 [loongarch-opcodes][loongarch-opcodes] 项目对 LoongArch 所有公开指令进行了汇总整理，
+并给出了精确无歧义的指令格式命名方案。（利益相关：该项目由本文作者维护。）
+
+精确描述的 LoongArch 的指令格式分类如下（操作数槽的名称含义详见 [loongarch-opcodes 项目文档][loongarch-opcodes]）：
+
+[loongarch-opcodes]: https://github.com/loongson-community/loongarch-opcodes
+
+<table class="loongarch-insn-formats">
+    <thead>
+        <tr>
+            <th rowspan="2">格式</th>
+            <th colspan="32">指令字</th>
+        </tr>
+        <tr>
+            <th>31</th><th>30</th><th>29</th><th>28</th><th>27</th><th>26</th><th>25</th><th>24</th>
+            <th>23</th><th>22</th><th>21</th><th>20</th><th>19</th><th>18</th><th>17</th><th>16</th>
+            <th>15</th><th>14</th><th>13</th><th>12</th><th>11</th><th>10</th><th>9</th><th>8</th>
+            <th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>CdFj</td><td class="field-opcode" colspan="22"></td><td colspan="5">Fj</td><td class="field-opcode" colspan="2"></td><td colspan="3">Cd</td></tr>
+        <tr><td>CdFjFk</td><td class="field-opcode" colspan="17"></td><td colspan="5">Fk</td><td colspan="5">Fj</td><td class="field-opcode" colspan="2"></td><td colspan="3">Cd</td></tr>
+        <tr><td>CdJ</td><td class="field-opcode" colspan="22"></td><td colspan="5">J</td><td class="field-opcode" colspan="2"></td><td colspan="3">Cd</td></tr>
+        <tr><td>CjSd5k16</td><td class="field-opcode" colspan="6"></td><td colspan="16">Sd5k16 低位</td><td class="field-opcode" colspan="2"></td><td colspan="3">Cj</td><td colspan="5">Sd5k16 高位</td></tr>
+        <tr><td>DCj</td><td class="field-opcode" colspan="24"></td><td colspan="3">Cj</td><td colspan="5">D</td></tr>
+        <tr><td>DFj</td><td class="field-opcode" colspan="22"></td><td colspan="5">Fj</td><td colspan="5">D</td></tr>
+        <tr><td>DJ</td><td class="field-opcode" colspan="22"></td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJK</td><td class="field-opcode" colspan="17"></td><td colspan="5">K</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJKUa2</td><td class="field-opcode" colspan="15"></td><td colspan="2">Ua2</td><td colspan="5">K</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJKUa3</td><td class="field-opcode" colspan="14"></td><td colspan="3">Ua3</td><td colspan="5">K</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJSk12</td><td class="field-opcode" colspan="10"></td><td colspan="12">Sk12</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJSk14</td><td class="field-opcode" colspan="8"></td><td colspan="14">Sk14</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJSk16</td><td class="field-opcode" colspan="6"></td><td colspan="16">Sk16</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJUk12</td><td class="field-opcode" colspan="10"></td><td colspan="12">Uk12</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJUk14</td><td class="field-opcode" colspan="8"></td><td colspan="14">Uk14</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJUk5</td><td class="field-opcode" colspan="17"></td><td colspan="5">Uk5</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJUk5Um5</td><td class="field-opcode" colspan="11"></td><td colspan="5">Um5</td><td class="field-opcode" colspan="1"></td><td colspan="5">Uk5</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJUk6</td><td class="field-opcode" colspan="16"></td><td colspan="6">Uk6</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJUk6Um6</td><td class="field-opcode" colspan="10"></td><td colspan="6">Um6</td><td colspan="6">Uk6</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DJUk8</td><td class="field-opcode" colspan="14"></td><td colspan="8">Uk8</td><td colspan="5">J</td><td colspan="5">D</td></tr>
+        <tr><td>DSj20</td><td class="field-opcode" colspan="7"></td><td colspan="20">Sj20</td><td colspan="5">D</td></tr>
+        <tr><td>DUj5</td><td class="field-opcode" colspan="22"></td><td colspan="5">Uj5</td><td colspan="5">D</td></tr>
+        <tr><td>EMPTY</td><td class="field-opcode" colspan="32"></td></tr>
+        <tr><td>FdCj</td><td class="field-opcode" colspan="24"></td><td colspan="3">Cj</td><td colspan="5">Fd</td></tr>
+        <tr><td>FdFj</td><td class="field-opcode" colspan="22"></td><td colspan="5">Fj</td><td colspan="5">Fd</td></tr>
+        <tr><td>FdFjFk</td><td class="field-opcode" colspan="17"></td><td colspan="5">Fk</td><td colspan="5">Fj</td><td colspan="5">Fd</td></tr>
+        <tr><td>FdFjFkCa</td><td class="field-opcode" colspan="14"></td><td colspan="3">Ca</td><td colspan="5">Fk</td><td colspan="5">Fj</td><td colspan="5">Fd</td></tr>
+        <tr><td>FdFjFkFa</td><td class="field-opcode" colspan="12"></td><td colspan="5">Fa</td><td colspan="5">Fk</td><td colspan="5">Fj</td><td colspan="5">Fd</td></tr>
+        <tr><td>FdJ</td><td class="field-opcode" colspan="22"></td><td colspan="5">J</td><td colspan="5">Fd</td></tr>
+        <tr><td>FdJK</td><td class="field-opcode" colspan="17"></td><td colspan="5">K</td><td colspan="5">J</td><td colspan="5">Fd</td></tr>
+        <tr><td>FdJSk12</td><td class="field-opcode" colspan="10"></td><td colspan="12">Sk12</td><td colspan="5">J</td><td colspan="5">Fd</td></tr>
+        <tr><td>JK</td><td class="field-opcode" colspan="17"></td><td colspan="5">K</td><td colspan="5">J</td><td class="field-opcode" colspan="5"></td></tr>
+        <tr><td>JKUd5</td><td class="field-opcode" colspan="17"></td><td colspan="5">K</td><td colspan="5">J</td><td colspan="5">Ud5</td></tr>
+        <tr><td>JSd5k16</td><td class="field-opcode" colspan="6"></td><td colspan="16">Sd5k16 低位</td><td colspan="5">J</td><td colspan="5">Sd5k16 高位</td></tr>
+        <tr><td>JUd5</td><td class="field-opcode" colspan="22"></td><td colspan="5">J</td><td colspan="5">Ud5</td></tr>
+        <tr><td>JUd5Sk12</td><td class="field-opcode" colspan="10"></td><td colspan="12">Sk12</td><td colspan="5">J</td><td colspan="5">Ud5</td></tr>
+        <tr><td>JUk8</td><td class="field-opcode" colspan="14"></td><td colspan="8">Uk8</td><td colspan="5">J</td><td class="field-opcode" colspan="5"></td></tr>
+        <tr><td>Sd10k16</td><td class="field-opcode" colspan="6"></td><td colspan="16">Sd10k16 低位</td><td colspan="10">Sd10k16 高位</td></tr>
+        <tr><td>Ud15</td><td class="field-opcode" colspan="17"></td><td colspan="15">Ud15</td></tr>
+    </tbody>
+    <tfoot>
+        <tr><td colspan="33">注：指令字部分，深色背景的单元格意为该位属于操作码。</td></tr>
+    </tfoot>
+</table>
+
+可见 LoongArch 的指令格式实际比 MIPS、RISC-V 复杂得多，此两种架构满打满算各自也就十几、二十种指令格式。
+虽然 LoongArch 的有些格式完全可以合而为一（例如 FdCj 和 CdFj 不追求操作数顺序与汇编保持一致的话，完全就可以合并嘛），但一方面现在改已经晚了，另一方面，客观上这么做也确实取得了节省大量编码空间的效果。
 
 ### LA464 处理器核/微架构和 GS464V 是不是一个东西，为啥改名了？
 
@@ -237,6 +411,25 @@ LoongArch 生态建设的预期是成为一个“正常”的软硬件平台。
 龙芯公司提供的[龙芯架构文档][loongarch-doc-mainpage-html]是很好的出发点。
 
 [loongarch-doc-mainpage-html]: https://loongson.github.io/LoongArch-Documentation
+
+### 如何快速学习 LoongArch 汇编？
+
+手册是你的好朋友 :wink:
+
+LoongArch 的汇编语言，语法上基本是简化版的 MIPS 汇编，但也有几点重大区别。
+
+* 与 MIPS 相同，寄存器都要带 `$` 前缀。（与 RISC-V 不同。）
+* 与 MIPS 相同，寄存器移动指令也叫 `move`（与 x86、RISC-V 不同，不叫 `mov` 或者 `mv`。）
+* 与 x86、MIPS 相同，空操作也叫 `nop`。（是 `andi $zero, $zero, 0` 的语法糖。）
+* 与 MIPS 相同，过程调用返回也叫 `jr $ra`。（是 `jirl $zero, $ra, 0` 的语法糖。与 RISC-V 不同，截至 2022.02.13，没有 `ret` 的语法糖。）
+* 与 MIPS 不同，代表内存地址的寄存器操作数不要加括号。（`ld $a0, 16($a1)` 变成 `ld.d $a0, $a1, 16`。）
+* 加载立即数的伪指令也要加宽度后缀。（基本 `li.w` 就够用了，很少装载 64 位数。）
+* 大部分指令操作数的书写顺序都是先寄存器后立即数，每组内从低位到高位。按照手册语法有特例！
+
+除此之外，由于手册定稿前没有征询更大范围社区的意见，目前版本的手册（v1.00）对指令的命名、语法都存在一些不一致、误导性乃至错误的描述。
+这些也整理在 [loongarch-opcodes] 项目的文档中了。
+
+（个人观点批注：该项目中的修改意见早些时候已经反馈回龙芯公司相应团队，得到的回复大致意思是“手册发布了不好修改了，没有这样的先例，开发者花些精力习惯就好” :smirk: 尽管如此，本文作者以及认同该项目观点的同学们仍然在努力推动各方面的改进措施，力求在 LoongArch 为更多开发者所知之前填掉尽量多的坑，不要让后人们把我们踩过的坑和钉子再踩一遍。）
 
 ### 我用 C/C++ 语言，怎么写 CFLAGS？怎么针对 LoongArch 及其基础特性做条件编译？
 
