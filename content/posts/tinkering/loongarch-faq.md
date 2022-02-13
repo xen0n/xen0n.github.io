@@ -164,7 +164,7 @@ LoongArch 是一门：
         <tr><td>I26</td><td class="field-opcode" colspan="6"></td><td colspan="16">立即数低位</td><td colspan="10">立即数高位</td></tr>
     </tbody>
     <tfoot>
-        <tr><td colspan="33">注：指令字部分，深色背景的单元格意为该位属于操作码。</td></tr>
+        <tr><td colspan="33">注：指令字部分，<code>这种背景颜色</code>的单元格意为该位属于操作码。</td></tr>
     </tfoot>
 </table>
 
@@ -254,7 +254,7 @@ LoongArch 是一门：
         <tr><td>Ud15</td><td class="field-opcode" colspan="17"></td><td colspan="15">Ud15</td></tr>
     </tbody>
     <tfoot>
-        <tr><td colspan="33">注：指令字部分，深色背景的单元格意为该位属于操作码。</td></tr>
+        <tr><td colspan="33">注：指令字部分，<code>这种背景颜色</code>的单元格意为该位属于操作码。</td></tr>
     </tfoot>
 </table>
 
