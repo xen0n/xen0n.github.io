@@ -9,6 +9,10 @@ hasCJKLanguage = true
 languageCode = 'zh-cmn-hans-cn'
 defaultContentLanguage = 'zh-cmn-hans-cn'
 
+# for raw tags like <sub> to work
+[markup.goldmark.renderer]
+unsafe = true
+
 # output format
 [outputs]
 home = ['HTML', 'RSS']
