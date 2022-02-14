@@ -1,5 +1,5 @@
 ---
-title: "关于 LoongArch 非官方但全面的常见问题解答（2022.02.13 更新）"
+title: "非官方但全面的 LoongArch 常见问题解答（2022.02.15 更新）"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -25,6 +25,7 @@ TocOpen: true
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
+* 2020-02-15: 部分措辞调整。
 * 2022-02-13: 部分措辞调整；添加指令格式、LoongArch 汇编的信息。
 * 2022-02-12: 最初版本。
 
@@ -34,7 +35,7 @@ TocOpen: true
 
 > 龙芯架构 LoongArch 是一种精简指令集计算机（Reduced Instruction Set Computing，简称 RISC）风格的指令系统架构。
 >
-> ——《龙芯架构参考手册》卷一：基础架构，引言
+> ——《龙芯架构参考手册 卷一：基础架构》，引言
 
 LoongArch 是龙芯公司设计的一种 CPU 指令集架构，2020 年对外公开其存在，2021 年起公开出货，在其 3A5000 CPU 产品开始搭载。
 
@@ -52,7 +53,7 @@ LoongArch 是龙芯公司设计的一种 CPU 指令集架构，2020 年对外公
 
 显然，该单词是“龙芯”（Loongson）、“Architecture”两个单词的混成词（portmanteau，也叫“混合词”、“合音词”等等）。
 
-介于此，LoongArch 的发音也应当是“龙芯”和“Architecture”两词的混合，即 /**lʊŋ˧˥**ɕin˥˥/ + /ˈ**ɑɹk**ɪtɛkt͡ʃɚ/ = /**ˈlʊŋ˧˥ˌɑɹk**/，读若“龙Arc”。<sub>中式英语发音 lóng à ke，“龙啊克” :smirk:</sub>
+介于此，LoongArch 的发音也应当是“龙芯”和“Architecture”两词的混合，即 /**lʊŋ˧˥**ɕin˥˥/ + /ˈ**ɑɹk**ɪtɛkt͡ʃɚ/ = /ˈlʊŋ˧˥ˌɑɹk/，读若“龙Arc”。<sub>中式英语发音 lóng à ke，“龙啊克” :smirk:</sub>
 
 当然，实践中“Arch”可能也被直接拼读为/ɑɹt͡ʃ/（作“拱门”解的 arch 一词），其原因与“char”经常不被念为“car”类似。这也是可接受的读音。<sub>中式英语发音 lóng à chi 或 lóng à qu，“龙啊吃”、“龙啊去” :smirk:</sub>
 
@@ -77,7 +78,7 @@ LoongArch 是一门：
 
     定长指令字，32 个寄存器，0 号寄存器固定表示零，目标寄存器可以不是源寄存器之一，运算操作不访存，内存模型平坦，等等。
 
-*   **LoongArch 的一些操作比 MIPS 和 RISC-V 更带劲。**
+*   **LoongArch 的一些操作比 MIPS (R6 之前) 和 RISC-V 更带劲。**
 
     跳转指令和 PIC 相关操作的立即数非常宽；装载立即数至多需要 4 条指令不需要移位；ABI 甚至给未来保留了一个静态寄存器（callee-save register）剩下的也差不多够用；RISC-V 基础指令集较为欠缺的位操作能力在 LoongArch 基础指令集基本都有。
 
@@ -95,7 +96,7 @@ LoongArch 是一门：
 
 #### 龙芯公司的“官方口径”
 
-按照《龙芯架构参考手册》卷一的描述，**LoongArch 有 9 种典型的指令编码格式**。
+按照《龙芯架构参考手册 卷一》的描述，**LoongArch 有 9 种典型的指令编码格式**。
 
 |无立即数格式|有立即数格式|
 |:--------:|:--------:|
@@ -290,15 +291,15 @@ LoongArch 是一门：
 
 - LoongArch 指令编码与 MIPS 完全不同。
 - LoongArch 不存在跳转延迟槽（branch delay slots），而 MIPS 直到 R6 才增加了可选使用的无延迟槽跳转指令。
-- LoongArch 去掉了 MIPS 上的一部分历史包袱，例如神奇的 HI/LO 累加器。
-- LoongArch 的 ABI 完全离开 MIPS 传统，而基于 RISC-V ABI 定义。分立的返回值寄存器、内核专用寄存器等概念都被摈弃。
+- MIPS 的一部分历史包袱，例如神奇的 HI/LO 累加器，在 LoongArch 都不存在。
+- LoongArch 的 ABI 基于 RISC-V ABI 定义。MIPS ABI 规定的分立返回值寄存器、内核专用寄存器等概念在 LoongArch ABI 中都不存在。
 
 但在 LoongArch 上可以看到客观的 MIPS 影响，例如：
 
 - LoongArch 浮点比较、跳转操作所用的谓词寄存器（predicate register）`$fccX` 是单独的 8 个 flag 位，与 MIPS 做法相同，少见于现代架构。
 - LoongArch 特权架构部分与 MIPS 有所相似（例如 TLB 的奇偶页设计，麻烦，不见于其他架构，但 LoongArch 这么做了）。
-- 个别一些指令（如 `maskeqz/masknez`）与 MIPS R6 对应指令（`selnez/seleqz`）语义相同，且不见于其他架构。
-- 个别一些操作（如 64 位立即数的装载，分四段，官方指令名为 `lu12i.w/ori/lu32i.d/lu52i.d`）与 MIPS R6 类似（`lui/ori/ahi/ati`），仅细节不同（每段的宽度，LoongArch `12/20/20/12` vs MIPS R6 `16/16/16/16`）；此做法不见于其他架构。
+- 个别一些指令与 MIPS R6 对应指令语义相同，且不见于其他架构。如 `maskeqz/masknez` 与 MIPS R6 `selnez/seleqz`。
+- 个别一些操作与 MIPS R6 类似，仅细节不同。如 LoongArch 分四段装载 64 位立即数，官方指令名为 `lu12i.w/ori/lu32i.d/lu52i.d`，与 MIPS R6 `lui/ori/dahi/dati` 仅每段的宽度不同（LoongArch `12/20/20/12` vs MIPS R6 `16/16/16/16`）；此做法不见于其他架构。
 - 虚拟化扩展（Loongson Virtualization Extension）的缩写叫 LVZ，非常可疑。因为按照 Loongson SIMD Extension = LSX，Loongson Advanced SIMD Extension = LASX，Loongson Binary Translation Extension = LBT（不对称：没叫 LBTX）的规律，这个扩展应该缩写叫 LVX 或者 LV，无论如何不可能从第二个单词取出两个字母变成 LVZ。VZ 是 MIPS 的叫法！
 - LoongArch 汇编语法与 MIPS 汇编近似。去掉了表示内存寻址的括号记法，但寄存器名字同样必须加 `$` 符号，伪指令如 `move` 取名与 MIPS 相同（而与 RISC-V 等不同）。
 - 工具链、内核等基础软件的早期 LoongArch 移植基本上是相应 MIPS 代码的复制粘贴、文本替换。（当然，由于这样做的代码质量低、且两个架构并不 **那么** 相似等原因，龙芯公司随后便不这么做了。）
@@ -363,7 +364,7 @@ MIPS 时代末期的龙芯 3A4000 实现的是完整的 MIPS MSA 向量扩展。
 
 [MD00868-1D-MSA64-AFP-01.12]: https://s3-eu-west-1.amazonaws.com/downloads-mips/documents/MD00868-1D-MSA64-AFP-01.12.pdf
 
-可见所有这些向量支持都是固定宽度的。结合《龙芯架构参考手册》卷一 表 2-2“CPUCFG 访问配置信息列表”对
+可见所有这些向量支持都是固定宽度的。结合《龙芯架构参考手册 卷一》表 2-2“CPUCFG 访问配置信息列表”对
 `LSX`、`LASX` 位的描述（“128 位向量扩展”、“256 位向量扩展”），可以推测 LoongArch 的
 LSX/LASX 和 MIPS 时代的 LSX/LASX 应该是近似的东西，至少向量宽度也是固定的。
 指令编码必然改变了，也可能有些指令被增删或修改，毕竟没有公开文档和开源支持，外界不会有代码依赖这些指令，也就不需要考虑兼容性。
@@ -427,7 +428,7 @@ LoongArch 的汇编语言，语法上基本是简化版的 MIPS 汇编，但也�
 * 与 x86、MIPS 相同，空操作也叫 `nop`。（是 `andi $zero, $zero, 0` 的语法糖。）
 * 与 MIPS 相同，过程调用返回也叫 `jr $ra`。（是 `jirl $zero, $ra, 0` 的语法糖。与 RISC-V 不同，截至 2022.02.13，没有 `ret` 的语法糖。）
 * 与 MIPS 不同，代表内存地址的寄存器操作数不要加括号。（`ld $a0, 16($a1)` 变成 `ld.d $a0, $a1, 16`。）
-* 加载立即数的伪指令也要加宽度后缀。（基本 `li.w` 就够用了，很少装载 64 位数。）
+* 装载立即数的伪指令也要加宽度后缀。（基本 `li.w` 就够用了，很少装载 64 位数。）
 * 大部分指令操作数的书写顺序都是先寄存器后立即数，每组内从低位到高位。按照手册语法有特例！
 
 除此之外，由于手册定稿前没有征询更大范围社区的意见，目前版本的手册（v1.00）对指令的命名、语法都存在一些不一致、误导性乃至错误的描述。
