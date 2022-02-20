@@ -655,12 +655,13 @@ and hardware development.
 You just do on LoongArch whatever you used to do for other platforms, such as
 x86 or ARM, except for those things inherently platform-specific.
 
-If you develop for some specific domain with high-level programming languages,
-you almost never need to care about low-level technical details of the platform.
+If you primarily develop high-level "business logic" with high-level
+programming languages, you almost never need to care about low-level technical
+details of the platform.
 These kind of things are already taken care of by the open-source community,
-consisting of all enterprise and individual developers using Loongson.
+consisting of all enterprise and individual developers using Loongson products.
 
-If you are an infrastruture developer yourself, or a higher-level developer
+If you are an infrastructure developer yourself, or a "business logic" developer
 that occasionally needs to care about low-level details here and there,
 [the LoongArch documentation][loongarch-doc-mainpage-html] provided by the
 Loongson Corporation is a good starting point.
