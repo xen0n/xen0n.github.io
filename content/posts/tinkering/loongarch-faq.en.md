@@ -30,7 +30,7 @@ to take a neutral stance and try to equally present the disagreeing opinions.
 
 This document is being updated from time to time, and changes are always
 accompanied with update dates.
-The version you are currently reading is last updated at 2022-02-20.
+The version you are currently reading is last updated at 2022-02-21.
 (Dates are always in the YYYY-MM-DD format, for ease of tracking changes
 between the original and the translations.)
 
@@ -47,6 +47,7 @@ MIPS ecosystem.
 
 You can view the change details at [this article's Git history](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.en.md).
 
+* 2022-02-21: (English version only) Added note on the meanings of "loong" and "Loongson".
 * 2022-02-20: Added translation to English; synced wording adjustments and layout tweaks with the Chinese original.
 * 2022-02-15: Adjusted wording.
 * 2022-02-13: Adjusted wording; added information about instruction formats and assembly language.
@@ -67,6 +68,18 @@ Shipping started in 2021 with the 3A5000 products.
 The Chinese name for LoongArch is 龙芯架构 (Simplified Chinese because the
 Loongson Corporation is based in Beijing; 龍芯架構 in Traditional characters),
 according to the title and first sentence of the original manual.
+
+> Note: the word 龙/龍/loong means "[Chinese dragon]", or more precisely, just
+> "loong".
+> The Chinese dragon never breathes fire, for example.
+> (Actually some of them mostly bring about rains and storms when they feel
+> like doing so!)
+>
+> And the character 芯 means "core/chip" in this context, so the
+> "龙芯/龍芯/Loongson" name has a literal meaning of "Dragon's Core" or
+> "Dragon's Chip".
+
+[Chinese dragon]: https://en.wikipedia.org/wiki/Chinese\_dragon
 
 ### What does LoongArch's logo look like?
 
