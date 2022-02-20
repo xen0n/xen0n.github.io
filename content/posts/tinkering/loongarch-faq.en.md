@@ -1,5 +1,5 @@
 ---
-title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-02-20)"
+title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-02-21)"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
