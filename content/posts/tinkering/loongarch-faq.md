@@ -17,7 +17,7 @@ TocOpen: true
 本文就争取做这么一篇讲述客观事实，对开发者有用的 FAQ 文档。
 由于涉及商业利益的事物不可避免存在争议，本文也力争将多方观点同时整理、平等呈现。
 
-本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-02-20 更新的。
+本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-02-21 更新的。
 
 免责说明：除观点性质的文字之外，本文中体现的信息均取自公开资料。观点性质的文字总会被明确标注出来。
 这些观点性质的文字仅代表个人观点，与本人雇主、龙芯公司等实体均无关。
@@ -27,6 +27,7 @@ TocOpen: true
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
+* 2020-02-21: 添加“关于使用”一节四个话题；为“关于开发”一节添加 target tuple、GOARCH 两个话题。
 * 2022-02-20: 配合英语翻译的部分措辞调整与排版优化。
 * 2022-02-15: 部分措辞调整。
 * 2022-02-13: 部分措辞调整；添加指令格式、LoongArch 汇编的信息。
@@ -460,6 +461,36 @@ LoongArch 生态建设的预期是成为一个“正常”的软硬件平台。
 
 [loongarch-doc-mainpage-html]: https://loongson.github.io/LoongArch-Documentation
 
+### LoongArch 的目标元组（target tuple）叫啥？
+
+这里需要区分下 GNU target tuples 和 Debian multi-arch tuples，因为二者不完全相同，尤其在目标支持多个 ABI 的情况下 Debian multi-arch tuples 一定会体现具体 ABI。
+完整的目标元组形如 `ARCH-VENDOR-OS-ENV`，但由于近现代大多数架构并不使用 vendor 字段，因而人们也经常将其省略，即得到形如 `ARCH-OS-ENV` 的目标三元组（target triplets）。
+
+最常见的 LoongArch 系统配置是 LP64D ABI 的 Linux 系统，libc 为 glibc。
+根据[《龙芯架构工具链约定》][tc-conventions-doc-html]，
+这个配置的 Debian multiarch tuple 叫 `loongarch64-linux-gnuf64`。
+相应的 GNU 目标元组目前叫 `loongarch64-unknown-linux-gnu`，其中 `unknown` 的部分有时也可省略。
+（省略的 ABI 浮点与扩展后缀代表取该 ARCH 最常见的 ABI 配置。）
+
+注：您可能见过[这个 2020 年末的 gnuconfig 变更][gnuconfig-202012]，这里的写法和《龙芯架构工具链约定》的最新写法有所不同：
+没有考虑 ABI 浮点、扩展后缀，还多出一个神秘的 `loongarchx32` 检查。
+这是由于此处记录了龙芯公司的研发们在 LoongArch 开发的最早期对其 ABI 的理解：
+三个 ARCH 取值 `loongarch32` `loongarch64` `loongarchx32`
+分别与 MIPS 的三个 ABI o32 n64 n32 一一对应。
+当然，后来人们意识到既然另起炉灶了就不要无脑抄 MIPS 了，于是根据 RISC-V ABI
+重新设计了目前的 LoongArch ABI；所谓的 LoongArch “x32” ABI 永远不会被实现了。
+
+[gnuconfig-202012]: https://git.savannah.gnu.org/gitweb/?p=config.git;a=commitdiff;h=c8ddc8472f8efcadafc1ef53ca1d863415fddd5f;hp=05734c3b30b02196506617b4e4d4b70b3bf4bb72
+
+### LoongArch 的 GOARCH 叫啥？
+
+[2021 年中，社区和龙芯公司在这个问题上吵了一架][golang-go-46229] :satisfied:
+
+最终结果是龙芯团队接受了社区意见，因而 LA64 的 GOARCH 已经确定为 `loong64` 了。
+因为各种地方的 32 位支持都暂时没做，所以目前也不存在 `loong32` 的写法。
+
+[golang-go-46229]: https://github.com/golang/go/issues/46229
+
 ### 如何快速上手 LoongArch 汇编？
 
 手册、ABI 规范是你的好朋友 :wink:
@@ -503,6 +534,45 @@ QEMU 的使用方法不属于本文范畴，请参考其他在线资料。
 注：截至 2022-02-12，LoongArch 的 target 支持没有合入 QEMU 主线，这意味着您需要自行编译[龙芯的开发分支][qemu-loongson-tcg-dev]。
 
 [qemu-loongson-tcg-dev]: https://github.com/loongson/qemu/tree/tcg-dev
+
+## 关于使用
+
+### LoongArch 的 Gentoo ARCH 叫啥？
+
+根据 [2021 年 8 月的上游沟通][gentoo-dev-mail-202108]，Gentoo 将把 LoongArch 叫作 `ARCH=loong`。
+这也就意味着你以后就写类似于 `ACCEPT_KEYWORDS="~loong"` 这样的配置了。
+
+跟 Go 的情况不一样，这回没吵起来 :rofl:
+
+[gentoo-dev-mail-202108]: https://archives.gentoo.org/gentoo-dev/message/388a4b7428461660e89c8eae8c292f32
+
+### LoongArch 系统用的啥固件（BIOS）？怎么管理启动项？用啥引导器？
+
+BIOS 是个过时一万年的概念，怎么还有人这么叫 :facepalm:
+
+撇开这个不谈，桌面、服务器 LoongArch 系统都遵循 UEFI 固件规范，并使用 ACPI 传递设备信息。
+与先前从未推入上游的 MIPS UEFI 实现不同，LoongArch 的 UEFI、ACPI 实现都走完了正规上游流程，
+将在两部规范的下一次更新中公开亮相。
+在此也向龙芯的固件团队表示祝贺！
+
+由于 LoongArch 的 UEFI 实现是相当标准的，这也意味着 LoongArch 系统的启动项管理姿势、引导器使用姿势与 x86、ARM64 等其他 UEFI 平台完全相同：
+你在别的平台怎么用（efibootmgr、systemd-boot、grub2、Linux EFI stub 等等），你在 LoongArch 上就怎么用！
+
+### LoongArch 系统能用啥显卡？
+
+目前（2022-02-20）没有 SoC 形态的 LoongArch CPU，因此 LoongArch 系统中一定存在一块桥片。
+截至该时间点，可与现存唯一 LoongArch CPU——龙芯 3A5000 搭配使用的桥片仅有龙芯 7A1000 一种，
+该桥片集成了一个基于 Vivante GC1000 的 GPU block，搭配龙芯自制的显示控制器 block 使用。
+目前该集显的上游工作正在推进中。（etnaviv 不能直接使用。）
+
+关于独显的兼容性，实际上一般而言只要系统上安装有相应的固件（一般无脑安装 linux-firmware 包即可），任何使用开源驱动的显卡都可正常工作。
+当然，由于老黄大概率不会给 LoongArch 专门编译一份闭源驱动，而开源的 nouveau 又非常拉胯（也怪老黄），近几年的 N 卡基本就别想了。
+AMD Yes！
+
+### LoongArch 系统能用啥声卡/网卡/采集卡/鼠标/键盘/硬盘/……？
+
+只要这硬件有 Linux 开源驱动，或者要么你够拽要么厂商大发慈悲，总之愿意给 LoongArch 提供闭源驱动，你就能用。
+如果不能用，找到你周围的龙芯用户社区，反馈这个事情，一定会有开发者看到 :wink:
 
 ## 关于生态
 
