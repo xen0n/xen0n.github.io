@@ -6,14 +6,14 @@
 
 - id: read_time
   translation:
-    one : "1 分钟"
-    other: "{{ .Count }} 分钟"
+    one : "预计阅读时间: 1 分钟"
+    other: "预计阅读时间: {{ .Count }} 分钟"
 
 - id: toc
   translation: "目录"
 
 - id: translations
-  translation: "语言"
+  translation: "其他语言版本"
 
 - id: home
   translation: "主页"
