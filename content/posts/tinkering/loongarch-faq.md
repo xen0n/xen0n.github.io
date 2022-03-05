@@ -1,5 +1,5 @@
 ---
-title: "非官方但全面的 LoongArch 常见问题解答（2022-02-20 更新）"
+title: "非官方但全面的 LoongArch 常见问题解答（2022-03-06 更新）"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -34,7 +34,8 @@ summary: |
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
-* 2020-02-21: 添加“关于使用”一节四个话题；为“关于开发”一节添加 target tuple、GOARCH 两个话题。
+* 2022-03-06: 添加“关于开发”一节两个话题；其他微调。
+* 2022-02-21: 添加“关于使用”一节四个话题；为“关于开发”一节添加 target tuple、GOARCH 两个话题。
 * 2022-02-20: 配合英语翻译的部分措辞调整与排版优化。
 * 2022-02-15: 部分措辞调整。
 * 2022-02-13: 部分措辞调整；添加指令格式、LoongArch 汇编的信息。
@@ -98,7 +99,7 @@ LoongArch 是一门：
     >
     > 如果不是设计阶段忽视了该问题，那么 LoongArch 使用前缀编码的决策依据应该是“16 位指令字带来的代码密度提升在真实业务场景下并不重要”。
 
-*   **LoongArch 是相当经典的 RISC 架构。**
+*   **LoongArch 是相当经典的 <abbr title="Reduced Instruction Set Computing">RISC</abbr> 架构。**
 
     定长指令字，32 个寄存器，0 号寄存器固定表示零，目标寄存器可以不是源寄存器之一，运算操作不访存，内存模型平坦，等等。
 
@@ -319,7 +320,7 @@ LoongArch 是一门：
 
 > 笔者评论：
 > [维基百科][en-wiki-loongson]上有 GS464EV 的说法，这就是社区为了解除歧义而不得不生造的名字。
-> 3A2000/3A3000 的微架构叫 GS464E，而 3A4000 是一次 tock（微架构）迭代，其在 GS464E 基础上最明显的变化是终于以 MSA 的形式提供了易用的向量支持，故名。
+> 3A2000/3A3000 的微架构叫 GS464E，而 3A4000 是一次 tock（微架构）迭代，其在 GS464E 基础上最明显的变化是终于以 <abbr title="MIPS&reg; SIMD Architecture">MSA</abbr> 的形式提供了易用的向量支持，故名。
 >
 > （先前的龙芯自制向量指令能力有限，且缺乏文档，因此才说 3A4000 的向量支持易用。）
 
@@ -338,7 +339,7 @@ LoongArch 是一门：
 
 ### LoongArch 和 MIPS 有什么关系？
 
-（请注意：由于所做的事情都是“通用计算”这一件事，所有 RISC 架构都存在相当程度的相似性。）
+（请注意：由于所做的事情都是“通用计算”这一件事，所有 <abbr title="Reduced Instruction Set Computing">RISC</abbr> 架构都存在相当程度的相似性。）
 
 按照公开资料，LoongArch 与 MIPS 不能互操作，并且一些关键架构特性也不能做到 1:1 对应；虽然它们的许多指令可以做到 1:1 对应。
 
@@ -350,7 +351,7 @@ LoongArch 是一门：
 但在 LoongArch 上可以看到客观的 MIPS 影响，例如：
 
 - LoongArch 浮点比较、跳转操作所用的谓词寄存器（predicate register）`$fccX` 是单独的 8 个 flag 位，与 MIPS 做法相同，少见于现代架构。
-- LoongArch 特权架构部分与 MIPS 有所相似。例如 TLB 的奇偶页设计，麻烦，不见于其他知名架构，但 LoongArch 这么做了。
+- LoongArch 特权架构部分与 MIPS 有所相似。例如 <abbr title="Translation Look-aside Buffer">TLB</abbr> 的奇偶页设计，麻烦，不见于其他知名架构，但 LoongArch 这么做了。
 - 个别一些指令与 MIPS R6 对应指令语义相同，且不见于其他知名架构。如 `maskeqz/masknez` 与 MIPS R6 `selnez/seleqz`。
 - 个别一些操作与 MIPS R6 类似，仅细节不同。如 LoongArch 分四段装载 64 位立即数，官方指令名为 `lu12i.w/ori/lu32i.d/lu52i.d`，与 MIPS R6 `lui/ori/dahi/dati` 仅每段的宽度不同（LoongArch `12/20/20/12` vs MIPS R6 `16/16/16/16`）；此做法不见于其他知名架构。
 - 虚拟化扩展（Loongson Virtualization Extension）的缩写叫 LVZ，非常可疑。因为按照 Loongson SIMD Extension = LSX，Loongson Advanced SIMD Extension = LASX，Loongson Binary Translation Extension = LBT（不对称：没叫 LBTX）的规律，这个扩展应该缩写叫 LVX 或者 LV，无论如何不可能从第二个单词取出两个字母变成 LVZ。VZ 是 MIPS 的叫法！
@@ -359,7 +360,7 @@ LoongArch 是一门：
 
 ### LoongArch 和 RISC-V 有什么关系？
 
-（请注意：由于所做的事情都是“通用计算”这一件事，所有 RISC 架构都存在相当程度的相似性。）
+（请注意：由于所做的事情都是“通用计算”这一件事，所有 <abbr title="Reduced Instruction Set Computing">RISC</abbr> 架构都存在相当程度的相似性。）
 
 按照公开资料，LoongArch 与 RISC-V 不能互操作，并且一些关键架构特性也不能做到 1:1 对应；虽然它们的许多指令在一定条件下（如限定 64 位操作）可以做到 1:1 对应。
 
@@ -409,11 +410,11 @@ LoongArch 的一些指令与对应的 RISC-V 指令语义完全相同，一些�
 
 **由于相关文档没有开放，以下内容是猜测。**
 
-MIPS 时代末期的龙芯 3A4000 实现的是完整的 MIPS MSA 向量扩展。
+MIPS 时代末期的龙芯 3A4000 实现的是完整的 MIPS <abbr title="MIPS&reg; SIMD Architecture">MSA</abbr> 向量扩展。
 除此之外，3A4000 还支持从 2F 时代继承的 LoongMMI，以及从未在公开文档出现的 LSX/LASX。
 梳理这些向量支持：
 
-- MSA：根据 [MSA64 手册 v1.12][MD00868-1D-MSA64-AFP-01.12] 的描述，是 128 位固定向量宽度。
+- <abbr title="MIPS&reg; SIMD Architecture">MSA</abbr>：根据 [MSA64 手册 v1.12][MD00868-1D-MSA64-AFP-01.12] 的描述，是 128 位固定向量宽度。
 - LoongMMI：用法极度类似 x86 MMX，64 位固定向量宽度。
 - LSX/LASX：除 PPT 之外公开资料近似不存在，工具链源码短暂出现后被撤回。LSX 应该是 128 位固定向量宽度，LASX 则为 256 位固定向量宽度。
 
@@ -448,10 +449,136 @@ LSX/LASX 和 MIPS 时代的 LSX/LASX 应该是近似的东西，至少向量宽�
 - 新增了架构状态 TOP 寄存器，以及对应的 FPU 模式位，在 x87 模式下，改变浮点操作寄存器字段的语义，使其变为基于 TOP 的寻址方式
 
 后来又添加了 ARM 条件执行等操作的支持，想必也是类似的实现思路。那么 LoongArch 的 x86、ARM
-二进制翻译大概率也是先前二进制翻译扩展的微调；至于 MIPS 二进制翻译，由于同属经典 RISC 架构，
+二进制翻译大概率也是先前二进制翻译扩展的微调；至于 MIPS 二进制翻译，由于同属经典 <abbr title="Reduced Instruction Set Computing">RISC</abbr> 架构，
 可能唯一的硬件支持会是跳转延迟槽。（HI/LO 等其他一些奇葩 MIPS 特性可以在翻译阶段由软件轻易完成，反正也要重建数据流。）
 
 ## 关于开发
+
+### GitHub 上有好几个组织都跟龙芯/LoongArch 有关。哪个是“官方”？
+
+你可能已经见过一两个下面的组织了：
+
+* [“大龙芯联盟”（“Great Loongson Union”，loongson）][org-ls]（说实话笔者看这名字就烦），
+* [LoongArch 平台软件移植（loongarch64）][org-la64]，以及
+* [“龙芯社区”（“Loongson Community”，loongson-community）][org-l-c]。
+
+[org-ls]: https://github.com/loongson
+[org-la64]: https://github.com/loongarch64
+[org-l-c]: https://github.com/loongson-community
+
+长话短说：上面的列表是按“官方程度”降序排序的，但正如大多数围绕龙芯的事情一样，“官方”的并不一定就是好的、你想要的。
+
+如果一定要听故事的话……
+
+最开始，龙芯公司在 GitHub（或者任何其他“国际化的”代码托管服务）上没有任何存在，
+因此 2015-07-14 一帮受够了的开源开发者设立了 [loongson-community 组织][org-l-c]作为集中的协作开发地点。
+几乎所有组织成员当时都与龙芯公司没有关联；一方面由于这个，
+另一方面，因为这种做技术决策和推进事情的方式并不为一些龙芯员工所待见，
+龙芯公司从未官方承认过这个组织是它的“社区”，时至今日仍然如此。
+的确；作为龙芯公司，可能确实很难去承认这么一个含有
+[3A4000 密码学加速指令扩展逆向文档][3a4000-crypto-ase]、
+[官方手册发布前就被逆向出来的 LoongArch 指令集手册][unofficial-reversed-insns]，
+还有[其他一堆无门槛下载的文档][l-c-docs]
+（龙芯公司官网的文档已经必须先注册账号（又名：销售线索）才能下载了）
+的地方是“社区”……
+
+[3a4000-crypto-ase]: https://github.com/loongson-community/loongson-3a4000-crypto-ase
+[l-c-docs]: https://github.com/loongson-community/docs
+
+快进到 2020 年，这一年的 8 月 LoongArch 已经官宣了，但没有代码开源出来。
+长期 MATE 开发者、开源贡献者 [@yetist](https://github.com/yetist) 加入了龙芯公司，
+做 LoongArch 的初始生态移植工作。
+当他发觉竟没有一个**受官方承认的**社区能让同事们愿意参与其中，自然而然地，就在 2020-09-29
+设立了 [loongarch64 组织][org-la64]，正好卡在国庆假期前这个时间点。
+很多人都被邀请加入这个组织，其中有很多龙芯员工，但也有 Deepin（统信）的人，
+以及其他很多与龙芯生态无关的开发者。
+为确保工作质量，这个组织建立了内部规范：代码必须经过评审（code review），至少 3 个人同意才能合并。
+龙芯公司员工没有绕过这规则的特权，当然至今为止也没有出现过违反规则的情况。
+尽管时不时总有一些评审意见是低质量的，甚至闭眼同意的情况也有，但这种情况总是会被更仔细的评审者抓住。
+
+再后来，到了 2021 年（可能与 Go loong64 移植需要开始推上游有关，但笔者记不太清了），
+龙芯公司内部的**另一群人**（可能其实就是另一个部门）也发现需要一个 GitHub 组织，
+然后意识到他们早在 2020-01-01 就注册了 [loongson 组织][org-ls]但完全没用起来。
+出于不为人知的原因，他们没有和 loongarch64 组织协调一致，而是就在“自己的”组织单独玩：
+这个组织从未邀请过非龙芯员工，团队结构也像是公司内部组织架构的翻版。
+代码审查也是必须的，合并代码也要 3 个人同意，但从笔者的个人经验看来，这边的闭眼合并情况比
+loongarch64 那边要严重一些。
+有时候一个 PR 没有有效讨论就合并了，或者被直接关掉了，尤其后边一种，已经属于是不太礼貌的行为了。
+那些龙芯公司“不喜欢”的变更基本不会有可能被合并，并且看上去对外部贡献者很快就要有 CLA 要签了。
+总之这个组织的运作目的更像是为了内部协作和 bug 报告，而不是社区参与；
+对于代码贡献，可能直接提交给“真”上游都比给龙芯靠谱。
+
+> 花絮：
+>
+> 有种办法可以快速比较三个组织的开放程度：观察笔者账号在这三个组织的权限。
+>
+> 笔者是 loongson-community 的**所有者**（*owner*）之一，
+> loongarch64 的普通成员之一**但有写权限**，
+> 然而**完全不是** loongson 的成员。
+> 这很能说明一些问题！
+
+### 各路软件的 LoongArch 移植都进上游了吗？
+
+要移植的软件真的有**很多**，有的进上游了，有的没进；
+有的进展顺利，有的可能还在激烈争论。
+笔者做了几张表来总结一下情况。
+
+表例：
+
+* :white_check_mark: -- 已经进入上游，并有正式版本支持
+* :hourglass_flowing_sand: -- 已经进入上游，将在下一个正式版本支持
+* :mag: -- 正在上游接受代码审查
+* :wrench: -- 正在做，或者做完了暂时还没提交，先接受社区的初步审查
+* :x: -- 还没做
+
+（基于 2022-02-22 的信息整理。）
+
+#### 模拟器和固件
+
+|项目|状态|开发代码库|备注|
+|-------|:----:|--------------|-----|
+|QEMU（target）|:mag:|[龙芯分支](https://github.com/loongson/qemu/tree/tcg-dev)|在其他架构上模拟 LoongArch。|
+|QEMU（TCG 宿主）|:hourglass_flowing_sand:|[xen0n 分支](https://gitlab.com/xen0n/qemu/)|在 LoongArch 上模拟其他架构；[补丁](https://patchew.org/QEMU/20211221054105.178795-1-git@xen0n.name/) [已经合并](https://gitlab.com/qemu-project/qemu/-/commit/8c5f94cd4182753959c8be8de415120dc879d8f0)。将在 QEMU 7.0 正式发布。|
+|EDK II|:wrench:|[龙芯分支](https://github.com/loongson/edk2)||
+
+#### 内核
+
+|项目|状态|开发代码库|备注|
+|-------|:----:|--------------|-----|
+|Linux|:mag:|[loongarch-next](https://github.com/loongson/linux/tree/loongarch-next)|[kernel.org 的分支](https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/?h=loongarch-next)有一阵没更新了。|
+|FreeBSD|:x:|-||
+|OpenBSD|:x:|-||
+|[RT-Thread](https://www.rt-thread.org)|:x:|-|国产实时操作系统；母公司（上海睿赛德电子科技有限公司）和龙芯公司的关系不错，但暂时没看到有 LoongArch 移植计划。|
+
+#### GNU 工具链
+
+|项目|状态|开发代码库|备注|
+|-------|:----:|--------------|-----|
+|binutils|:white_check_mark:|[龙芯分支（v4）](https://github.com/loongson/binutils-gdb/tree/upstream_v4)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。|
+|gcc|:mag:|[龙芯分支（v7）](https://github.com/loongson/gcc/tree/loongarch_upstream_v7)||
+|glibc|:mag:|[龙芯分支（v2.2）](https://github.com/loongson/glibc/tree/loongarch_2_35_dev_v2.2)||
+
+#### 其他工具链组件、语言
+
+|项目|状态|开发代码库|备注|
+|-------|:----:|--------------|-----|
+|musl|:wrench:|-||
+|llvm|:wrench:|[龙芯分支](https://github.com/loongson/llvm-project)|分支的代码**不是**最新；关注 [SixWeining](https://reviews.llvm.org/p/SixWeining/) 以获取最新动态。|
+|rust|:x:|-|被 LLVM 阻挡。|
+|go|:mag:|[龙芯分支](https://github.com/loongson/go/tree/loong64-master)||
+|dotnet|:wrench:|-|移植完了，还没开源。|
+|openjdk|:x:|-|状态未知。|
+|v8|:white_check_mark:|-|[已经通过审查、合并](https://chromium-review.googlesource.com/c/v8/v8/+/3089095)；在 9.5.3 版本发布了。|
+
+#### 其他基础设施项目
+
+|项目|状态|开发代码库|备注|
+|-------|:----:|--------------|-----|
+|systemd|:white_check_mark:|[LoongArch64 组织分支](https://github.com/loongarch64/systemd)|基本支持已经进入 v250 版本，以及为 LoongArch 新增定义了一些[可发现分区类型][dpt]。|
+|util-linux|:hourglass_flowing_sand:||新的[可发现分区类型][dpt]已经合并。|
+
+[dpt]: https://systemd.io/DISCOVERABLE_PARTITIONS/
+
 
 ### 我准备移植我的软件到 LoongArch，有什么需要准备的吗？
 
@@ -479,13 +606,13 @@ LoongArch 生态建设的预期是成为一个“正常”的软硬件平台。
 相应的 GNU 目标元组目前叫 `loongarch64-unknown-linux-gnu`，其中 `unknown` 的部分有时也可省略。
 （省略的 ABI 浮点与扩展后缀代表取该 ARCH 最常见的 ABI 配置。）
 
-注：您可能见过[这个 2020 年末的 gnuconfig 变更][gnuconfig-202012]，这里的写法和《龙芯架构工具链约定》的最新写法有所不同：
-没有考虑 ABI 浮点、扩展后缀，还多出一个神秘的 `loongarchx32` 检查。
-这是由于此处记录了龙芯公司的研发们在 LoongArch 开发的最早期对其 ABI 的理解：
-三个 ARCH 取值 `loongarch32` `loongarch64` `loongarchx32`
-分别与 MIPS 的三个 ABI o32 n64 n32 一一对应。
-当然，后来人们意识到既然另起炉灶了就不要无脑抄 MIPS 了，于是根据 RISC-V ABI
-重新设计了目前的 LoongArch ABI；所谓的 LoongArch “x32” ABI 永远不会被实现了。
+> 注：您可能见过[这个 2020 年末的 gnuconfig 变更][gnuconfig-202012]，这里的写法和《龙芯架构工具链约定》的最新写法有所不同：
+> 没有考虑 ABI 浮点、扩展后缀，还多出一个神秘的 `loongarchx32` 检查。
+> 这是由于此处记录了龙芯公司的研发们在 LoongArch 开发的最早期对其 ABI 的理解：
+> 三个 ARCH 取值 `loongarch32` `loongarch64` `loongarchx32`
+> 分别与 MIPS 的三个 ABI o32 n64 n32 一一对应。
+> 当然，后来人们意识到既然另起炉灶了就不要无脑抄 MIPS 了，于是根据 RISC-V ABI
+> 重新设计了目前的 LoongArch ABI；所谓的 LoongArch “x32” ABI 永远不会被实现了。
 
 [gnuconfig-202012]: https://git.savannah.gnu.org/gitweb/?p=config.git;a=commitdiff;h=c8ddc8472f8efcadafc1ef53ca1d863415fddd5f;hp=05734c3b30b02196506617b4e4d4b70b3bf4bb72
 
@@ -572,7 +699,7 @@ BIOS 是个过时一万年的概念，怎么还有人这么叫 :facepalm:
 该桥片集成了一个基于 Vivante GC1000 的 GPU block，搭配龙芯自制的显示控制器 block 使用。
 目前该集显的上游工作正在推进中。（etnaviv 不能直接使用。）
 
-关于独显的兼容性，实际上一般而言只要系统上安装有相应的固件（一般无脑安装 linux-firmware 包即可），任何使用开源驱动的显卡都可正常工作。
+关于独显的兼容性，实际上一般而言只要系统上安装有相应的固件（一般无脑安装 linux-firmware 包即可），任何 **使用开源驱动的显卡** 都可正常工作。
 当然，由于老黄大概率不会给 LoongArch 专门编译一份闭源驱动，而开源的 nouveau 又非常拉胯（也怪老黄），近几年的 N 卡基本就别想了。
 AMD Yes！
 

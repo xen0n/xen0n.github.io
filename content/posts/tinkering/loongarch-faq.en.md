@@ -1,5 +1,5 @@
 ---
-title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-02-21)"
+title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-03-06)"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -55,13 +55,14 @@ MIPS ecosystem.
 
 You can view the change details at [this article's Git history](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.en.md).
 
+* 2022-03-06: Added several more topics; minor tweaks all over.
 * 2022-02-21: (English version only) Added note on the meanings of "loong" and "Loongson".
 * 2022-02-20: Added translation to English; synced wording adjustments and layout tweaks with the Chinese original.
 * 2022-02-15: Adjusted wording.
 * 2022-02-13: Adjusted wording; added information about instruction formats and assembly language.
 * 2022-02-12: Initial version.
 
-## About the ISA
+## About the <abbr title="instruction set architecture">ISA</abbr>
 
 ### What's LoongArch?
 
@@ -73,9 +74,10 @@ LoongArch is an instruction set architecture designed by the Loongson
 Corporation, publicly announced in 2020.
 Shipping started in 2021 with the 3A5000 products.
 
-The Chinese name for LoongArch is 龙芯架构 (Simplified Chinese because the
-Loongson Corporation is based in Beijing; 龍芯架構 in Traditional characters),
-according to the title and first sentence of the original manual.
+The Chinese name for LoongArch is 龙芯架构 (in Simplified characters, because
+the Loongson Corporation is based in Beijing; 龍芯架構 in Traditional
+characters), according to the title and first sentence of the original manual.
+It just means "Loongson Architecture".
 
 > Note: the word 龙/龍/loong means "[Chinese dragon]", or more precisely, just
 > "loong".
@@ -111,7 +113,7 @@ reason why the word "char" often does not get pronounced as "car".
 This pronunciation is acceptable as well.
 <sub>This would be "lóng à chi" or "lóng à qu" in typical Chinglish accent :smirk:</sub>
 
-### What are the basic features of LoongArch as an ISA?
+### What are the basic features of LoongArch as an <abbr title="instruction set architecture">ISA</abbr>?
 
 LoongArch is a register-register architecture which:
 
@@ -121,7 +123,7 @@ LoongArch is a register-register architecture which:
 
 #### Some observations
 
-*   **LoongArch opcodes all extend from MSB to LSB, i.e. are allocated in a "prefix encoding" fashion.**
+*   **LoongArch opcodes all extend from <abbr title="most significant bit">MSB</abbr> to <abbr title="least significant bit">LSB</abbr>, i.e. are allocated in a "prefix encoding" fashion.**
 
     This is helpful for conserving the encoding space.
     Of course, it also means that there is no well-defined "opcode" field in
@@ -143,46 +145,51 @@ LoongArch is a register-register architecture which:
     > necessary.
     >
     > The LoongArch approach precludes the possibility of shorter instruction
-    > words in the same machine mode, because the opcode sits at MSB side and
-    > has no well-defined segments, making it impossible to see enough of opcode
-    > with instruction fetches shorter than 4 bytes.
+    > words in the same machine mode, because the opcode sits at
+    > <abbr title="most significant bit">MSB</abbr> side and has no well-defined
+    > segments, making it impossible to see enough of opcode with instruction
+    > fetches shorter than 4 bytes.
     > For example, suppose the first instruction after a reset or a jump is
     > 2 bytes long. Fetching 4 bytes is clearly wrong here; but if only 2 bytes
     > are fetched while the instruction is actually 4 bytes long, then the
-    > fetch may well only see the LSB-portion that are actually operands. But
-    > the operand fields are arbitrarily specified by the programmer,
-    > and boom! the core runs amok.
+    > fetch may well only see the
+    > <abbr title="least significant bit">LSB</abbr>-portion that are actually
+    > operands. But the operand fields are arbitrarily specified by the
+    > programmer, and boom! the core runs amok.
     >
     > If this problem was not overlooked in the design phase, then the most
     > probable reason behind the design decision could be that
     > "code density improvements with 16-bit instruction words are not
     > worthwhile for actual business cases".
 
-*   **LoongArch is a rather classical RISC design.**
+*   **LoongArch is a rather classical <abbr title="Reduced Instruction Set Computing">RISC</abbr> design.**
 
     Complete with fixed-length instructions, 32 registers, hard-wired zero register, 3-operand instructions, pure computations that do not touch memory, flat memory model, etc...
 
 *   **Some of the LoongArch operations are more powerful than (pre-R6) MIPS and RISC-V.**
 
-    Jumps and PIC-related operations have wide immediate fields;
+    Jumps and <abbr title="position-independent code">PIC</abbr>-related
+    operations have wide immediate fields;
     immediates are loaded in 4 instructions at most without shifting;
-    the ABI even reserves one register for future use, while having enough for almost all cases;
-    various bitwise operations lacking in the RISC-V base ISA are present in
-    that of LoongArch.
+    the <abbr title="application binary interface">ABI</abbr> even reserves one
+    register for future use, while having enough for almost all cases;
+    various bitwise operations lacking in the RISC-V base
+    <abbr title="instruction set architecture">ISA</abbr> are present in that of
+    LoongArch.
 
 #### On the widths of operations
 
 LoongArch follows the classical approach (as with x86 or MIPS) in defining the
 widths for operations: for almost all operations, the operand width of a
 specific opcode does not change with the register width, as determined by the
-µarch or the current machine mode.
+<abbr title="micro-architecture">µarch</abbr> or the current machine mode.
 For example, the `add.d` instruction either is illegal in the current machine
 mode / on a particular core, or always represents the 64-bit addition
 operation.
 The `add.w` instruction always exists (because there is no LoongArch core with
 at most 16-bit support), and always represents the 32-bit addition operation.
 
-|Μarch/Machine mode|Instruction|Legal?|Operation represented|
+|<abbr title="Micro-architecture">Μarch</abbr>/Machine mode|Instruction|Legal?|Operation represented|
 |:------:|:--:|:----:|--------|
 |LA32|`add.w`|:o:|32-bit addition|
 |LA32|`add.d`|:x:|-|
@@ -196,7 +203,7 @@ cores.
 Meanwhile, the `addw` instruction brought by RV64 only operates on the lower
 32-bit even on RV64 cores, but this instruction does not exist on RV32 cores.
 
-|Μarch/Machine mode|Instruction|Legal?|Operation represented|
+|<abbr title="Micro-architecture">Μarch</abbr>/Machine mode|Instruction|Legal?|Operation represented|
 |:------:|:--:|:----:|--------|
 |RV32|`addw`|:x:|-|
 |RV32|`add`|:o:|Native-width addition (XLEN=32)|
@@ -205,8 +212,9 @@ Meanwhile, the `addw` instruction brought by RV64 only operates on the lower
 
 (Trivia: this is one of the biggest mistakes your author made, while
 [reverse-engineering LoongArch from scratch][unofficial-reversed-insns]
-before Loongson released the ISA manual -- assuming that LoongArch specified
-its operand widths just like RISC-V. :joy:)
+before Loongson released the <abbr title="instruction set architecture">ISA</abbr>
+manual -- assuming that LoongArch specified its operand widths just like RISC-V.
+:joy:)
 
 [unofficial-reversed-insns]: https://github.com/loongson-community/docs/tree/master/unofficial/loongarch
 
@@ -326,7 +334,8 @@ low-level handling:
 
 If we classify the instruction formats according to the strict rule of
 "different bit-fields or different operand types, different format", then
-*the v1.00 LoongArch base ISA has a total of 39 distinct instruction formats*.
+the v1.00 LoongArch base <abbr title="instruction set architecture">ISA</abbr>
+has a total of *39 distinct instruction formats*.
 The community-maintained [loongarch-opcodes][loongarch-opcodes] project
 provides a collection of all publicly known LoongArch instructions, and a
 precise naming scheme for instruction formats.
@@ -403,7 +412,7 @@ the FdCj and CdFj formats; they are the same if we do not pursue complete
 correspondence of operand order in assembler syntax), that ship has sailed;
 also the current scheme does conserve a lot of encoding space after all.
 
-### Is the LA464 µarch the same thing as GS464V? Why did it get renamed?
+### Is the LA464 <abbr title="micro-architecture">µarch</abbr> the same thing as GS464V? Why did it get renamed?
 
 *This answer contains speculations.*
 
@@ -415,24 +424,29 @@ the much earlier 3B1500 are also called GS464V in the documentation.
 > Author's comment:
 > There is the GS464EV name on [Wikipedia][en-wiki-loongson], and it is coined
 > by the community exactly because of the desire to avoid ambiguity.
-> The µarch of 3A2000/3A3000 is called GS464E; 3A4000, as a "tock"/µarch
-> iteration, finally gained usable vector support by implementing MSA,
+> The <abbr title="micro-architecture">µarch</abbr> of 3A2000/3A3000 is called
+> GS464E; 3A4000, as a "tock"/<abbr title="micro-architecture">µarch</abbr>
+> iteration, finally gained usable vector support by implementing
+> <abbr title="MIPS&reg; SIMD Architecture">MSA</abbr>,
 > hence the GS464EV name.
 >
 > (The former vector instructions developed in-house are lacking in terms of
-> functionality and documentation, so this is why we call MSA "usable".)
+> functionality and documentation, so this is why we call
+> <abbr title="MIPS&reg; SIMD Architecture">MSA</abbr> "usable".)
 
 [en-wiki-loongson]: https://en.wikipedia.org/wiki/Loongson
 
 As for the LA464/GA464V, there are expressions like
-"adjusting ISA of present IP cores" (“调整现有 IP 核的指令系统”)
+"adjusting <abbr title="instruction set architecture">ISA</abbr> of present
+<abbr title="intellectual property">IP</abbr> cores"
+(“调整现有 <abbr title="intellectual property">IP</abbr> 核的指令系统”)
 that can be seen in earlier public articles or presentations about the
 development of the 3A5000 or the LoongArch,
 e.g. [the August 2020 keynote by HU Weiwu][hww-pres-202008].
 Considering that the 3A4000 and 3A5000 belong to the same tock-tick iteration,
 such wording may imply that the 3A5000 is just the 3A4000 with a replaced
 decoder.
-However, it is not okay to re-use the codename, as the instruction set is
+However, it is not okay to re-use the name, as the instruction set is
 incompatible after all; the Loongson Corporation ultimately chose to modify
 all of its documentation and open-source code to mass-replace GS464V with LA464
 for the new LoongArch model, on August 2021.
@@ -441,13 +455,26 @@ for the new LoongArch model, on August 2021.
 
 So, overall it is more appropriate to consider the LA464 and GS464V as a
 not-so-similar "pair of twins", with roughly the same micro-architecture, but
-different supported ISA.
+different supported <abbr title="instruction set architecture">ISA</abbr>.
+
+> Trivia:
+> "GS464" stands for "Godson 4-issue 64-bit".
+>
+> "Godson", despite its obvious impression for an English speaker, is in fact
+> just a sound approximation of "狗剩" (gǒu shèng), "dog leftovers".
+> Back in the pre-industrial times, it was believed by some Chinese families
+> that newborns with such lowly names are easier to raise;
+> this tradition is known in Chinese as "赖名好养活" or "贱名好养活".
+>
+> The switch to the "LA" prefix is presumably because all "GS" cores
+> implemented some variant of MIPS, and the company wanted to cut off this
+> relationship, though.
 
 ### What's the relationship between LoongArch and MIPS?
 
-(Please note that all RISC architectures bear a significant resemblance to
-each other, because all of them are made to perform the same thing called
-"general-purpose computation".)
+(Please note that all <abbr title="Reduced Instruction Set Computing">RISC</abbr>
+architectures bear a significant resemblance to each other, because all of them
+are made to perform the same thing called "general-purpose computation".)
 
 According to public sources, LoongArch and MIPS cannot interoperate, and there
 is no 1:1 correspondence between some of the important architectural features;
@@ -458,9 +485,10 @@ though such correspondence exists for many of their instruction semantics.
   gain optional delay-slot-less branches/jumps until R6.
 - LoongArch does not feature some of the historical warts of MIPS, for example
   the "wonderful" HI/LO accumulators.
-- LoongArch's ABI is based on that of RISC-V, departing from the MIPS
-  tradition. Concepts such as dedicated return value registers and registers
-  reserved for kernel use are abolished.
+- LoongArch's <abbr title="application binary interface">ABI</abbr> is based on
+  that of RISC-V, departing from the MIPS tradition.
+  Concepts such as dedicated return value registers and registers reserved for
+  kernel use are abolished.
 
 However, there is objective MIPS influence on LoongArch. For example:
 
@@ -468,8 +496,9 @@ However, there is objective MIPS influence on LoongArch. For example:
   branches, which are 8 distinct flag bits; this is the same as MIPS, and
   rarely seen on other modern architectures.
 - LoongArch's privileged architecture is similar to that of MIPS. For example,
-  the LoongArch TLB has a special even/odd entry distinction; this is
-  cumbersome, hence not seen on any other prominent architecture but MIPS.
+  the LoongArch <abbr title="Translation Look-aside Buffer">TLB</abbr> has a
+  special even/odd entry distinction; this is cumbersome, hence not seen on
+  any other prominent architecture but MIPS.
 - Some instructions have identical semantics as their MIPS R6 counterparts,
   while similar semantically-identical instructions are not found in any other
   prominent architecture.
@@ -505,9 +534,9 @@ However, there is objective MIPS influence on LoongArch. For example:
 
 ### What's the relationship between LoongArch and RISC-V?
 
-(Please note that all RISC architectures bear a significant resemblance to
-each other, because all of them are made to perform the same thing called
-"general-purpose computation".)
+(Please note that all <abbr title="Reduced Instruction Set Computing">RISC</abbr>
+architectures bear a significant resemblance to each other, because all of them
+are made to perform the same thing called "general-purpose computation".)
 
 According to public sources, LoongArch and RISC-V cannot interoperate, and
 there is no 1:1 correspondence between some of the important architectural
@@ -517,18 +546,20 @@ example).
 
 - LoongArch's privileged architecture and memory management are significantly
   different to those of RISC-V.
-- The supported operations of LoongArch base ISA are mostly a superset of its
-  RISC-V counterpart.
+- The supported operations of LoongArch base <abbr title="instruction set architecture">ISA</abbr>
+  are mostly a superset of its RISC-V counterpart.
 - RISC-V always sign-extends its immediate operands, while LoongArch
   differentiates based on type of operation (sign-extending for arithmetic
   operations; zero-extending for logical operations).
-- LoongArch has opcodes starting from MSB, precluding compressed instruction
-  words in the RVC way.
+- LoongArch has opcodes starting from <abbr title="most significant bit">MSB</abbr>,
+  precluding compressed instruction words in the RVC way.
 
 There is significant RISC-V influence in the software part of LoongArch, such
-as the ABI and several fundamental toolchain pieces.
-LoongArch's ABI is rather similar to RISC-V's, and the semantic similarities
-of instructions are notable as well.
+as the <abbr title="application binary interface">ABI</abbr> and several
+fundamental toolchain pieces.
+LoongArch's <abbr title="application binary interface">ABI</abbr> is rather
+similar to RISC-V's, and the semantic similarities of instructions are notable
+as well.
 Often, simple syntactic tweaks to the RISC-V version are all it takes to port
 a primitive to LoongArch for some fundamental software.
 
@@ -536,15 +567,18 @@ Some LoongArch instructions have identical semantics as their RISC-V
 counterparts; some of the architectural features are similar as well.
 For example:
 
-- The PIC-related `pcaddu12i` behaves the same as the RISC-V `auipc`.
+- The <abbr title="position-independent code">PIC</abbr>-related `pcaddu12i`
+  behaves the same as the RISC-V `auipc`.
 - The register jump `jirl` behaves the same as the RISC-V `jalr`,
   very unlike the MIPS `jalr`.
 - The timekeeping instructions `rdtime.*` are semantically similar to their
   RISC-V counterparts in that they all return values from a constant-frequency
   counter.
-- LoongArch's privileged resources live in the CSR space, and the CSR concept
-  obviously comes from RISC-V. This is already the case back to 3A5000's
-  predecessor, 3A4000.
+- LoongArch's privileged resources live in the
+  <abbr title="control status register">CSR</abbr> space, and the
+  <abbr title="control status register">CSR</abbr> concept obviously comes from
+  RISC-V.
+  This is already the case back to 3A5000's predecessor, 3A4000.
 - RISC-V originally defined 4 privilege levels (from high to low,
   Machine/Hypervisor/Supervisor/User; Hypervisor was later removed), and
   LoongArch defines 4 too (from high to low, PLV0/PLV1/PLV2/PLV3).
@@ -553,9 +587,10 @@ For example:
 
 And these are possible influences of RISC-V to LoongArch as well.
 
-### How many ABIs do LoongArch have?
+### How many <abbr title="application binary interface">ABI</abbr>s do LoongArch have?
 
-LoongArch currently defines 3x2=6 ABIs, according to [the LoongArch ELF psABI][elf-psabi-doc-html].
+LoongArch currently defines 3x2=6 <abbr title="application binary interface">ABI</abbr>s,
+according to [the LoongArch ELF psABI][elf-psabi-doc-html].
 
 [Data models][data-models] of which are:
 
@@ -570,13 +605,16 @@ And the floating-point support are:
 - Single-precision hard-float (F)
 - Double-precision hard-float (D)
 
-Currently only the LP64D ABI is fully supported.
+Currently only the LP64D <abbr title="application binary interface">ABI</abbr>
+is fully supported.
 All publicly available commercial distributions for LoongArch are built with
-this ABI.
-If you attempt to use the other ABIs, you are very likely to get all kinds of
-compilation errors, so usage of these ABIs is not recommended at this early
-stage of bring-up.
-In particular, the support for the ILP32 ABIs are known to be very incomplete,
+this <abbr title="application binary interface">ABI</abbr>.
+If you attempt to use the other <abbr title="application binary interface">ABI</abbr>s,
+you are very likely to get all kinds of compilation errors, so usage of these
+<abbr title="application binary interface">ABI</abbr>s is not recommended at
+this early stage of bring-up.
+In particular, the support for the ILP32 <abbr title="application binary interface">ABI</abbr>s
+are known to be very incomplete,
 and it is extremely likely that builds will just error out immediately if one
 ever try.
 
@@ -587,7 +625,7 @@ ever try.
 *This answer is speculative because the relevant documentation has not been released.*
 
 The 3A4000 from the end of Loongson's MIPS era contains a complete implementation
-of MIPS's MSA vector extension.
+of MIPS's <abbr title="MIPS&reg; SIMD Architecture">MSA</abbr> vector extension.
 In addition to that, the 3A4000 also has support for the LoongMMI which is
 inherited from the 2F era, and the LSX/LASX that never appeared in public
 documentation.
@@ -660,12 +698,156 @@ conditional execution, and the approach should be similar.
 So, the x86 and ARM translation aid of LoongArch is likely to be minor tweaks
 to the previous binary translation extension.
 As for the translation of MIPS, because both MIPS and LoongArch are classical
-RISC designs, branch delay slots may be the only hardware aid.
+<abbr title="Reduced Instruction Set Computing">RISC</abbr> designs,
+branch delay slots may be the only hardware aid needed.
 (Other weird MIPS features such as HI/LO registers are easily implemented in
 software at translation time, because you have to recover the data flow
 regardless.)
 
 ## About software development
+
+### There seems to be many organizations related to Loongson/LoongArch on GitHub. Which of these are "official"?
+
+You may have seen one of these organizations already:
+
+* The ["Great Loongson Union" (loongson)][org-ls] (your author really dislikes the title btw),
+* The [LoongArch porting group (loongarch64)][org-la64], and
+* The [Loongson Community (loongson-community)][org-l-c].
+
+[org-ls]: https://github.com/loongson
+[org-la64]: https://github.com/loongarch64
+[org-l-c]: https://github.com/loongson-community
+
+Long story short: The list is in decreasing "officiality", but as with nearly
+everything Loongson, "officiality" may or may not be something you would want.
+
+Or if you prefer the long story...
+
+In the beginning, the Loongson Corporation has no presence on GitHub (or any
+of the "international" code forges) at all, so at 2015-07-14, a group of
+disgruntled open-source developers set up [the loongarch-community
+organization][org-l-c] as a central place for collaboration.
+Almost all organization members have no affiliation with the Loongson
+Corporation; in part because of this, and in part because this particular way
+of making technical decisions and doing things is not agreed by some of the
+Loongson people, the Loongson Corporation never officially acknowledged this
+organization as its "community", even to this day. You know, it is hard for
+the company to officially recognize the community when it housed goodies like
+[reverse-engineered docs for the 3A4000's crypto instructions][3a4000-crypto-ase],
+[reverse-engineered LoongArch instructions even before the official manual release][unofficial-reversed-insns],
+and [collection of other docs][l-c-docs] free for download with the official
+website now requiring registration (read: business lead) for access to
+any documentation...
+
+[3a4000-crypto-ase]: https://github.com/loongson-community/loongson-3a4000-crypto-ase
+[l-c-docs]: https://github.com/loongson-community/docs
+
+Fast forward to 2020, when the LoongArch was already announced at August, but
+without any open-source code drops yet; longtime MATE developer and open-source
+contributor [@yetist](https://github.com/yetist) was hired by the Loongson
+Corporation to work on bringing up the LoongArch.
+Seeing that there was not a single *recognized* community out there that their
+colleagues would like to participate in, naturally, they set up [the
+loongarch64 organization][org-la64] for facilitating early code reviews, at
+2020-09-29, just before the National Day holiday.
+Many people from different backgrounds are invited to the organization;
+many are Loongson employees, but there are also Deepin/UOS employees and
+many unaffiliated developers.
+Internal procedures are set up to ensure quality of submissions; code review
+is required, and at least 3 approvals are required before merging any PR.
+Loongson employees are not exempt from the rules, and there has not been any
+violation so far.
+Although there are low-quality reviews or even blind LGTM's from time to time,
+they are invariably caught by the more prudent reviewers.
+
+Later, in 2021 (perhaps triggered by the need to upstream the Go loong64 port,
+but your author's memories may be failing him),
+some *other* group (maybe a different department) inside Loongson found also the
+need for a GitHub organization, and discovered that they had already
+registered [the loongson organization][org-ls] back at 2020-01-01 but had not
+made any use of it.
+For unknown reasons, they did not pursue cooperation with the loongarch64
+effort; instead they just quietly began their work on "their" organization.
+No invitations was ever extended to non-Loongson employees, and team
+structures seemed like replication of the corporate organizational structure.
+Code reviews are also mandated and it is the same 3-approvals rule for merging,
+but FWIW blind and/or rushed LGTM's are more common than in loongarch64.
+There are cases where PRs are merged with little discussion, or closed without
+any comment; the latter is already considered impolite in community etiquette.
+Changes not "approved" by Loongson are unlikely to be merged, and it seems
+there will be a CLA in place for external contributors soon.
+All in all, this organization is more about internal collaboration and bug
+reporting than community participation; for code contributions, it may be
+better to submit directly to the respective "true" upstreams instead.
+
+> Trivia:
+> A quick way to compare the openness of the three organizations is to look at
+> the access level of your author.
+> Your author is an *owner* of the loongson-community organization, an ordinary
+> member of the loongarch64 organization *but with write access*, while *not*
+> a part of the loongson organization at all; and that tells a lot!
+
+### Are the various LoongArch ports upstreamed already?
+
+There are *many* pieces, all with varying upstream statuses;
+some are progressing smoothly, while some are under heated discussion.
+Your author has summarized the situation with the tables below.
+
+Table legend:
+
+* :white_check_mark: -- upstreamed and released
+* :hourglass_flowing_sand: -- upstreamed, pending release
+* :mag: -- under upstream review
+* :wrench: -- WIP, or under community pre-review before first upstream submission
+* :x: -- TODO
+
+(Based on information as of 2022-02-22.)
+
+#### Emulator and firmware
+
+|Project|Status|Dev repository|Notes|
+|-------|:----:|--------------|-----|
+|QEMU (target)|:mag:|[Loongson fork](https://github.com/loongson/qemu/tree/tcg-dev)|For emulating LoongArch on other arches.|
+|QEMU (TCG host)|:hourglass_flowing_sand:|[xen0n fork](https://gitlab.com/xen0n/qemu/)|For emulating other arches on LoongArch hosts; [patch series](https://patchew.org/QEMU/20211221054105.178795-1-git@xen0n.name/) [already merged](https://gitlab.com/qemu-project/qemu/-/commit/8c5f94cd4182753959c8be8de415120dc879d8f0). Will appear in QEMU 7.0.|
+|EDK II|:wrench:|[Loongson fork](https://github.com/loongson/edk2)||
+
+#### Kernels
+
+|Project|Status|Dev repository|Notes|
+|-------|:----:|--------------|-----|
+|Linux|:mag:|[loongarch-next](https://github.com/loongson/linux/tree/loongarch-next)|The [fork at kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/?h=loongarch-next) is outdated.|
+|FreeBSD|:x:|-||
+|OpenBSD|:x:|-||
+|[RT-Thread](https://www.rt-thread.org)|:x:|-|This is an original Chinese RTOS; relationship between its parent company (上海睿赛德电子科技有限公司) and the Loongson Corporation is good, but no LoongArch porting plan has been announced.|
+
+#### GNU Toolchain
+
+|Project|Status|Dev repository|Notes|
+|-------|:----:|--------------|-----|
+|binutils|:white_check_mark:|[Loongson fork (v4)](https://github.com/loongson/binutils-gdb/tree/upstream_v4)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile.|
+|gcc|:mag:|[Loongson fork (v7)](https://github.com/loongson/gcc/tree/loongarch_upstream_v7)||
+|glibc|:mag:|[Loongson fork (v2.2)](https://github.com/loongson/glibc/tree/loongarch_2_35_dev_v2.2)||
+
+#### Other toolchain pieces/languages
+
+|Project|Status|Dev repository|Notes|
+|-------|:----:|--------------|-----|
+|musl|:wrench:|-||
+|llvm|:wrench:|[Loongson fork](https://github.com/loongson/llvm-project)|The forked repo does *not* contain up-to-date code; follow [SixWeining](https://reviews.llvm.org/p/SixWeining/)'s activities for progress.|
+|rust|:x:|-|Blocked by LLVM.|
+|go|:mag:|[Loongson fork](https://github.com/loongson/go/tree/loong64-master)||
+|dotnet|:wrench:|-|Porting finished but not open-sourced yet.|
+|openjdk|:x:|-|Status unknown.|
+|v8|:white_check_mark:|-|[Reviewed and merged](https://chromium-review.googlesource.com/c/v8/v8/+/3089095); released in 9.5.3.|
+
+#### Other infrastructure projects
+
+|Project|Status|Dev repository|Notes|
+|-------|:----:|--------------|-----|
+|systemd|:white_check_mark:|[LoongArch64 porting group fork](https://github.com/loongarch64/systemd)|Basic support appeared in v250 along with new [discoverable partition types][dpt] defined for LoongArch.|
+|util-linux|:hourglass_flowing_sand:||Support for the new [discoverable partition types][dpt] already merged.|
+
+[dpt]: https://systemd.io/DISCOVERABLE_PARTITIONS/
 
 ### I'm going to port my software to LoongArch. What do I need to prepare for?
 
@@ -689,9 +871,63 @@ Loongson Corporation is a good starting point.
 
 [loongarch-doc-mainpage-html]: https://loongson.github.io/LoongArch-Documentation
 
+### What does LoongArch's target tuple look like?
+
+First of all, we need to differentiate between the GNU target tuples and the
+Debian multi-arch tuples, because the two are not always the same;
+in particular, for targets supporting multiple
+<abbr title="application binary interface">ABI</abbr>s, this fact is guaranteed
+to be reflected in the Debian multi-arch tuples.
+A complete target tuple looks like `ARCH-VENDOR-OS-ENV`, but the vendor field
+is often omitted because few contemporary architectures make use of it, making
+it `ARCH-OS-ENV` instead; this short form is also called the *target triplet*.
+
+The most common configuration for a LoongArch system is one running Linux with
+the LP64D <abbr title="application binary interface">ABI</abbr> and glibc.
+According to [the LoongArch toolchain convention][tc-conventions-doc-html],
+the Debian multi-arch tuple for this configuration is `loongarch64-linux-gnuf64`.
+The corresponding GNU target tuple is `loongarch64-unknown-linux-gnu`;
+the `unknown` part can be dropped.
+(The <abbr title="application binary interface">ABI</abbr> suffixes for
+floating-point support and extensions can be omitted, if the configuration is
+the most common for the given ARCH.)
+
+> Note: You may have seen [this change to gnuconfig from late 2020][gnuconfig-202012],
+> which differs from the latest spec:
+> no consideration for the <abbr title="application binary interface">ABI</abbr>
+> floating-point or extension suffixes, and a mysterious `loongarchx32` check.
+> This is because the change reflected the earliest understanding of the
+> LoongArch <abbr title="application binary interface">ABI</abbr> inside the
+> Loongson Corporation:
+> the three ARCH values `loongarch32` `loongarch64` `loongarchx32` corresponds
+> 1:1 to the three MIPS <abbr title="application binary interface">ABI</abbr>s
+> o32 n64 and n32.
+> Of course, people finally realized there is absolutely no reason to blindly
+> copy MIPS when you are starting from scratch after all,
+> so the <abbr title="application binary interface">ABI</abbr> was re-modeled
+> after that of RISC-V;
+> the so-called "x32" <abbr title="application binary interface">ABI</abbr> for
+> LoongArch will never get implemented as a result.
+
+[gnuconfig-202012]: https://git.savannah.gnu.org/gitweb/?p=config.git;a=commitdiff;h=c8ddc8472f8efcadafc1ef53ca1d863415fddd5f;hp=05734c3b30b02196506617b4e4d4b70b3bf4bb72
+
+
+### What does LoongArch's GOARCH value look like?
+
+The Loongson Corporation [had an argument][golang-go-46229] with the community
+about the topic back in mid-2021. :satisfied:
+
+The Loongson team ultimately accepted the community proposal though, so the
+GOARCH for the LA64 is confirmed to be `loong64`.
+Because 32-bit support is still missing here and there, there is no such thing
+as `loong32` at the moment.
+
+[golang-go-46229]: https://github.com/golang/go/issues/46229
+
 ### How do I quickly familiarize myself with LoongArch assembly?
 
-The manual and ABI spec are your friends :wink:
+The manual and the <abbr title="application binary interface">ABI</abbr> spec
+are your friends :wink:
 
 Syntactically, LoongArch's assembly language is basically a simplified version
 of MIPS assembly, but there are a few important differences as well.
@@ -701,13 +937,16 @@ this, coupled with manual reading, it is easy to master the language as well.
 
 * Registers must be prefixed with `$`, like MIPS.
   (In RISC-V assembly this is not necessary.)
-* The ABI divides registers into three classes `$a*` `$t*` `$s*`, like RISC-V.
+* The <abbr title="application binary interface">ABI</abbr> divides registers
+  into three classes `$a*` `$t*` `$s*`, like RISC-V.
   (Different from MIPS; there is no distinct `$v*` nor `$k*`.)
-* The way of doing PIC is the same as RISC-V, different from MIPS.
+* The way of doing <abbr title="position-independent code">PIC</abbr> is the
+  same as RISC-V, different from MIPS.
   (The abicall convention is a compromise to the limited functionality of the
-  pre-R6 MIPS ISA, and as such, there is no point carrying it over to the new
-  era.)
-* The way of doing TLS (Thread-local storage) is the same as RISC-V.
+  pre-R6 MIPS <abbr title="instruction set architecture">ISA</abbr>, and as
+  such, there is no point carrying it over to the new era.)
+* The way of doing <abbr title="thread-local storage">TLS</abbr> is the same as
+  RISC-V.
   (Different from MIPS; LoongArch has the dedicated `$tp` register so it is no
   longer necessary to workaround this with things like `rdhwr`.)
 * The register move pseudo-instruction is called `move`, like MIPS.
@@ -721,14 +960,16 @@ this, coupled with manual reading, it is easy to master the language as well.
   memory operands.
   (`ld $a0, 16($a1)` becomes `ld.d $a0, $a1, 16`.)
 * A width suffix is needed for the `li` pseudo-instruction as well.
-  (`li.w` suffices most of the time; it is seldom necessary to load 64-bit
-  constants.)
+  (`li.w` suffices most of the time; it is seldom necessary to load constants
+  wider than 32 bits.)
 * As for operand ordering of instructions, most follow the rule of registers
-  before immediates, and from LSB to MSB in each group.
+  before immediates, and from <abbr title="least significant bit">LSB</abbr> to
+  <abbr title="most significant bit">MSB</abbr> in each group.
   Note that there are exceptions if using manual syntax!
 
 Aside from these, there are some known inconsistent, misleading or even
-errorneous descriptions existing in the current version (v1.00) of the ISA
+errorneous descriptions existing in the current version (v1.00) of the
+<abbr title="instruction set architecture">ISA</abbr>
 manual, due to Loongson not soliciting reviews from the wider community before
 publishing the manuals.
 These are all described in the [loongarch-opcodes] project's documentation.
@@ -771,6 +1012,57 @@ This means you would have to compile
 [Loongson's development branch][qemu-loongson-tcg-dev] yourself.
 
 [qemu-loongson-tcg-dev]: https://github.com/loongson/qemu/tree/tcg-dev
+
+## About usage
+
+### What's the Gentoo ARCH for LoongArch systems?
+
+Gentoo has assigned `ARCH=loong` for LoongArch, according to [the upstream communication back in August 2021][gentoo-dev-mail-202108].
+This means you are going to write things like `ACCEPT_KEYWORDS="~loong"`.
+
+And this time everything went smoothly, unlike the Go situation. :rofl:
+
+[gentoo-dev-mail-202108]: https://archives.gentoo.org/gentoo-dev/message/388a4b7428461660e89c8eae8c292f32
+
+### What firmware/BIOS does LoongArch systems use? How do I manage boot options? What bootloader do I use?
+
+The "BIOS" concept is already obsolete for a millenia, why do people still call firmwares as such? :facepalm:
+
+Aside from that, both desktop and server LoongArch systems comply to the UEFI specification, and both use ACPI to communicate information about devices.
+Unlike the earlier ad-hoc MIPS UEFI implementation that was never upstreamed, the UEFI and ACPI implementations for LoongArch have already completed the upstream process, and will be officially supported starting from the next release of the specs. Congratulations to Loongson's firmware team BTW!
+
+The LoongArch UEFI implementation is fairly standard. This means things are more-or-less the same as the other UEFI platforms such as x86 or ARM64, regarding boot options management and bootloader choice and usage.
+Whatever (reasonably portable piece) you currently use on the other platforms, like efibootmgr, systemd-boot, grub2, Linux EFI stub, etc., it is (or should be) the same on LoongArch!
+
+### What GPUs can be used on LoongArch systems?
+
+As of 2022-02-20, there is no LoongArch CPU in SoC form, so every LoongArch
+system out there invariably includes a bridge chip.
+At this time point, there is only one model of bridge chip, the LS7A1000,
+that can work with the only LoongArch CPU in existence -- the Loongson 3A5000;
+this bridge chip includes a GPU block that is based on the Vivante GC1000,
+together with an in-house display controller block.
+Upstream work for this integrated GPU is currently in progress.
+(The etnaviv driver cannot work as-is.)
+
+As for compatibility of discrete GPUs, basically *any GPU with open-source
+driver* will work if the required firmware is present on the system, typically
+installed with the linux-firmware package.
+Of course this largely eliminates the NVIDIA cards, because the chance for a
+LoongArch blob is slim (blame Jensen Huang), and the open-source nouveau is
+borderline unusable (also blame Jensen Huang).
+AMD Yes!
+
+### What soundcard/network interface card/capture card/mouse/keyboard/HDD/`$INSERT_YOUR_PERIPHERAL` can be used on LoongArch systems?
+
+You can use the said hardware as long as it has open-source Linux support.
+Closed-source drivers that have LoongArch versions are fine too, if the vendor
+happen to be so merciful as to provide LoongArch blobs; or if you are some
+powerful figure who can persuade the vendor into providing such blobs.
+
+If a particular piece of hardware does not work even if a LoongArch driver
+exists, tell us about it in any of the LoongArch user community; you can be
+sure a developer will see it. :wink:
 
 ## About the LoongArch ecosystem
 
@@ -818,9 +1110,10 @@ All binary software built on community distributions, and some software
 written in high-level languages and existing in forms like source code or
 bytecode (such as those written in Python or Java) cannot run on commercial
 distributions, and vice versa.
-All closed-source software from ISVs such as WPS Office are built on
-commercial distributions, so they are extremely unlikely to work as-is on
-community distributions.
+All closed-source software from
+<abbr title="independent software vendor">ISV</abbr>s such as WPS Office are
+built on commercial distributions, so they are extremely unlikely to work
+as-is on community distributions.
 
 This is the so-called compatibility problem between the *old-world* and the *new-world*.
 Because the Loongson Corporation finished all commercial moves before
