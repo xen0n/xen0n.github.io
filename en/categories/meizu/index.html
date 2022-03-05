@@ -1,0 +1,103 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Meizu | write(2)</title><meta name=keywords content>
+<meta name=description content="random thoughts from the wandering craftsman">
+<meta name=author content="WÁNG &#34;xen0n&#34; Xuěruì">
+<link rel=canonical href=https://blog.xen0n.name/en/categories/meizu/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<link rel=icon href=https://blog.xen0n.name/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://blog.xen0n.name/favicon-16x16.png>
+<link rel=icon type=image/png sizes=32x32 href=https://blog.xen0n.name/favicon-32x32.png>
+<link rel=apple-touch-icon href=https://blog.xen0n.name/apple-touch-icon.png>
+<link rel=mask-icon href=https://blog.xen0n.name/safari-pinned-tab.svg>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.93.2">
+<link rel=alternate type=application/rss+xml href=https://blog.xen0n.name/en/categories/meizu/index.xml>
+<link rel=alternate hreflang=en href=https://blog.xen0n.name/en/categories/meizu/>
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="Meizu">
+<meta property="og:description" content="random thoughts from the wandering craftsman">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://blog.xen0n.name/en/categories/meizu/"><meta property="og:site_name" content="write(2)">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Meizu">
+<meta name=twitter:description content="random thoughts from the wandering craftsman">
+</head><body class=list id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://blog.xen0n.name/en/ accesskey=h title="write(2) (Alt + H)">write(2)</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+<ul class=lang-switch><li>|</li><li>
+<a href=https://blog.xen0n.name/ title=简体中文（大陆普通话） aria-label=:cn:>🇨🇳</a>
+</li></ul></span>
+</div><ul id=menu>
+<li>
+<a href=https://blog.xen0n.name/en/archives title=Archive>
+<span>Archive</span>
+</a>
+</li><li>
+<a href=https://blog.xen0n.name/en/categories title=Categories>
+<span>Categories</span>
+</a>
+</li></ul></nav></header><main class=main>
+<header class=page-header><div class=breadcrumbs><a href=https://blog.xen0n.name/en/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/en/categories/>Categories</a></div><h1>Meizu</h1></header><article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>CyanogenMod for Meizu MX4: CM12.1 20160411 testing release
+</h2></header><section class=entry-content>
+<p>Disclaimer and acknowledgements All your actions with your phone are at your own risk; the author of this ROM is not liable.
+This ROM is compiled from CyanogenMod 12.1 sources with own modifications (which are open-sourced on GitHub). I’d like to acknowledge the following people for their respective efforts:
+kirill8000 and kkk4 for unlocking bootloader of ordinary MX4’s @axet and @fire855 for the general MTK porting efforts @DerTeufel for the information regarding to the MTK GPS implementation cofface’s CWM recovery Daxiaamu’s one-key bootloader unlocking app (in Chinese) Bugfixes and various contributions from @ccfxny (Weibo, GitHub) Announcement changelog NOTE: All times in this announcement are UTC+8....</p></section><footer class=entry-footer><span title="2016-04-12 00:20:00 +0800 +0800">April 12, 2016</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì</footer><a class=entry-link aria-label="post link to CyanogenMod for Meizu MX4: CM12.1 20160411 testing release" href=https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-11/></a>
+</article><article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>CyanogenMod for Meizu MX4: CM12.1 20160218 testing release
+</h2></header><section class=entry-content>
+<p>Disclaimer and acknowledgements All your actions with your phone are at your own risk; the author of this ROM is not liable.
+This ROM is compiled from CyanogenMod 12.1 sources with own modifications (which are open-sourced on GitHub). I’d like to acknowledge the following people for their respective efforts:
+kirill8000 and kkk4 for unlocking bootloader of ordinary MX4’s @axet and @fire855 for the general MTK porting efforts @DerTeufel for the information regarding to the MTK GPS implementation cofface’s CWM recovery Daxiaamu’s one-key bootloader unlocking app (in Chinese) Bugfixes and various contributions from @ccfxny (Weibo, GitHub) Announcement changelog NOTE: All times in this announcement are UTC+8....</p></section><footer class=entry-footer><span title="2016-02-25 05:00:00 +0800 +0800">February 25, 2016</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì</footer><a class=entry-link aria-label="post link to CyanogenMod for Meizu MX4: CM12.1 20160218 testing release" href=https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-9/></a>
+</article><article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>CyanogenMod for Meizu MX4: CM12.1 20151015 testing release
+</h2></header><section class=entry-content>
+<p>Disclaimer and acknowledgements All your actions with your phone are at your own risk; the author of this ROM is not liable.
+This ROM is compiled from CyanogenMod 12.1 sources with own modifications (which are open-sourced on GitHub). I’d like to acknowledge the following people for their respective efforts:
+kirill8000 and kkk4 for unlocking bootloader of ordinary MX4’s @axet and @fire855 for the general MTK porting efforts @DerTeufel for the information regarding to the MTK GPS implementation cofface’s CWM recovery Daxiaamu’s one-key bootloader unlocking app (in Chinese) Announcement changelog NOTE: All times in this announcement are UTC+8....</p></section><footer class=entry-footer><span title="2015-10-16 04:00:00 +0800 +0800">October 16, 2015</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì</footer><a class=entry-link aria-label="post link to CyanogenMod for Meizu MX4: CM12.1 20151015 testing release" href=https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-5/></a>
+</article><article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>CyanogenMod for Meizu MX4: CM12.1 20151009 testing release
+</h2></header><section class=entry-content>
+<p>Disclaimer and acknowledgements All your actions with your phone are at your own risk; the author of this ROM is not liable.
+This ROM is compiled from CyanogenMod 12.1 sources with own modifications (which are open-sourced on GitHub). I’d like to acknowledge the following people for their respective efforts:
+kirill8000 and kkk4 for unlocking bootloader of ordinary MX4’s @axet and @fire855 for the general MTK porting efforts @DerTeufel for the information regarding to the MTK GPS implementation cofface’s CWM recovery Daxiaamu’s one-key bootloader unlocking app (in Chinese) Changelog 2015/10/10 04:00 First (translated) release Changes since last release Synced with upstream sources as of 2015/10/09, with security updates merged Blobs and prebuilt kernel synced to Flyme 4....</p></section><footer class=entry-footer><span title="2015-10-10 04:00:00 +0800 +0800">October 10, 2015</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì</footer><a class=entry-link aria-label="post link to CyanogenMod for Meizu MX4: CM12.1 20151009 testing release" href=https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-4/></a>
+</article><article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>CyanogenMod for Meizu MX4: CM12.1 20151005 testing release
+</h2></header><section class=entry-content>
+<p>Disclaimer and acknowledgements All your actions with your phone are at your own risk; the author of this ROM is not liable.
+This ROM is compiled from CyanogenMod 12.1 sources with own modifications (which are open-sourced on GitHub). I’d like to acknowledge the following people for their respective efforts:
+@axet and @fire855 for the general MTK porting efforts @DerTeufel for the information regarding to the MTK GPS implementation Changelog 2015/10/06 17:15 First (translated) release Bugs fixed since last release Added incremental (not block-based, however) OTA package Fixed some SIM cards not being recognized and FDD baseband not working Fixed being unable to initialize Wi-Fi hotspot (kludgy; more elegant solution pending) Fixed PLMN name UNICOM not being correctly localized as China Unicom Fixed Trebuchet crashing on long-pressing app icon when quick search bar is not present Fixed LTE being not selectable as preferred network in Settings app Known bugs and limitations FDD baseband cannot attach to UMTS networks Proximity sensor not properly working in some circumstances Unable to revert from setting USB option to Charging-only Audio is not properly re-routed on connecting Bluetooth audio Unable to pair with some Bluetooth (BLE?...</p></section><footer class=entry-footer><span title="2015-10-06 17:15:00 +0800 +0800">October 6, 2015</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì</footer><a class=entry-link aria-label="post link to CyanogenMod for Meizu MX4: CM12.1 20151005 testing release" href=https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-3/></a>
+</article><article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>CyanogenMod for Meizu MX4: FAQ #1
+</h2></header><section class=entry-content>
+<p>Status on bootloader lock circumvention As you’ve already known, ordinary version of Meizu MX4 has its bootloader locked, thus only stock Flyme images are allowed to boot. Due to the implementation of MTK secure restricted boot, the device will be hard-bricked if the RSA signature verification failed. You can’t even recharge the battery as the verification code runs very early, even earlier than initialization of peripherals. Flashing using SP Flash Tool wouldn’t work either because the Boot ROM (BROM) is locked on the hardware level....</p></section><footer class=entry-footer><span title="2015-09-14 16:35:00 +0800 +0800">September 14, 2015</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì</footer><a class=entry-link aria-label="post link to CyanogenMod for Meizu MX4: FAQ #1" href=https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/faq/></a>
+</article></main><footer class=footer>
+<span>© WANG Xuerui; licensed with cc-by-nc-sa 4.0</span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(t){t.preventDefault();var e=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(e)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(e)}']`).scrollIntoView({behavior:"smooth"}),e==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${e}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script>
+</body></html>
