@@ -8,6 +8,9 @@ TocOpen: true
     - LoongArch
     - 龙芯
     - 折腾
+
+summary: |
+    关于 LoongArch 你可能需要知道的一些内容；由一名独立开发者汇总整理。
 ---
 
 ## 前言

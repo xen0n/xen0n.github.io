@@ -8,6 +8,10 @@ categories:
     - LoongArch
     - Loongson
     - tinkering
+
+summary: |
+    Things you probably should know about the LoongArch, compiled and written by an independent developer.
+    Translated from the Chinese version with the addition of some helpful language and cultural background.
 ---
 
 ## Foreword
