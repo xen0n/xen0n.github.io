@@ -35,11 +35,19 @@ copyright = '© WANG Xuerui; licensed with cc-by-nc-sa 4.0'
 name = '所有文章'
 url = 'archives'
 weight = 1
+[[languages.zh-cmn-hans-cn.menu.main]]
+name = '文章类别'
+url = '文章类别'
+weight = 2
 
 [[languages.en.menu.main]]
 name = 'Archive'
 url = 'archives'
 weight = 1
+[[languages.en.menu.main]]
+name = 'Categories'
+url = 'categories'
+weight = 2
 
 # taxonomy
 [languages.zh-cmn-hans-cn.taxonomies]
