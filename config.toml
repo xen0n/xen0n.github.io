@@ -41,6 +41,13 @@ name = 'Archive'
 url = 'archives'
 weight = 1
 
+# taxonomy
+[languages.zh-cmn-hans-cn.taxonomies]
+"文章类别" = "文章类别"
+
+[languages.en.taxonomies]
+category = "categories"
+
 # theme
 [params]
 title = 'write(2)'

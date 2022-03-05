@@ -4,6 +4,11 @@ date: 2015-09-14T17:00:00+08:00
 draft: false
 aliases:
     - /2015/09/14/meizu-mx4-cm-faq/
+文章类别:
+    - Android
+    - CyanogenMod
+    - 旧文
+    - 魅族
 ---
 
 ## BL 锁规避进度

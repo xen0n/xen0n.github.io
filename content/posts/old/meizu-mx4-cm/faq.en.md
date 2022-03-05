@@ -4,6 +4,11 @@ date: 2015-09-14T16:35:00+08:00
 draft: false
 aliases:
     - /2015/09/14/meizu-mx4-cm-faq-en/
+categories:
+    - Android
+    - CyanogenMod
+    - Meizu
+    - obsolete
 ---
 
 ## Status on bootloader lock circumvention

@@ -4,6 +4,11 @@ date: 2015-11-05T15:45:00+08:00
 draft: false
 aliases:
     - /2015/11/05/docker-systemd-networkd-frustrations/
+文章类别:
+    - Docker
+    - Linux
+    - systemd
+    - 折腾
 ---
 
 ## tl;dr

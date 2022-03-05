@@ -4,6 +4,10 @@ date: 2016-06-04T23:07:51+08:00
 draft: false
 aliases:
     - /2016/06/04/simple-polyglot-python-trick/
+文章类别:
+    - Python
+    - Shell
+    - 折腾
 ---
 
 最近经常见到 `:` 这个 Shell built-in, 比较好奇, 于是 StackOverflow 了一下.

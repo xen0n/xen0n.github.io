@@ -4,6 +4,9 @@ date: 2019-12-28T21:31:00+08:00
 draft: false
 aliases:
     - /2019/12/28/on-our-love-destined-to-end/
+文章类别:
+    - 个人向
+    - 随笔
 ---
 
 是 2019 最后的周末了。

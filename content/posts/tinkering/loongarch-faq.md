@@ -4,6 +4,10 @@ date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
 TocOpen: true
+文章类别:
+    - LoongArch
+    - 龙芯
+    - 折腾
 ---
 
 ## 前言

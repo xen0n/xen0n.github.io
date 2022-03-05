@@ -4,6 +4,11 @@ date: 2017-08-19T16:21:38+08:00
 draft: false
 aliases:
     - /2017/08/19/glibc-utf-8-locale-misery/
+文章类别:
+    - Linux
+    - glibc
+    - macOS
+    - 折腾
 ---
 
 ## tl;dr

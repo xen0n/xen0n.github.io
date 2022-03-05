@@ -2,6 +2,9 @@
 title: "2022：翻新，脱虚向实"
 date: 2022-01-13T23:37:36+08:00
 draft: false
+文章类别:
+    - 个人向
+    - 随笔
 ---
 
 > de·vir·tual·ize vt.

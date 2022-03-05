@@ -4,6 +4,9 @@ date: 2016-05-30T19:16:51+08:00
 draft: false
 aliases:
     - /2016/05/30/ujson-symbol-chasing/
+文章类别:
+    - Python
+    - 折腾
 ---
 
 ## tl;dr
