@@ -53,9 +53,9 @@
 </li></ul></nav></header><main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>主页</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
 《开局一个二进制，从零开始的 LoongArch 指令集推导》——第三回 阅读文本
-</h1><div class=post-meta><span title="2021-02-21 12:04:00 +0800 +0800">2021/02/21</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</h1><div class=post-meta><span title="2021-02-21 12:04:00 +0800 +0800">2021/02/21</span>&nbsp;·&nbsp;预计阅读时间: 4 分钟&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
 </div></header><div class=post-content><blockquote>
 <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p><p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p><p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p></blockquote><p>上一回我们讲到，解包出来的二进制真的是 LoongArch 的 ELF 文件，接下来我们可以有两个方向：一是释读 LoongArch ELF 格式的特殊内容；二是直接动手，搞明白指令含义。</p><p>ELF 文件格式支持每个架构各自表达一些特定属性、tag、section。这么做也是合情合理，正如没有两片雪花完全相同，不同架构当然也有各自独特的属性。你不会看到 AMD64 的程序库声明自己不支持浮点指令，也不会看到 ARM 可执行文件包含 MIPS 格式的重定向记录。由于 ELF 格式本身就考虑了这部分需求，我们不需要先行了解任何 LoongArch 的信息，就可以搞明白很多东西——</p><p>然而，实际操作中当然需要先弄懂指令集，才能真正把这些架构相关扩展整明白。例如你看到一个类型 3 的重定向，地址是 <code>78f00</code>，内容是 <code>1a2b3c</code>，你并不能直接知道它的含义是把“什么东西”写到“什么位置”。到底是把 <code>1a2b3c</code> 左移 10 位然后合并到 <code>78f00 - 代码段基址</code> 的指令字里？还是用 <code>1a2b3c</code> 先减去 <code>78f00</code> 构造一个 PC-relative 偏移量然后左移 6 位写入相同的地方？</p><p>那我们还是先想办法把指令都提取出来再说吧！</p><p>有一个工具叫 <code>readelf</code>，顾名思义，它 <code>reads ELF files</code>；你可以自己不带参数，或者带着 <code>--help</code> 运行一下，支持的功能挺多的。我们直接让他解析文件头：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>$ readelf -eW libpython2.7_d.so.1.0
 </span></span><span style=display:flex><span>ELF Header:
@@ -170,12 +170,12 @@
 </span></span></code></pre></div><p>很工整嘛！看上去我们猜的没错——与所有其他常见 RISC 指令集一样，LoongArch 的机器码在内存中，就是一堆原生字节序的整数。对 LoongArch 而言，就是一堆 32 位的小端序整数。像这前两条指令 <code>1c0076a4 02dca084</code>，你如果直接拿十六进制编辑器打开文件，其实在那个位置存放的是 <code>a4 76 00 1c 84 a0 dc 02</code>，每 4 个字节都是反过来的。</p><p>那么我们现在已经找到了整个代码段，借助老胡的 PPT 助攻，我们甚至不用自己统计分析指令格式了，真的爽！何况现在已知的指令格式就有 10 种，还可能有未知的（剧透：真的有！），自己分析还不知要到猴年马月……现在只需要搞明白哪些 opcode 是使用的哪种指令格式，含义是啥就好了。</p><p>接下来，终于可以进入真正指令的破译工作了！欲知后事如何，且听下回分解~</p></div><footer class=post-footer>
 <nav class=paginav>
 <a class=prev href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-4/>
-<span class=title>« </span>
+<span class=title>« 上一页</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第四回 把大象放进冰箱</span>
 </a>
 <a class=next href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-2/>
-<span class=title> »</span>
+<span class=title>下一页 »</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第二回 ELF</span>
 </a>

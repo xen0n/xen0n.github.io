@@ -53,9 +53,9 @@
 </li></ul></nav></header><main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>主页</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
 《开局一个二进制，从零开始的 LoongArch 指令集推导》——第九回 序与跋（五）
-</h1><div class=post-meta><span title="2021-04-12 13:42:00 +0800 +0800">2021/04/12</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</h1><div class=post-meta><span title="2021-04-12 13:42:00 +0800 +0800">2021/04/12</span>&nbsp;·&nbsp;预计阅读时间: 4 分钟&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
 </div></header><div class=post-content><blockquote>
 <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p><p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p><p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p></blockquote><p>上一回我们找出了 <code>ld</code> <code>sd</code> 两条指令，看到了几个寄存器的序号，<code>r4 r5 r12</code> 这样的；但我们并不知道为何一定是这几个寄存器。这一回我们就来一探究竟。为了对初学者友好一些（也为了水篇幅），还是先介绍一些背景资料吧。</p><p>回顾 MIPS 的寄存器规范，这里取 n64 ABI：</p><table>
 <thead>
@@ -101,12 +101,12 @@
 <td>22</td><td>s?/fp</td><td>Callee</td><td>保证不被过程调用覆盖；可用作帧指针</td></tr></tbody></table><p>我们有充分的理由相信 LoongArch 的帧指针也是可选利用的，但不清楚它的分配顺序在其他正常 s 系列寄存器之前还是之后。</p><p>那么我们接下来可以怎么搞明白其他的部分呢？</p><p>当然，我们不能看见手头代码没有用到的指令和用法。还好 Python 这个软件足够通用，该用到的东西基本都会用到。</p><p>为了搞明白 zero 寄存器是哪一个（虽然大概率是 0 号寄存器），需要找到一些语义很明显的指令；这个肯定有。</p><p>为了搞明白哪些寄存器归被调用方保存，需要找到临时量需求非常大，过程调用很多的函数，也就是大函数；这个肯定有。</p><p>为了搞明白哪些寄存器是入参，需要找到参数特别多的函数；虽然一个函数一大堆参数是一种坏味道，但相信也会有。</p><p>为了搞明白哪些寄存器放返回值，需要找到，emmmm，有返回值的函数；是个程序都有。</p><p>为了搞明白哪个寄存器是线程指针，需要有地方访问 thread-local 变量；这个倒不一定有，但 C 语言的 <code>errno</code> 就是最典型的这么一个量，碰碰运气吧！</p><p>至于全局指针，说实话，我们不一定能在 LoongArch 中看到，因为如果 LoongArch 确实如介绍 PPT 中所说的，添加了 PC-relative 的加载、跳转功能，那么就不像 MIPS，对 gp（在 MIPS 指向 GOT）的依赖会削弱很多很多。也碰碰运气吧！</p><p>那么我们能找到多少函数和指令来验证我们的想法呢？请看下回分解。</p></div><footer class=post-footer>
 <nav class=paginav>
 <a class=prev href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-10/>
-<span class=title>« </span>
+<span class=title>« 上一页</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第十回 序与跋（六）</span>
 </a>
 <a class=next href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-8/>
-<span class=title> »</span>
+<span class=title>下一页 »</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第八回 序与跋（四）</span>
 </a>

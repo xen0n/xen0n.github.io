@@ -53,9 +53,9 @@
 </li></ul></nav></header><main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>主页</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
 《开局一个二进制，从零开始的 LoongArch 指令集推导》——第十回 序与跋（六）
-</h1><div class=post-meta><span title="2021-04-14 14:00:00 +0800 +0800">2021/04/14</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</h1><div class=post-meta><span title="2021-04-14 14:00:00 +0800 +0800">2021/04/14</span>&nbsp;·&nbsp;预计阅读时间: 3 分钟&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
 </div></header><div class=post-content><blockquote>
 <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p><p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p><p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p></blockquote><p>在上一回，我们已经介绍了足够多背景知识和方向，现在可以开始把 LoongArch 寄存器规范的拼图完成了！</p><p>首先我们先从简单的问题入手，先来尝试回答 saved registers 序列包含哪些寄存器。</p><p>在整个工作过程中，为了提高效率，我们一直伴随开发着一个反汇编工具。因为我们现在已经认识构成函数 prologue 的所有指令了，所以直接反汇编整个 <code>.text</code> 段，找到保存寄存器最多的一串 prologue，就能知道哪些寄存器构成 saved registers 了。</p><p>这不就找到了吗！</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>libpython2.7_d.so.1.0 代码（-O0 编译，无优化）
 </span></span><span style=display:flex><span>
@@ -171,12 +171,12 @@
 <td>23-31</td><td>s0-s8</td><td>Callee</td><td>保证不被过程调用覆盖</td></tr></tbody></table><p>我们还有好几个问题没有回答；欲知后事如何，请看下回分解。</p></div><footer class=post-footer>
 <nav class=paginav>
 <a class=prev href=https://blog.xen0n.name/posts/writing/belated-2021-retrospective/>
-<span class=title>« </span>
+<span class=title>« 上一页</span>
 <br>
 <span>迟来的 2021 年度总结</span>
 </a>
 <a class=next href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-9/>
-<span class=title> »</span>
+<span class=title>下一页 »</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第九回 序与跋（五）</span>
 </a>

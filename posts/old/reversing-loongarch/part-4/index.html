@@ -53,9 +53,9 @@
 </li></ul></nav></header><main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>主页</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
 《开局一个二进制，从零开始的 LoongArch 指令集推导》——第四回 把大象放进冰箱
-</h1><div class=post-meta><span title="2021-02-24 14:14:00 +0800 +0800">2021/02/24</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</h1><div class=post-meta><span title="2021-02-24 14:14:00 +0800 +0800">2021/02/24</span>&nbsp;·&nbsp;预计阅读时间: 3 分钟&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
 </div></header><div class=post-content><blockquote>
 <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p><p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p><p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p></blockquote><p>上一回我们已经找到了 <code>libpython</code> 的代码段，并且成功看到了最初的一些指令。接下来的工作说简单也不简单；简单是因为 Python 这个软件是有源码的，不简单是因为指令格式、含义都要一点点从头猜起。</p><p>鉴于接下来的情节展开，对欠缺相关训练、实践的读者一定会造成困扰甚至误导，还是插入一段对汇编语言、指令集的简单科普好了。</p><blockquote>
 <p>Q: 把大象放进冰箱要几个步骤？</p><p>A: 两步：打开冰箱；把大象放进去。</p></blockquote><p>生活中有许多类似的场合，需要按一定的步骤顺次完成一系列动作；有时还会涉及简单的判断，这种情况下做这几步，那种情况跳过哪几步，诸如此类。菜谱、乐谱、棋谱、说明书，都是一系列动作的记录。</p><p>所谓“汇编语言”也是这样的一种记录，使用特定的记录方式，记录人们希望处理器执行的一系列动作。如果我们用汇编的方式描述“把大象放进冰箱”，可能会变成如下的形式：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>打开 冰箱
@@ -79,12 +79,12 @@
 </span></span></code></pre></div><p>所谓汇编语言的学习，无非是去了解面前简洁的代码实际每一步的效果、副作用如何，最终能够在脑内完成类似上述的双向变换，以及每种芯片支持的不同操作。</p><p>只要一个指令集支持相同的三种操作，这段代码的形状都会是一样的，只是具体语言不同。这就好像中国人看中文的操作说明，美国人看英文的操作说明，最终效果都是把大象放进了冰箱一样。</p><p>同样的，LoongArch 作为一种懂行的人设计的现代精简指令集，不可避免地，会与其他现代精简指令集相似之处甚多。不相似是不可能做到的，因为完成一件事虽然有很多不同姿势，但通行的姿势往往是唯一的。设计人员犯不着为了不一样而不一样。</p><p>那么从下一回开始，终于可以开始推导最初的指令含义了！敬请期待。</p></div><footer class=post-footer>
 <nav class=paginav>
 <a class=prev href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-5/>
-<span class=title>« </span>
+<span class=title>« 上一页</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第五回 序与跋（一）</span>
 </a>
 <a class=next href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-3/>
-<span class=title> »</span>
+<span class=title>下一页 »</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第三回 阅读文本</span>
 </a>

@@ -53,9 +53,9 @@
 </li></ul></nav></header><main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>主页</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
 《开局一个二进制，从零开始的 LoongArch 指令集推导》——第五回 序与跋（一）
-</h1><div class=post-meta><span title="2021-02-25 14:19:00 +0800 +0800">2021/02/25</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</h1><div class=post-meta><span title="2021-02-25 14:19:00 +0800 +0800">2021/02/25</span>&nbsp;·&nbsp;预计阅读时间: 2 分钟&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
 </div></header><div class=post-content><blockquote>
 <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p><p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p><p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p></blockquote><p>上一回我们从“把大象放进冰箱”说起，科普了一下基本的汇编语言概念，认识到了 C 语言的“函数”到了汇编，就是一组操作步骤的集合；那么今天，我们就要运用相同的人类常识，搞明白最初的 LoongArch 指令了！</p><p>首先，我们想知道，LoongArch 的函数大概长什么样子。但怎么知道一个函数从何处开始，到何处结束呢？</p><p>其实，函数、数据的边界，这正是前面提到过的 ELF 符号表记录的东西——可以理解成，一个符号就对应一个地址。那么下一个符号开始，自然就意味着上一个符号结束。处理 ELF 的工具几乎一定会支持符号表，但自己写一个还是很麻烦的（你可以自己试一试），有没有现成可以展示各个符号分别包含代码的工具呢？</p><p>当然有，<code>objdump</code> 是也。马上试一试：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>$ objdump -dCw usr/lib/loongarch64-linux-gnu/libpython2.7_d.so.1.0
 </span></span><span style=display:flex><span>usr/lib/loongarch64-linux-gnu/libpython2.7_d.so.1.0:     file format elf64-little
@@ -102,12 +102,12 @@
 </span></span></code></pre></div><p>看到东西了！右边的“MIPS 汇编”可以完全无视，毕竟根本就不是这个架构的指令，但左边也是一样可以看的，这样就省得一上来各种东西都要自己来一遍了。这个阶段的分析根本用不着这么麻烦。</p></div><footer class=post-footer>
 <nav class=paginav>
 <a class=prev href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-6/>
-<span class=title>« </span>
+<span class=title>« 上一页</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）</span>
 </a>
 <a class=next href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-4/>
-<span class=title> »</span>
+<span class=title>下一页 »</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第四回 把大象放进冰箱</span>
 </a>

@@ -53,9 +53,9 @@
 </li></ul></nav></header><main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>主页</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
 《开局一个二进制，从零开始的 LoongArch 指令集推导》——第六回 序与跋（二）
-</h1><div class=post-meta><span title="2021-02-25 20:00:00 +0800 +0800">2021/02/25</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</h1><div class=post-meta><span title="2021-02-25 20:00:00 +0800 +0800">2021/02/25</span>&nbsp;·&nbsp;预计阅读时间: 3 分钟&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
 </div></header><div class=post-content><blockquote>
 <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p><p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p><p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p></blockquote><p>前面我们搞了个土办法，已经能借助 MIPS 的工具链方便地检查单个函数的代码了。现在找两个小函数开刀：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>
 </span></span><span style=display:flex><span><span style=color:#a6e22e>_Py_gitversion</span>(<span style=color:#66d9ef>void</span>)
@@ -111,12 +111,12 @@
 </span></span></code></pre></div><p>这里借用了 RISC-V 的指令名（所以以后发现的 32 位立即数加法会叫 <code>addiw</code>）。另外，<code>r3</code> 寄存器应该就是 LoongArch 约定的栈指针了。</p><p>为了一篇文章不要太长，剩下的指令，就留到下回分解吧~</p></div><footer class=post-footer>
 <nav class=paginav>
 <a class=prev href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-7/>
-<span class=title>« </span>
+<span class=title>« 上一页</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第七回 序与跋（三）</span>
 </a>
 <a class=next href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-5/>
-<span class=title> »</span>
+<span class=title>下一页 »</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第五回 序与跋（一）</span>
 </a>

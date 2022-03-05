@@ -53,9 +53,9 @@
 </li></ul></nav></header><main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>主页</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
 《开局一个二进制，从零开始的 LoongArch 指令集推导》——第二回 ELF
-</h1><div class=post-meta><span title="2021-02-19 11:30:00 +0800 +0800">2021/02/19</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</h1><div class=post-meta><span title="2021-02-19 11:30:00 +0800 +0800">2021/02/19</span>&nbsp;·&nbsp;预计阅读时间: 2 分钟&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
 </div></header><div class=post-content><blockquote>
 <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p><p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p><p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p></blockquote><p>上回我们讲到，拿到了 <code>libpython2.7</code> 和 <code>libpython2.7-dbg</code> 的包，接下来的事情自然是“开箱验货”——成品 LoongArch 二进制的真容终于要一见天日了！</p><p>Debian <code>.deb</code> 软件包的格式和静态库 <code>.a</code> 文件一样，都是 <code>ar</code> 生成的归档文件，使用 <code>ar x</code> 命令解压就好了。</p><p>解开之后有几个文件，其中 <code>data.tar.xz</code> 就是这个包的真正文件内容了（实际压缩格式可能会有不同，目前拿到的这些包都是 <code>xz</code>），再次 <code>tar xf</code> 解压之后，一个 <code>usr</code> 目录就出现在我们眼前……</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>$ tree usr
 </span></span><span style=display:flex><span>usr
@@ -84,12 +84,12 @@
 </span></span></code></pre></div><p>这就很舒服了！</p></div><footer class=post-footer>
 <nav class=paginav>
 <a class=prev href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-3/>
-<span class=title>« </span>
+<span class=title>« 上一页</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第三回 阅读文本</span>
 </a>
 <a class=next href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-1/>
-<span class=title> »</span>
+<span class=title>下一页 »</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第一回 软件包</span>
 </a>

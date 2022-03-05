@@ -53,9 +53,9 @@
 </li></ul></nav></header><main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://blog.xen0n.name/>Home</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
+<div class=breadcrumbs><a href=https://blog.xen0n.name/>主页</a>&nbsp;»&nbsp;<a href=https://blog.xen0n.name/posts/>Posts</a></div><h1 class=post-title>
 《开局一个二进制，从零开始的 LoongArch 指令集推导》——第一回 软件包
-</h1><div class=post-meta><span title="2021-02-17 22:52:00 +0800 +0800">2021/02/17</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
+</h1><div class=post-meta><span title="2021-02-17 22:52:00 +0800 +0800">2021/02/17</span>&nbsp;·&nbsp;预计阅读时间: 3 分钟&nbsp;·&nbsp;WÁNG "xen0n" Xuěruì
 </div></header><div class=post-content><blockquote>
 <p>本 LoongArch 指令集研究工作在百度贴吧龙芯吧同步连载。</p><p>本研究中涉及的逆向工程仅出于学习、研究目的。本研究工作未得到任何龙芯、麒麟等软硬件厂商的任何形式帮助。</p><p>本研究属于个人行为，与本人雇主或任何其他主体无关。</p></blockquote><p>众所周知，几大常见国产商业发行版的软件源地址都是公开的，只要你自己装过，或者询问过有这系统的朋友，都可以知道。</p><p>商业发行版的软件源不同于许多社区发行版，往往可以见到一些商业软件的移植版；会受生态问题困扰的软件自然是不开源的（开源软件的适配、打包工作，社区自己就自带干粮做了），社区发行版由于运营主体模糊，也不易与商业公司达成再分发的协议。所以很多时候虽然你能看到不少软件、驱动，甚至有的软件你也能用上，也只能看个乐呵。</p><p>是假期前的一天，楼主漫无目的地在网上闲逛，走进了麒麟的软件源，嗬！有一个叫 <code>binary-loongarch64</code> 的目录！</p><p>麒麟是一个 Debian 系发行版，软件源的目录结构类似如下：</p><ul>
 <li><code>https://example.com/&lt;系统代号>/</code>
@@ -89,12 +89,12 @@ Description-md5: d0d975dec3625409d24be1238cede238
 </code></pre><p>很明显，只要过滤出 <code>Architecture: loongarch64</code> 的包名和对应的 <code>.deb</code> 包路径就好了。</p><p>实际上会有很多包由于是脚本语言写作，或者是纯数据，因此是架构无关的，<code>Architecture</code> 字段会取 <code>all</code>。</p><p>因为按照命名规范，架构名一定会在文件名中出现，所以投机取巧一下，直接 <code>grep</code> 出满足 <code>^Filename: .*loongarch64</code> 的行，然后切掉头，拼上软件源的基础 URL 前缀就可以了。</p><p>这样我们从 <code>main</code> 和 <code>universe</code> 两个库获得了一共 497 个 LoongArch 软件包，一行一个，放进一个文件，使用 <code>wget</code> 的 <code>-i</code> 选项可以很方便地批量下载。</p><p>全部下载之后，定睛一看，咦？没有 <code>linux</code>，没有 <code>binutils</code>，没有 <code>gcc</code>，也没有 <code>glibc</code>！</p><p>得，什么都没有，自己搞吧，自己动手丰衣足食……好在为数不多的几个包里，还有 <code>libpython2.7</code> 和 <code>libpython2.7-dbg</code>，有个通用编程语言实现，还是聊胜于无，至少能看到的指令种类应该不缺了。</p></div><footer class=post-footer>
 <nav class=paginav>
 <a class=prev href=https://blog.xen0n.name/posts/old/reversing-loongarch/part-2/>
-<span class=title>« </span>
+<span class=title>« 上一页</span>
 <br>
 <span>《开局一个二进制，从零开始的 LoongArch 指令集推导》——第二回 ELF</span>
 </a>
 <a class=next href=https://blog.xen0n.name/posts/writing/on-our-love-destined-to-end/>
-<span class=title> »</span>
+<span class=title>下一页 »</span>
 <br>
 <span>关于我们注定会结束的爱情</span>
 </a>
