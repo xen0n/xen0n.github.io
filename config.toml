@@ -58,6 +58,7 @@ category = "categories"
 
 # theme
 [params]
+env = 'production'
 title = 'write(2)'
 keywords = ['blog', 'xen0n']
 author = ['WÁNG "xen0n" Xuěruì']
