@@ -71,8 +71,17 @@ ShowPostNavLinks = true
 ShowBreadCrumbs = true
 
 [[params.socialIcons]]
-name = 'github'
+name = 'GitHub'
 url = 'https://github.com/xen0n'
+[[params.socialIcons]]
+name = 'GitLab'
+url = 'https://gitlab.com/xen0n'
+[[params.socialIcons]]
+name = 'Bilibili'
+url = 'https://space.bilibili.com/192484'
+[[params.socialIcons]]
+name = 'NeteaseCloudMusic'
+url = 'https://music.163.com/#/user/home?id=79360463'
 
 [languages.zh-cmn-hans-cn.params]
 description = '漫步匠人的只言片语'
