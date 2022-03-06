@@ -1048,7 +1048,7 @@ Upstream work for this integrated GPU is currently in progress.
 As for compatibility of discrete GPUs, basically *any GPU with open-source
 driver* will work if the required firmware is present on the system, typically
 installed with the linux-firmware package.
-Of course this largely eliminates the NVIDIA cards, because the chance for a
+Of course this largely eliminates the green camp, because the chance for a
 LoongArch blob is slim (blame Jensen Huang), and the open-source nouveau is
 borderline unusable (also blame Jensen Huang).
 AMD Yes!
