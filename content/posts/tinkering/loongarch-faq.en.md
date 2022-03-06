@@ -38,7 +38,7 @@ to take a neutral stance and try to equally present the disagreeing opinions.
 
 This document is being updated from time to time, and changes are always
 accompanied with update dates.
-The version you are currently reading is last updated at 2022-02-21.
+The version you are currently reading is last updated at 2022-03-06.
 (Dates are always in the YYYY-MM-DD format, for ease of tracking changes
 between the original and the translations.)
 
@@ -955,7 +955,7 @@ this, coupled with manual reading, it is easy to master the language as well.
   (Syntactic sugar for `andi $zero, $zero, 0`.)
 * Return from subroutine is `jr $ra`, like MIPS.
   (Syntactic sugar for `jirl $zero, $ra, 0`; different from RISC-V, there is
-  no `ret` as an additional syntactic sugar as of 2022-02-13.)
+  no `ret` as an additional syntactic sugar as of 2022-03-06.)
 * Different from MIPS, there are no parentheses around registers that represent
   memory operands.
   (`ld $a0, 16($a1)` becomes `ld.d $a0, $a1, 16`.)
@@ -1007,7 +1007,7 @@ Linux kernel) are supported.
 Usage of QEMU is outside the scope of this documentation; consult other online
 resources for that.
 
-Note: As of 2022-02-12, target support for LoongArch is not upstreamed yet.
+Note: As of 2022-03-06, target support for LoongArch is not upstreamed yet.
 This means you would have to compile
 [Loongson's development branch][qemu-loongson-tcg-dev] yourself.
 
@@ -1036,7 +1036,7 @@ Whatever (reasonably portable piece) you currently use on the other platforms, l
 
 ### What GPUs can be used on LoongArch systems?
 
-As of 2022-02-20, there is no LoongArch CPU in SoC form, so every LoongArch
+As of 2022-03-06, there is no LoongArch CPU in SoC form, so every LoongArch
 system out there invariably includes a bridge chip.
 At this time point, there is only one model of bridge chip, the LS7A1000,
 that can work with the only LoongArch CPU in existence -- the Loongson 3A5000;
@@ -1072,7 +1072,7 @@ Thanks to prioritized hardware access and team collaboration provided by the
 Loongson Corporation, the commercial development around LoongArch is
 progressing very rapidly.
 
-As of 2022-02-12, multiple commercial distributions (developed by China
+As of 2022-03-06, multiple commercial distributions (developed by China
 mainland entities) already provide LoongArch ports.
 These include but are not limited to: (in alphabetical order)
 
@@ -1095,7 +1095,7 @@ After the publication of the various LoongArch documentation, and
 open-sourcing of Loongson forks of fundamental pieces of software,
 the porting pace of community distributions has accelerated as well.
 
-There are several ongoing porting efforts as of 2022-02-12, including but
+There are several ongoing porting efforts as of 2022-03-06, including but
 not limited to: (in alphabetical order)
 
 - Arch Linux
@@ -1104,7 +1104,7 @@ not limited to: (in alphabetical order)
 
 ### Why can't I run closed-source software like WPS Office on community distributions? (aka What's this so-called "old world" and "new world"?)
 
-As of 2022-02-12, all commercial LoongArch distributions are incompatible with
+As of 2022-03-06, all commercial LoongArch distributions are incompatible with
 all community distributions.
 All binary software built on community distributions, and some software
 written in high-level languages and existing in forms like source code or
