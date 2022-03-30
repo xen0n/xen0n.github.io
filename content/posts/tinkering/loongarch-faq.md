@@ -575,6 +575,7 @@ loongarch64 那边要严重一些。
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
+|strace|:white_check_mark:|-|LoongArch64 支持[已经](https://github.com/strace/strace/pull/205)[合并](https://github.com/strace/strace/pull/207)；在 5.17 版本发布了。|
 |systemd|:white_check_mark:|[LoongArch64 组织分支](https://github.com/loongarch64/systemd)|基本支持已经进入 v250 版本，以及为 LoongArch 新增定义了一些[可发现分区类型][dpt]。|
 |util-linux|:white_check_mark:||新的[可发现分区类型][dpt]已经合并。在 2.38 版本发布了。|
 

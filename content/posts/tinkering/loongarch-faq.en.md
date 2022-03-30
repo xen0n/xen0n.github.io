@@ -845,6 +845,7 @@ Table legend:
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
+|strace|:white_check_mark:|-|LoongArch64 support [has been](https://github.com/strace/strace/pull/205) [merged](https://github.com/strace/strace/pull/207); released in 5.17.|
 |systemd|:white_check_mark:|[LoongArch64 porting group fork](https://github.com/loongarch64/systemd)|Basic support appeared in v250 along with new [discoverable partition types][dpt] defined for LoongArch.|
 |util-linux|:white_check_mark:||Support for the new [discoverable partition types][dpt] already merged. Released in 2.38.|
 
