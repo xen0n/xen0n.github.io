@@ -1,5 +1,5 @@
 ---
-title: "非官方但全面的 LoongArch 常见问题解答（2022-03-06 更新）"
+title: "非官方但全面的 LoongArch 常见问题解答（2022-03-30 更新）"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -24,7 +24,7 @@ summary: |
 本文就争取做这么一篇讲述客观事实，对开发者有用的 FAQ 文档。
 由于涉及商业利益的事物不可避免存在争议，本文也力争将多方观点同时整理、平等呈现。
 
-本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-03-06 更新的。
+本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-03-30 更新的。
 
 免责说明：除观点性质的文字之外，本文中体现的信息均取自公开资料。观点性质的文字总会被明确标注出来。
 这些观点性质的文字仅代表个人观点，与本人雇主、龙芯公司等实体均无关。
@@ -34,6 +34,7 @@ summary: |
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
+* 2022-03-30: 更新上游状态。
 * 2022-03-06: 添加“关于开发”一节两个话题；其他微调。
 * 2022-02-21: 添加“关于使用”一节四个话题；为“关于开发”一节添加 target tuple、GOARCH 两个话题。
 * 2022-02-20: 配合英语翻译的部分措辞调整与排版优化。
@@ -531,7 +532,7 @@ loongarch64 那边要严重一些。
 * :wrench: -- 正在做，或者做完了暂时还没提交，先接受社区的初步审查
 * :x: -- 还没做
 
-（基于 2022-02-22 的信息整理。）
+（基于 2022-03-30 的信息整理。）
 
 #### 模拟器和固件
 
@@ -554,8 +555,8 @@ loongarch64 那边要严重一些。
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|binutils|:white_check_mark:|[龙芯分支（v4）](https://github.com/loongson/binutils-gdb/tree/upstream_v4)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。|
-|gcc|:mag:|[龙芯分支（v7）](https://github.com/loongson/gcc/tree/loongarch_upstream_v7)||
+|binutils|:white_check_mark:|[龙芯分支（v4.1）](https://github.com/loongson/binutils-gdb/tree/upstream_v4.1)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。|
+|gcc|:hourglass_flowing_sand:|[龙芯分支](https://github.com/loongson/gcc)|将在 gcc 12.1.0 正式发布。|
 |glibc|:mag:|[龙芯分支（v2.2）](https://github.com/loongson/glibc/tree/loongarch_2_35_dev_v2.2)||
 
 #### 其他工具链组件、语言
@@ -575,7 +576,7 @@ loongarch64 那边要严重一些。
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
 |systemd|:white_check_mark:|[LoongArch64 组织分支](https://github.com/loongarch64/systemd)|基本支持已经进入 v250 版本，以及为 LoongArch 新增定义了一些[可发现分区类型][dpt]。|
-|util-linux|:hourglass_flowing_sand:||新的[可发现分区类型][dpt]已经合并。|
+|util-linux|:white_check_mark:||新的[可发现分区类型][dpt]已经合并。在 2.38 版本发布了。|
 
 [dpt]: https://systemd.io/DISCOVERABLE_PARTITIONS/
 

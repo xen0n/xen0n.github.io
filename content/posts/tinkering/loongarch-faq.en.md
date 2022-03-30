@@ -1,5 +1,5 @@
 ---
-title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-03-06)"
+title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-03-30)"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -38,7 +38,7 @@ to take a neutral stance and try to equally present the disagreeing opinions.
 
 This document is being updated from time to time, and changes are always
 accompanied with update dates.
-The version you are currently reading is last updated at 2022-03-06.
+The version you are currently reading is last updated at 2022-03-30.
 (Dates are always in the YYYY-MM-DD format, for ease of tracking changes
 between the original and the translations.)
 
@@ -55,6 +55,7 @@ MIPS ecosystem.
 
 You can view the change details at [this article's Git history](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.en.md).
 
+* 2022-03-30: Updated the upstreaming progress section.
 * 2022-03-06: Added several more topics; minor tweaks all over.
 * 2022-02-21: (English version only) Added note on the meanings of "loong" and "Loongson".
 * 2022-02-20: Added translation to English; synced wording adjustments and layout tweaks with the Chinese original.
@@ -801,7 +802,7 @@ Table legend:
 * :wrench: -- WIP, or under community pre-review before first upstream submission
 * :x: -- TODO
 
-(Based on information as of 2022-02-22.)
+(Based on information as of 2022-03-30.)
 
 #### Emulator and firmware
 
@@ -824,8 +825,8 @@ Table legend:
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|binutils|:white_check_mark:|[Loongson fork (v4)](https://github.com/loongson/binutils-gdb/tree/upstream_v4)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile.|
-|gcc|:mag:|[Loongson fork (v7)](https://github.com/loongson/gcc/tree/loongarch_upstream_v7)||
+|binutils|:white_check_mark:|[Loongson fork (v4.1)](https://github.com/loongson/binutils-gdb/tree/upstream_v4.1)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile.|
+|gcc|:hourglass_flowing_sand:|[Loongson fork](https://github.com/loongson/gcc)|Will appear in 12.1.0.|
 |glibc|:mag:|[Loongson fork (v2.2)](https://github.com/loongson/glibc/tree/loongarch_2_35_dev_v2.2)||
 
 #### Other toolchain pieces/languages
@@ -845,7 +846,7 @@ Table legend:
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
 |systemd|:white_check_mark:|[LoongArch64 porting group fork](https://github.com/loongarch64/systemd)|Basic support appeared in v250 along with new [discoverable partition types][dpt] defined for LoongArch.|
-|util-linux|:hourglass_flowing_sand:||Support for the new [discoverable partition types][dpt] already merged.|
+|util-linux|:white_check_mark:||Support for the new [discoverable partition types][dpt] already merged. Released in 2.38.|
 
 [dpt]: https://systemd.io/DISCOVERABLE_PARTITIONS/
 
