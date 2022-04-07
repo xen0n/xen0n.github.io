@@ -768,7 +768,7 @@ AMD Yes！
 
 网上有许多地方都可以讨论龙芯、LoongArch 等等相关话题，人多的公开场合包括但不限于：
 
-- [龙芯开源社区论坛](http://bbs.loongnix.cn/)（由于技术原因，目前不支持 HTTPS）（仅中文交流）
+- [LoongArch 非官方开源社区论坛](https://bbs.loongarch.org)（仅中文交流）
 - [百度贴吧龙芯吧](https://tieba.baidu.com/f?kw=%E9%BE%99%E8%8A%AF&ie=utf-8)（仅中文交流）
 - [Telegram Loongson group](https://t.me/loongson_users)（中文 & English）
 - QQ 群 922566903

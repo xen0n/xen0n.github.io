@@ -1162,7 +1162,7 @@ Communities exist for any technology with users, and LoongArch is no exception
 There are a lot of places on the Internet where Loongson and LoongArch topics
 are discussed. Some places frequented by many people are (but not limited to):
 
-- [Forum of the Loongson Open-source Community](http://bbs.loongnix.cn/) (龙芯开源社区论坛) (HTTP-only due to technical reasons; Chinese-only)
+- [LoongArch Unofficial OpenSource Community](https://bbs.loongarch.org) (LoongArch 非官方开源社区论坛) (Chinese-only)
 - [Loongson Bar on Baidu Tieba](https://tieba.baidu.com/f?kw=%E9%BE%99%E8%8A%AF&ie=utf-8) (百度贴吧龙芯吧) (Chinese-only)
 - [Telegram Loongson group](https://t.me/loongson_users)（Chinese & English）
 - QQ group 922566903 (Chinese-only)
