@@ -1,5 +1,5 @@
 ---
-title: "非官方但全面的 LoongArch 常见问题解答（2022-03-30 更新）"
+title: "非官方但全面的 LoongArch 常见问题解答（2022-04-21 更新）"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -24,7 +24,7 @@ summary: |
 本文就争取做这么一篇讲述客观事实，对开发者有用的 FAQ 文档。
 由于涉及商业利益的事物不可避免存在争议，本文也力争将多方观点同时整理、平等呈现。
 
-本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-03-30 更新的。
+本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-04-21 更新的。
 
 免责说明：除观点性质的文字之外，本文中体现的信息均取自公开资料。观点性质的文字总会被明确标注出来。
 这些观点性质的文字仅代表个人观点，与本人雇主、龙芯公司等实体均无关。
@@ -34,6 +34,10 @@ summary: |
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
+* 2022-04-21: 小更新。
+    - 更新上游状态；
+    - 添加 Gentoo LoongArch 项目的外链。
+    - LoongArch 的中文名称或定为“龙架构”。
 * 2022-03-30: 更新上游状态。
 * 2022-03-06: 添加“关于开发”一节两个话题；其他微调。
 * 2022-02-21: 添加“关于使用”一节四个话题；为“关于开发”一节添加 target tuple、GOARCH 两个话题。
@@ -52,7 +56,13 @@ summary: |
 
 LoongArch 是龙芯公司设计的一种 CPU 指令集架构，2020 年对外公开其存在，2021 年起公开出货，在其 3A5000 CPU 产品开始搭载。
 
-根据 LoongArch 的参考手册标题以及手册的第一句（引文即为此），LoongArch 的中文名应为“龙芯架构”。
+根据 LoongArch 的参考手册标题以及手册的第一句（引文即为此），LoongArch 的中文名似乎应为“龙芯架构”。
+龙芯中科也于 2022-01-29 申请注册“龙芯架构”为中国商标。
+但随后 2022-02-23 龙芯中科即申请注册“龙架构”中国商标，
+且又于 2022-04-13 在其微信公众号上发表[一篇文章][wxmp-article-1]首次将“LoongArch”与“龙架构”并列，
+这似乎表明“龙架构”将成为 LoongArch 的正式中文名称。
+
+[wxmp-article-1]: https://mp.weixin.qq.com/s/kAn_TrIirlGaBwJc6QOP3g
 
 ### LoongArch logo 长啥样？
 
@@ -532,14 +542,14 @@ loongarch64 那边要严重一些。
 * :wrench: -- 正在做，或者做完了暂时还没提交，先接受社区的初步审查
 * :x: -- 还没做
 
-（基于 2022-03-30 的信息整理。）
+（基于 2022-04-21 的信息整理。）
 
 #### 模拟器和固件
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|QEMU（target）|:mag:|[龙芯分支](https://github.com/loongson/qemu/tree/tcg-dev)|在其他架构上模拟 LoongArch。|
-|QEMU（TCG 宿主）|:hourglass_flowing_sand:|[xen0n 分支](https://gitlab.com/xen0n/qemu/)|在 LoongArch 上模拟其他架构；[补丁](https://patchew.org/QEMU/20211221054105.178795-1-git@xen0n.name/) [已经合并](https://gitlab.com/qemu-project/qemu/-/commit/8c5f94cd4182753959c8be8de415120dc879d8f0)。将在 QEMU 7.0 正式发布。|
+|QEMU（目标）|:mag:|[龙芯分支](https://github.com/loongson/qemu/tree/tcg-dev)|在其他架构上模拟 LoongArch。|
+|QEMU（宿主）|:white_check_mark:|-|在 LoongArch 上模拟其他架构。在 7.0 版本发布了。|
 |EDK II|:wrench:|[龙芯分支](https://github.com/loongson/edk2)||
 
 #### 内核
@@ -555,9 +565,9 @@ loongarch64 那边要严重一些。
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|binutils|:white_check_mark:|[龙芯分支（v4.1）](https://github.com/loongson/binutils-gdb/tree/upstream_v4.1)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。|
+|binutils|:white_check_mark:|[龙芯分支](https://github.com/loongson/binutils-gdb)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。|
 |gcc|:hourglass_flowing_sand:|[龙芯分支](https://github.com/loongson/gcc)|将在 gcc 12.1.0 正式发布。|
-|glibc|:mag:|[龙芯分支（v2.2）](https://github.com/loongson/glibc/tree/loongarch_2_35_dev_v2.2)||
+|glibc|:mag:|[龙芯分支（v3）](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v3)||
 
 #### 其他工具链组件、语言
 
@@ -575,9 +585,12 @@ loongarch64 那边要严重一些。
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
+|libbsd|:white_check_mark:|-|LoongArch64 支持[已经合并](https://gitlab.freedesktop.org/libbsd/libbsd/-/commit/15200ec7ac97e3f169b6c2f378f0ec2f94663c9f)；在 0.11.6 版本发布了。|
+|libffi|:mag:|[GitHub PR](https://github.com/libffi/libffi/pull/678)||
+|libunwind|:hourglass_flowing_sand:|-|LoongArch64 支持[已经合并](https://git.savannah.nongnu.org/cgit/libunwind.git/commit/?id=c5f1d12c77dea6a60740730c675fc56b3c52b86a)。|
 |strace|:white_check_mark:|-|LoongArch64 支持[已经](https://github.com/strace/strace/pull/205)[合并](https://github.com/strace/strace/pull/207)；在 5.17 版本发布了。|
-|systemd|:white_check_mark:|[LoongArch64 组织分支](https://github.com/loongarch64/systemd)|基本支持已经进入 v250 版本，以及为 LoongArch 新增定义了一些[可发现分区类型][dpt]。|
-|util-linux|:white_check_mark:||新的[可发现分区类型][dpt]已经合并。在 2.38 版本发布了。|
+|systemd|:white_check_mark:|[LoongArch64 组织分支](https://github.com/loongarch64/systemd)|基本支持已经进入 v250 版本，以及为 LoongArch64 新增定义了一些[可发现分区类型][dpt]。|
+|util-linux|:white_check_mark:|-|新的[可发现分区类型][dpt]已经合并。在 2.38 版本发布了。|
 
 [dpt]: https://systemd.io/DISCOVERABLE_PARTITIONS/
 
@@ -736,7 +749,9 @@ AMD Yes！
 
 - Arch Linux
 - CLFS
-- Gentoo
+- [Gentoo][gentoo-loongarch-home]
+
+[gentoo-loongarch-home]: https://wiki.gentoo.org/wiki/Project:LoongArch
 
 ### 为什么我不能在社区发行版上运行 WPS Office 等软件？（“旧世界”“新世界”是怎么一回事？）
 
@@ -768,9 +783,10 @@ AMD Yes！
 
 网上有许多地方都可以讨论龙芯、LoongArch 等等相关话题，人多的公开场合包括但不限于：
 
-- [龙芯开源社区论坛](http://bbs.loongnix.cn/)（由于技术原因，目前不支持 HTTPS）（仅中文交流）
+- ~~龙芯开源社区论坛~~（原先位于 bbs.loongnix.cn，龙芯公司已将其关闭）
+- [非官方 LoongArch 社区](https://bbs.loongarch.org)（bbs.loongnix.cn 的精神续作；主要以中文交流）
 - [百度贴吧龙芯吧](https://tieba.baidu.com/f?kw=%E9%BE%99%E8%8A%AF&ie=utf-8)（仅中文交流）
-- [Telegram Loongson group](https://t.me/loongson_users)（中文 & English）
+- [Telegram Loongson group](https://t.me/loongson_users)（中文 & English；主要以中文交流，但群友英语水平较高）
 - QQ 群 922566903
 
 可能还有其他讨论龙芯话题的 QQ 群，但由于本文作者不使用 QQ，因此不知道群号。（欢迎知道的朋友给作者私聊或者提 PR 补充！）

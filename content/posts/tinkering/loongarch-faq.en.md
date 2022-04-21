@@ -1,5 +1,5 @@
 ---
-title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-03-30)"
+title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-04-21)"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -38,7 +38,7 @@ to take a neutral stance and try to equally present the disagreeing opinions.
 
 This document is being updated from time to time, and changes are always
 accompanied with update dates.
-The version you are currently reading is last updated at 2022-03-30.
+The version you are currently reading is last updated at 2022-04-21.
 (Dates are always in the YYYY-MM-DD format, for ease of tracking changes
 between the original and the translations.)
 
@@ -55,6 +55,10 @@ MIPS ecosystem.
 
 You can view the change details at [this article's Git history](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.en.md).
 
+* 2022-04-21: Minor updates.
+    - Updated the upstreaming progress section.
+    - Added external link to the Gentoo/LoongArch project.
+    - LoongArch's Chinese name may already be decided.
 * 2022-03-30: Updated the upstreaming progress section.
 * 2022-03-06: Added several more topics; minor tweaks all over.
 * 2022-02-21: (English version only) Added note on the meanings of "loong" and "Loongson".
@@ -75,10 +79,12 @@ LoongArch is an instruction set architecture designed by the Loongson
 Corporation, publicly announced in 2020.
 Shipping started in 2021 with the 3A5000 products.
 
-The Chinese name for LoongArch is 龙芯架构 (in Simplified characters, because
-the Loongson Corporation is based in Beijing; 龍芯架構 in Traditional
-characters), according to the title and first sentence of the original manual.
+The Chinese name for LoongArch was supposed to be 龙芯架构
+(in Simplified characters, because the Loongson Corporation is based in
+Beijing; 龍芯架構 in Traditional characters),
+according to the title and first sentence of the original manual.
 It just means "Loongson Architecture".
+Loongson Corporation applied for the Chinese trademark "龙芯架构" in 2022-01-29.
 
 > Note: the word 龙/龍/loong means "[Chinese dragon]", or more precisely, just
 > "loong".
@@ -91,6 +97,15 @@ It just means "Loongson Architecture".
 > "Dragon's Chip".
 
 [Chinese dragon]: https://en.wikipedia.org/wiki/Chinese\_dragon
+
+However, about one month later, the corporation filed another trademark
+application, this time "龙架构" (Loong Architecture / Dragon Architecture);
+and in 2022-04-13 there was [a press release][wxmp-article-1] with both
+"LoongArch" and "龙架构" mentioned.
+This is likely an indication that the Chinese name of LoongArch is finally
+decided to be "龙架构".
+
+[wxmp-article-1]: https://mp.weixin.qq.com/s/kAn_TrIirlGaBwJc6QOP3g
 
 ### What does LoongArch's logo look like?
 
@@ -802,14 +817,14 @@ Table legend:
 * :wrench: -- WIP, or under community pre-review before first upstream submission
 * :x: -- TODO
 
-(Based on information as of 2022-03-30.)
+(Based on information as of 2022-04-21.)
 
 #### Emulator and firmware
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
 |QEMU (target)|:mag:|[Loongson fork](https://github.com/loongson/qemu/tree/tcg-dev)|For emulating LoongArch on other arches.|
-|QEMU (TCG host)|:hourglass_flowing_sand:|[xen0n fork](https://gitlab.com/xen0n/qemu/)|For emulating other arches on LoongArch hosts; [patch series](https://patchew.org/QEMU/20211221054105.178795-1-git@xen0n.name/) [already merged](https://gitlab.com/qemu-project/qemu/-/commit/8c5f94cd4182753959c8be8de415120dc879d8f0). Will appear in QEMU 7.0.|
+|QEMU (host)|:white_check_mark:|-|For emulating other arches on LoongArch hosts. Released in 7.0.|
 |EDK II|:wrench:|[Loongson fork](https://github.com/loongson/edk2)||
 
 #### Kernels
@@ -825,9 +840,9 @@ Table legend:
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|binutils|:white_check_mark:|[Loongson fork (v4.1)](https://github.com/loongson/binutils-gdb/tree/upstream_v4.1)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile.|
+|binutils|:white_check_mark:|[Loongson fork](https://github.com/loongson/binutils-gdb)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile.|
 |gcc|:hourglass_flowing_sand:|[Loongson fork](https://github.com/loongson/gcc)|Will appear in 12.1.0.|
-|glibc|:mag:|[Loongson fork (v2.2)](https://github.com/loongson/glibc/tree/loongarch_2_35_dev_v2.2)||
+|glibc|:mag:|[Loongson fork (v3)](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v3)||
 
 #### Other toolchain pieces/languages
 
@@ -845,8 +860,11 @@ Table legend:
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
+|libbsd|:white_check_mark:|-|LoongArch64 support [has been merged](https://gitlab.freedesktop.org/libbsd/libbsd/-/commit/15200ec7ac97e3f169b6c2f378f0ec2f94663c9f). Released in 0.11.6.|
+|libffi|:mag:|[GitHub PR](https://github.com/libffi/libffi/pull/678)||
+|libunwind|:hourglass_flowing_sand:|-|LoongArch64 support [has been merged](https://git.savannah.nongnu.org/cgit/libunwind.git/commit/?id=c5f1d12c77dea6a60740730c675fc56b3c52b86a).|
 |strace|:white_check_mark:|-|LoongArch64 support [has been](https://github.com/strace/strace/pull/205) [merged](https://github.com/strace/strace/pull/207); released in 5.17.|
-|systemd|:white_check_mark:|[LoongArch64 porting group fork](https://github.com/loongarch64/systemd)|Basic support appeared in v250 along with new [discoverable partition types][dpt] defined for LoongArch.|
+|systemd|:white_check_mark:|[LoongArch64 porting group fork](https://github.com/loongarch64/systemd)|Basic support appeared in v250 along with new [discoverable partition types][dpt] defined for LoongArch64.|
 |util-linux|:white_check_mark:||Support for the new [discoverable partition types][dpt] already merged. Released in 2.38.|
 
 [dpt]: https://systemd.io/DISCOVERABLE_PARTITIONS/
@@ -1102,7 +1120,9 @@ not limited to: (in alphabetical order)
 
 - Arch Linux
 - CLFS
-- Gentoo
+- [Gentoo][gentoo-loongarch-home]
+
+[gentoo-loongarch-home]: https://wiki.gentoo.org/wiki/Project:LoongArch
 
 ### Why can't I run closed-source software like WPS Office on community distributions? (aka What's this so-called "old world" and "new world"?)
 
@@ -1162,9 +1182,10 @@ Communities exist for any technology with users, and LoongArch is no exception
 There are a lot of places on the Internet where Loongson and LoongArch topics
 are discussed. Some places frequented by many people are (but not limited to):
 
-- [Forum of the Loongson Open-source Community](http://bbs.loongnix.cn/) (龙芯开源社区论坛) (HTTP-only due to technical reasons; Chinese-only)
+- ~~Forum of the Loongson Open-source Community (龙芯开源社区论坛)~~ (Originally at bbs.loongnix.cn, shut down by Loongson Corporation)
+- [LoongArch Unofficial Open-Source Community](https://bbs.loongarch.org) (spiritual successor of bbs.loongnix.cn; predominately Chinese)
 - [Loongson Bar on Baidu Tieba](https://tieba.baidu.com/f?kw=%E9%BE%99%E8%8A%AF&ie=utf-8) (百度贴吧龙芯吧) (Chinese-only)
-- [Telegram Loongson group](https://t.me/loongson_users)（Chinese & English）
+- [Telegram Loongson group](https://t.me/loongson_users) (Chinese & English; predominately Chinese but average English proficiency is high)
 - QQ group 922566903 (Chinese-only)
 
 There may be other QQ groups discussing Loongson topics, but your author does
