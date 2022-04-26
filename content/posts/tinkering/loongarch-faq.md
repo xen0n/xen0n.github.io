@@ -1,5 +1,5 @@
 ---
-title: "非官方但全面的 LoongArch 常见问题解答（2022-04-21 更新）"
+title: "非官方但全面的 LoongArch 常见问题解答（2022-04-26 更新）"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -24,7 +24,7 @@ summary: |
 本文就争取做这么一篇讲述客观事实，对开发者有用的 FAQ 文档。
 由于涉及商业利益的事物不可避免存在争议，本文也力争将多方观点同时整理、平等呈现。
 
-本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-04-21 更新的。
+本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-04-26 更新的。
 
 免责说明：除观点性质的文字之外，本文中体现的信息均取自公开资料。观点性质的文字总会被明确标注出来。
 这些观点性质的文字仅代表个人观点，与本人雇主、龙芯公司等实体均无关。
@@ -34,6 +34,7 @@ summary: |
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
+* 2022-04-26: 更新上游状态；dotnet 的改动完全合并了。
 * 2022-04-21: 小更新。
     - 更新上游状态；
     - 添加 Gentoo LoongArch 项目的外链。
@@ -542,7 +543,7 @@ loongarch64 那边要严重一些。
 * :wrench: -- 正在做，或者做完了暂时还没提交，先接受社区的初步审查
 * :x: -- 还没做
 
-（基于 2022-04-21 的信息整理。）
+（基于 2022-04-26 的信息整理。）
 
 #### 模拟器和固件
 
@@ -577,7 +578,7 @@ loongarch64 那边要严重一些。
 |llvm|:wrench:|[龙芯分支](https://github.com/loongson/llvm-project)|分支的代码**不是**最新；关注 [SixWeining](https://reviews.llvm.org/p/SixWeining/) 以获取最新动态。|
 |rust|:x:|-|被 LLVM 阻挡。|
 |go|:mag:|[龙芯分支](https://github.com/loongson/go/tree/loong64-master)||
-|dotnet|:wrench:|-|移植完了，还没开源。|
+|dotnet|:hourglass_flowing_sand:|-|LoongArch64 支持[已经合并](https://github.com/dotnet/runtime/issues/59561)；将在 7.0 正式发布。|
 |openjdk|:x:|-|状态未知。|
 |v8|:white_check_mark:|-|[已经通过审查、合并](https://chromium-review.googlesource.com/c/v8/v8/+/3089095)；在 9.5.3 版本发布了。|
 

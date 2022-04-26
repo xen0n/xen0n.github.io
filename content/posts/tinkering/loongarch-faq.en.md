@@ -1,5 +1,5 @@
 ---
-title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-04-21)"
+title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-04-26)"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -38,7 +38,7 @@ to take a neutral stance and try to equally present the disagreeing opinions.
 
 This document is being updated from time to time, and changes are always
 accompanied with update dates.
-The version you are currently reading is last updated at 2022-04-21.
+The version you are currently reading is last updated at 2022-04-26.
 (Dates are always in the YYYY-MM-DD format, for ease of tracking changes
 between the original and the translations.)
 
@@ -55,6 +55,7 @@ MIPS ecosystem.
 
 You can view the change details at [this article's Git history](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.en.md).
 
+* 2022-04-26: Updated the upstreaming progress section; support has been merged in dotnet.
 * 2022-04-21: Minor updates.
     - Updated the upstreaming progress section.
     - Added external link to the Gentoo/LoongArch project.
@@ -817,7 +818,7 @@ Table legend:
 * :wrench: -- WIP, or under community pre-review before first upstream submission
 * :x: -- TODO
 
-(Based on information as of 2022-04-21.)
+(Based on information as of 2022-04-26.)
 
 #### Emulator and firmware
 
@@ -852,9 +853,9 @@ Table legend:
 |llvm|:wrench:|[Loongson fork](https://github.com/loongson/llvm-project)|The forked repo does *not* contain up-to-date code; follow [SixWeining](https://reviews.llvm.org/p/SixWeining/)'s activities for progress.|
 |rust|:x:|-|Blocked by LLVM.|
 |go|:mag:|[Loongson fork](https://github.com/loongson/go/tree/loong64-master)||
-|dotnet|:wrench:|-|Porting finished but not open-sourced yet.|
+|dotnet|:hourglass_flowing_sand:|-|LoongArch64 support [has been merged](https://github.com/dotnet/runtime/issues/59561). Will appear in 7.0.|
 |openjdk|:x:|-|Status unknown.|
-|v8|:white_check_mark:|-|[Reviewed and merged](https://chromium-review.googlesource.com/c/v8/v8/+/3089095); released in 9.5.3.|
+|v8|:white_check_mark:|-|[Reviewed and merged](https://chromium-review.googlesource.com/c/v8/v8/+/3089095). Released in 9.5.3.|
 
 #### Other infrastructure projects
 
@@ -863,7 +864,7 @@ Table legend:
 |libbsd|:white_check_mark:|-|LoongArch64 support [has been merged](https://gitlab.freedesktop.org/libbsd/libbsd/-/commit/15200ec7ac97e3f169b6c2f378f0ec2f94663c9f). Released in 0.11.6.|
 |libffi|:mag:|[GitHub PR](https://github.com/libffi/libffi/pull/678)||
 |libunwind|:hourglass_flowing_sand:|-|LoongArch64 support [has been merged](https://git.savannah.nongnu.org/cgit/libunwind.git/commit/?id=c5f1d12c77dea6a60740730c675fc56b3c52b86a).|
-|strace|:white_check_mark:|-|LoongArch64 support [has been](https://github.com/strace/strace/pull/205) [merged](https://github.com/strace/strace/pull/207); released in 5.17.|
+|strace|:white_check_mark:|-|LoongArch64 support [has been](https://github.com/strace/strace/pull/205) [merged](https://github.com/strace/strace/pull/207). Released in 5.17.|
 |systemd|:white_check_mark:|[LoongArch64 porting group fork](https://github.com/loongarch64/systemd)|Basic support appeared in v250 along with new [discoverable partition types][dpt] defined for LoongArch64.|
 |util-linux|:white_check_mark:||Support for the new [discoverable partition types][dpt] already merged. Released in 2.38.|
 
