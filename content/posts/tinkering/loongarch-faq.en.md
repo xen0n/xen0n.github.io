@@ -1,5 +1,5 @@
 ---
-title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-04-26)"
+title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-07-18)"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -38,7 +38,7 @@ to take a neutral stance and try to equally present the disagreeing opinions.
 
 This document is being updated from time to time, and changes are always
 accompanied with update dates.
-The version you are currently reading is last updated at 2022-04-26.
+The version you are currently reading is last updated at 2022-07-18.
 (Dates are always in the YYYY-MM-DD format, for ease of tracking changes
 between the original and the translations.)
 
@@ -55,6 +55,7 @@ MIPS ecosystem.
 
 You can view the change details at [this article's Git history](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.en.md).
 
+* 2022-07-18: Updated the upstreaming progress section.
 * 2022-04-26: Updated the upstreaming progress section; support has been merged in dotnet.
 * 2022-04-21: Minor updates.
     - Updated the upstreaming progress section.
@@ -183,7 +184,7 @@ LoongArch is a register-register architecture which:
 
     Complete with fixed-length instructions, 32 registers, hard-wired zero register, 3-operand instructions, pure computations that do not touch memory, flat memory model, etc...
 
-*   **Some of the LoongArch operations are more powerful than (pre-R6) MIPS and RISC-V.**
+*   **Some of the LoongArch operations are more powerful than (pre-R6) MIPS and RISC-V (RV64G).**
 
     Jumps and <abbr title="position-independent code">PIC</abbr>-related
     operations have wide immediate fields;
@@ -704,11 +705,12 @@ or public presentations done by Loongson themselves
 [syuu]: https://www.slideshare.net/syuu1228/hardware-assited-x86-emulation-on-godson-3-5040660
 [foxsen-pres-202104]: https://www.bilibili.com/video/BV1KZ4y1c7kQ
 
-- New architectural state of the EFLAGS register is added, along with
+- An EFLAGS register is added to the architectural state, along with
   purely EFLAGS-updating counterparts for some basic instructions;
-- New architectural state of the TOP register is added, along with the
+- A TOP register is added to the architectural state, along with the
   corresponding FPU mode bit; semantics of FP register operands is altered to
-  be TOP-based if the x87 emulation mode is enabled.
+  be TOP-based if the x87 emulation mode is enabled (e.g. meaning of `$f2`
+  becomes something like `$f(TOP + 2)` instead).
 
 Loongson later added support for other operations too, such as the ARM
 conditional execution, and the approach should be similar.
@@ -818,13 +820,13 @@ Table legend:
 * :wrench: -- WIP, or under community pre-review before first upstream submission
 * :x: -- TODO
 
-(Based on information as of 2022-04-26.)
+(Based on information as of 2022-07-18.)
 
 #### Emulator and firmware
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|QEMU (target)|:mag:|[Loongson fork](https://github.com/loongson/qemu/tree/tcg-dev)|For emulating LoongArch on other arches.|
+|QEMU (target)|:hourglass_flowing_sand:|[Loongson fork](https://github.com/loongson/qemu/tree/tcg-full-system)|For emulating LoongArch on other arches. Linux-user emulation and basic system emulation support have been merged, support for full system emulation is still brewing.|
 |QEMU (host)|:white_check_mark:|-|For emulating other arches on LoongArch hosts. Released in 7.0.|
 |EDK II|:wrench:|[Loongson fork](https://github.com/loongson/edk2)||
 
@@ -832,37 +834,40 @@ Table legend:
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|Linux|:mag:|[loongarch-next](https://github.com/loongson/linux/tree/loongarch-next)|The [fork at kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/?h=loongarch-next) is outdated.|
+|Linux|:hourglass_flowing_sand:|-|Will appear in v5.19.|
+|Linux|:mag:|loongarch-next [for end users](https://github.com/loongson/linux/tree/loongarch-next), and [for upstream](https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/?h=loongarch-next)|The "for-upstream" loongarch-next branch will only contain code that has passed reviews; head over to GitHub for ready-to-use (bootable) branch.|
 |FreeBSD|:x:|-||
 |OpenBSD|:x:|-||
-|[RT-Thread](https://www.rt-thread.org)|:x:|-|This is an original Chinese RTOS; relationship between its parent company (上海睿赛德电子科技有限公司) and the Loongson Corporation is good, but no LoongArch porting plan has been announced.|
+|[RT-Thread](https://www.rt-thread.org)|:x:|-|This is an original Chinese RTOS. Support has been added in its commercial variant, but not the open-source branch.|
 
 #### GNU Toolchain
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
 |binutils|:white_check_mark:|[Loongson fork](https://github.com/loongson/binutils-gdb)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile.|
-|gcc|:hourglass_flowing_sand:|[Loongson fork](https://github.com/loongson/gcc)|Will appear in 12.1.0.|
-|glibc|:mag:|[Loongson fork (v3)](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v3)||
+|gcc|:white_check_mark:|[Loongson fork](https://github.com/loongson/gcc)|Released in 12.1.0.|
+|glibc|:mag:|[Loongson fork (v6)](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v6)||
 
 #### Other toolchain pieces/languages
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
 |musl|:wrench:|-||
-|llvm|:wrench:|[Loongson fork](https://github.com/loongson/llvm-project)|The forked repo does *not* contain up-to-date code; follow [SixWeining](https://reviews.llvm.org/p/SixWeining/)'s activities for progress.|
-|rust|:x:|-|Blocked by LLVM.|
-|go|:mag:|[Loongson fork](https://github.com/loongson/go/tree/loong64-master)||
+|llvm|:mag:|[Loongson fork](https://github.com/loongson/llvm-project)|The forked repo does *not* contain up-to-date code; follow [SixWeining](https://reviews.llvm.org/p/SixWeining/)'s activities for progress.|
+|rust|:wrench:|-|[Rushed initial bring-up](https://github.com/rust-lang/rust/pull/96971) and [MCP](https://github.com/rust-lang/compiler-team/issues/518).|
+|go|:hourglass_flowing_sand:|-|Will appear in go1.19.|
 |dotnet|:hourglass_flowing_sand:|-|LoongArch64 support [has been merged](https://github.com/dotnet/runtime/issues/59561). Will appear in 7.0.|
 |openjdk|:x:|-|Status unknown.|
 |v8|:white_check_mark:|-|[Reviewed and merged](https://chromium-review.googlesource.com/c/v8/v8/+/3089095). Released in 9.5.3.|
+|nodejs|:white_check_mark:|-|Supported since v18.0.0.|
 
 #### Other infrastructure projects
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
 |libbsd|:white_check_mark:|-|LoongArch64 support [has been merged](https://gitlab.freedesktop.org/libbsd/libbsd/-/commit/15200ec7ac97e3f169b6c2f378f0ec2f94663c9f). Released in 0.11.6.|
-|libffi|:mag:|[GitHub PR](https://github.com/libffi/libffi/pull/678)||
+|libffi|:hourglass_flowing_sand:|[GitHub PR](https://github.com/libffi/libffi/pull/678)||
+|libseccomp|:mag:|[GitHub PR](https://github.com/seccomp/libseccomp/pull/356)||
 |libunwind|:hourglass_flowing_sand:|-|LoongArch64 support [has been merged](https://git.savannah.nongnu.org/cgit/libunwind.git/commit/?id=c5f1d12c77dea6a60740730c675fc56b3c52b86a).|
 |strace|:white_check_mark:|-|LoongArch64 support [has been](https://github.com/strace/strace/pull/205) [merged](https://github.com/strace/strace/pull/207). Released in 5.17.|
 |systemd|:white_check_mark:|[LoongArch64 porting group fork](https://github.com/loongarch64/systemd)|Basic support appeared in v250 along with new [discoverable partition types][dpt] defined for LoongArch64.|
@@ -976,7 +981,7 @@ this, coupled with manual reading, it is easy to master the language as well.
   (Syntactic sugar for `andi $zero, $zero, 0`.)
 * Return from subroutine is `jr $ra`, like MIPS.
   (Syntactic sugar for `jirl $zero, $ra, 0`; different from RISC-V, there is
-  no `ret` as an additional syntactic sugar as of 2022-03-06.)
+  no `ret` as an additional syntactic sugar as of 2022-07-18.)
 * Different from MIPS, there are no parentheses around registers that represent
   memory operands.
   (`ld $a0, 16($a1)` becomes `ld.d $a0, $a1, 16`.)
@@ -1028,11 +1033,11 @@ Linux kernel) are supported.
 Usage of QEMU is outside the scope of this documentation; consult other online
 resources for that.
 
-Note: As of 2022-03-06, target support for LoongArch is not upstreamed yet.
+Note: As of 2022-07-18, target support for LoongArch is not fully upstreamed yet.
 This means you would have to compile
-[Loongson's development branch][qemu-loongson-tcg-dev] yourself.
+[Loongson's development branch][qemu-loongson-tcg-full-system] yourself.
 
-[qemu-loongson-tcg-dev]: https://github.com/loongson/qemu/tree/tcg-dev
+[qemu-loongson-tcg-full-system]: https://github.com/loongson/qemu/tree/tcg-full-system
 
 ## About usage
 
@@ -1057,7 +1062,7 @@ Whatever (reasonably portable piece) you currently use on the other platforms, l
 
 ### What GPUs can be used on LoongArch systems?
 
-As of 2022-03-06, there is no LoongArch CPU in SoC form, so every LoongArch
+As of 2022-07-18, there is no LoongArch CPU in SoC form, so every LoongArch
 system out there invariably includes a bridge chip.
 At this time point, there is only one model of bridge chip, the LS7A1000,
 that can work with the only LoongArch CPU in existence -- the Loongson 3A5000;
@@ -1093,7 +1098,7 @@ Thanks to prioritized hardware access and team collaboration provided by the
 Loongson Corporation, the commercial development around LoongArch is
 progressing very rapidly.
 
-As of 2022-03-06, multiple commercial distributions (developed by China
+As of 2022-07-18, multiple commercial distributions (developed by China
 mainland entities) already provide LoongArch ports.
 These include but are not limited to: (in alphabetical order)
 
@@ -1116,18 +1121,18 @@ After the publication of the various LoongArch documentation, and
 open-sourcing of Loongson forks of fundamental pieces of software,
 the porting pace of community distributions has accelerated as well.
 
-There are several ongoing porting efforts as of 2022-03-06, including but
+There are several ongoing porting efforts as of 2022-07-18, including but
 not limited to: (in alphabetical order)
 
-- Arch Linux
-- CLFS
+- [Arch Linux](https://github.com/archlinux-loongarch64)
+- [CLFS](https://github.com/sunhaiyong1978/CLFS-for-LoongArch)
 - [Gentoo][gentoo-loongarch-home]
 
 [gentoo-loongarch-home]: https://wiki.gentoo.org/wiki/Project:LoongArch
 
 ### Why can't I run closed-source software like WPS Office on community distributions? (aka What's this so-called "old world" and "new world"?)
 
-As of 2022-03-06, all commercial LoongArch distributions are incompatible with
+As of 2022-07-18, all commercial LoongArch distributions are incompatible with
 all community distributions.
 All binary software built on community distributions, and some software
 written in high-level languages and existing in forms like source code or
