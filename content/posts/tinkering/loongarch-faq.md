@@ -1,5 +1,5 @@
 ---
-title: "非官方但全面的 LoongArch 常见问题解答（2022-07-18 更新）"
+title: "非官方但全面的 LoongArch 常见问题解答（2022-07-23 更新）"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -24,7 +24,7 @@ summary: |
 本文就争取做这么一篇讲述客观事实，对开发者有用的 FAQ 文档。
 由于涉及商业利益的事物不可避免存在争议，本文也力争将多方观点同时整理、平等呈现。
 
-本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-07-18 更新的。
+本文内容会不定期更新，所有更新内容都会注明更新日期。您当前看到的版本是 2022-07-23 更新的。
 
 免责说明：除观点性质的文字之外，本文中体现的信息均取自公开资料。观点性质的文字总会被明确标注出来。
 这些观点性质的文字仅代表个人观点，与本人雇主、龙芯公司等实体均无关。
@@ -34,6 +34,7 @@ summary: |
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
+* 2022-07-23: 更新上游状态。
 * 2022-07-18: 更新上游状态。
 * 2022-04-26: 更新上游状态；dotnet 的改动完全合并了。
 * 2022-04-21: 小更新。
@@ -550,7 +551,7 @@ loongarch64 那边要严重一些。
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|QEMU（目标）|:hourglass_flowing_sand:|[龙芯分支](https://github.com/loongson/qemu/tree/tcg-full-system)|在其他架构上模拟 LoongArch。linux-user 与基本的系统模拟支持已经合并，完整系统模拟支持在开发分支。|
+|QEMU（目标）|:hourglass_flowing_sand:|-|在其他架构上模拟 LoongArch。将在 7.1 正式发布。|
 |QEMU（宿主）|:white_check_mark:|-|在 LoongArch 上模拟其他架构。在 7.0 版本发布了。|
 |EDK II|:wrench:|[龙芯分支](https://github.com/loongson/edk2)||
 
@@ -568,9 +569,9 @@ loongarch64 那边要严重一些。
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|binutils|:white_check_mark:|[龙芯分支](https://github.com/loongson/binutils-gdb)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。|
+|binutils|:white_check_mark:|[龙芯分支](https://github.com/loongson/binutils-gdb)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。2.39 可用。|
 |gcc|:white_check_mark:|[龙芯分支](https://github.com/loongson/gcc)|在 gcc 12.1.0 正式发布了。|
-|glibc|:mag:|[龙芯分支（v6）](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v6)||
+|glibc|:hourglass_flowing_sand:|[龙芯分支（v6）](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v6)|已经通过审查，几乎确定将在 2.36 正式发布。|
 
 #### 其他工具链组件、语言
 
@@ -685,9 +686,7 @@ LoongArch 的汇编语言，语法上基本是简化版的 MIPS 汇编，但也�
 系统级模拟（模拟一台完整的龙芯架构计算机）与用户态模拟（基于当前宿主系统的 Linux 内核提供一个龙芯架构的 Linux 系统调用界面）均可以支持。
 QEMU 的使用方法不属于本文范畴，请参考其他在线资料。
 
-注：截至 2022-07-18，LoongArch 的 target 支持没有完整合入 QEMU 主线，这意味着您需要自行编译[龙芯的开发分支][qemu-loongson-tcg-full-system]。
-
-[qemu-loongson-tcg-full-system]: https://github.com/loongson/qemu/tree/tcg-full-system
+注：截至 2022-07-23，LoongArch 的 target 支持已经完整合入 QEMU 主线。待 7.1 版本发布，直接用就好了。
 
 ## 关于使用
 
@@ -717,7 +716,7 @@ BIOS 是个过时一万年的概念，怎么还有人这么叫 :facepalm: 叫**�
 目前（2022-07-18）没有 SoC 形态的 LoongArch CPU，因此 LoongArch 系统中一定存在一块桥片。
 截至该时间点，可与现存唯一 LoongArch CPU——龙芯 3A5000 搭配使用的桥片仅有龙芯 7A1000 一种，
 该桥片集成了一个基于 Vivante GC1000 的 GPU block，搭配龙芯自制的显示控制器 block 使用。
-目前该集显的上游工作正在推进中。（etnaviv 不能直接使用。）
+目前该集显的上游支持工作正在推进中。（etnaviv 不能直接使用。）
 
 关于独显的兼容性，实际上一般而言只要系统上安装有相应的固件（一般无脑安装 linux-firmware 包即可），任何 **使用开源驱动的显卡** 都可正常工作。
 当然，由于老黄大概率不会给 LoongArch 专门编译一份闭源驱动，而开源的 nouveau 又非常拉胯（也怪老黄），近几年的 N 卡基本就别想了。
@@ -734,7 +733,7 @@ AMD Yes！
 
 得益于龙芯公司优先提供的硬件与团队协作等资源，LoongArch 的商业生态建设非常迅速。
 
-截至 2022-07-18，已有多种（中国大陆境内实体开发的）商业 Linux 发行版提供了 LoongArch port（包括但不限于，按字母顺序排列）：
+截至 2022-07-23，已有多种（中国大陆境内实体开发的）商业 Linux 发行版提供了 LoongArch port（包括但不限于，按字母顺序排列）：
 
 - Kylin（由[麒麟软件][kylin-website]开发）
 - Loongnix（由[龙芯公司][loongson-website]开发）
@@ -750,11 +749,13 @@ AMD Yes！
 [loongnix-home]: http://www.loongnix.cn
 
 在 LoongArch 指令集手册等文档发布、以及工具链等基础软件的龙芯分支（fork）开源后，社区发行版也加快了移植的脚步。
-截至 2022-07-18 已经出现了以下的发行版移植项目（包括但不限于，字母顺序排列）：
+截至 2022-07-23 已经出现了以下的发行版移植项目（包括但不限于，字母顺序排列）：
 
 - [Arch Linux](https://github.com/archlinux-loongarch64/)
 - [CLFS](https://github.com/sunhaiyong1978/CLFS-for-LoongArch)
+- [Debian](https://gitee.com/bexsder/debootstrap-la)
 - [Gentoo][gentoo-loongarch-home]
+- [Slackware](https://github.com/shipujin/slackware-loongarch64)
 
 [gentoo-loongarch-home]: https://wiki.gentoo.org/wiki/Project:LoongArch
 

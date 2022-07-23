@@ -1,5 +1,5 @@
 ---
-title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-07-18)"
+title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-07-23)"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -38,7 +38,7 @@ to take a neutral stance and try to equally present the disagreeing opinions.
 
 This document is being updated from time to time, and changes are always
 accompanied with update dates.
-The version you are currently reading is last updated at 2022-07-18.
+The version you are currently reading is last updated at 2022-07-23.
 (Dates are always in the YYYY-MM-DD format, for ease of tracking changes
 between the original and the translations.)
 
@@ -55,6 +55,7 @@ MIPS ecosystem.
 
 You can view the change details at [this article's Git history](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.en.md).
 
+* 2022-07-23: Updated the upstreaming progress section.
 * 2022-07-18: Updated the upstreaming progress section.
 * 2022-04-26: Updated the upstreaming progress section; support has been merged in dotnet.
 * 2022-04-21: Minor updates.
@@ -826,7 +827,7 @@ Table legend:
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|QEMU (target)|:hourglass_flowing_sand:|[Loongson fork](https://github.com/loongson/qemu/tree/tcg-full-system)|For emulating LoongArch on other arches. Linux-user emulation and basic system emulation support have been merged, support for full system emulation is still brewing.|
+|QEMU (target)|:hourglass_flowing_sand:|-|For emulating LoongArch on other arches. Will appear in 7.1.|
 |QEMU (host)|:white_check_mark:|-|For emulating other arches on LoongArch hosts. Released in 7.0.|
 |EDK II|:wrench:|[Loongson fork](https://github.com/loongson/edk2)||
 
@@ -844,9 +845,9 @@ Table legend:
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|binutils|:white_check_mark:|[Loongson fork](https://github.com/loongson/binutils-gdb)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile.|
+|binutils|:white_check_mark:|[Loongson fork](https://github.com/loongson/binutils-gdb)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile. 2.39 should be fully usable.|
 |gcc|:white_check_mark:|[Loongson fork](https://github.com/loongson/gcc)|Released in 12.1.0.|
-|glibc|:mag:|[Loongson fork (v6)](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v6)||
+|glibc|:hourglass_flowing_sand:|[Loongson fork (v6)](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v6)|Passed reviews, almost certain to appear in 2.36.|
 
 #### Other toolchain pieces/languages
 
@@ -1033,11 +1034,8 @@ Linux kernel) are supported.
 Usage of QEMU is outside the scope of this documentation; consult other online
 resources for that.
 
-Note: As of 2022-07-18, target support for LoongArch is not fully upstreamed yet.
-This means you would have to compile
-[Loongson's development branch][qemu-loongson-tcg-full-system] yourself.
-
-[qemu-loongson-tcg-full-system]: https://github.com/loongson/qemu/tree/tcg-full-system
+Note: Target support for LoongArch is fully upstreamed as of 2022-07-23.
+QEMU 7.1.0 should be usable out of the box.
 
 ## About usage
 
@@ -1098,7 +1096,7 @@ Thanks to prioritized hardware access and team collaboration provided by the
 Loongson Corporation, the commercial development around LoongArch is
 progressing very rapidly.
 
-As of 2022-07-18, multiple commercial distributions (developed by China
+As of 2022-07-23, multiple commercial distributions (developed by China
 mainland entities) already provide LoongArch ports.
 These include but are not limited to: (in alphabetical order)
 
@@ -1121,12 +1119,14 @@ After the publication of the various LoongArch documentation, and
 open-sourcing of Loongson forks of fundamental pieces of software,
 the porting pace of community distributions has accelerated as well.
 
-There are several ongoing porting efforts as of 2022-07-18, including but
+There are several ongoing porting efforts as of 2022-07-23, including but
 not limited to: (in alphabetical order)
 
 - [Arch Linux](https://github.com/archlinux-loongarch64)
 - [CLFS](https://github.com/sunhaiyong1978/CLFS-for-LoongArch)
+- [Debian](https://gitee.com/bexsder/debootstrap-la)
 - [Gentoo][gentoo-loongarch-home]
+- [Slackware](https://github.com/shipujin/slackware-loongarch64)
 
 [gentoo-loongarch-home]: https://wiki.gentoo.org/wiki/Project:LoongArch
 
