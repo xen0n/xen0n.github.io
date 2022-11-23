@@ -1,5 +1,5 @@
 ---
-title: "非官方但全面的 LoongArch 常见问题解答（2022-07-23 更新）"
+title: "非官方但全面的 LoongArch 常见问题解答（2022-11-23 更新）"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -34,6 +34,7 @@ summary: |
 
 更新记录明细可在[本文件的 Git 提交历史](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.md)查看。
 
+* 2022-11-23: 更新上游状态。
 * 2022-07-23: 更新上游状态。
 * 2022-07-18: 更新上游状态。
 * 2022-04-26: 更新上游状态；dotnet 的改动完全合并了。
@@ -545,44 +546,43 @@ loongarch64 那边要严重一些。
 * :wrench: -- 正在做，或者做完了暂时还没提交，先接受社区的初步审查
 * :x: -- 还没做
 
-（基于 2022-07-18 的信息整理。）
+（基于 2022-11-23 的信息整理。）
 
 #### 模拟器和固件
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|QEMU（目标）|:hourglass_flowing_sand:|-|在其他架构上模拟 LoongArch。将在 7.1 正式发布。|
+|QEMU（目标）|:white_check_mark:|-|在其他架构上模拟 LoongArch。在 7.1 版本发布了，7.2 版本完全可用。|
 |QEMU（宿主）|:white_check_mark:|-|在 LoongArch 上模拟其他架构。在 7.0 版本发布了。|
-|EDK II|:wrench:|[龙芯分支](https://github.com/loongson/edk2)||
+|EDK II|:hourglass_flowing_sand:|[龙芯分支](https://github.com/loongson/edk2)|[合并了](https://github.com/tianocore/edk2/pull/3474)。[QEMU 环境固件支持](https://github.com/tianocore/edk2-platforms/pull/46)正在接受审查。|
 
 #### 内核
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|Linux（系统调用界面）|:hourglass_flowing_sand:|-|将在 v5.19 正式发布。|
-|Linux（完整支持）|:mag:|[面向用户分支](https://github.com/loongson/linux/tree/loongarch-next)、[loongarch-next 上游分支](https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/?h=loongarch-next)|上游分支只会放通过了代码审查的内容，可直接用的代码要去龙芯 GitHub 找。|
+|Linux|:white_check_mark:|[面向用户分支](https://github.com/loongson/linux/tree/loongarch-next)、[loongarch-next 上游分支](https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/?h=loongarch-next)|内核 ABI 在 v5.19 冻结了，irqchip 变更在 v6.0 集成了，初始 EFI 引导支持进 v6.1 了。预期在 v6.2 可以开箱即用。<br />上游分支只会放通过了代码审查的内容，可直接用的代码要去龙芯 GitHub 找。|
 |FreeBSD|:x:|-||
 |OpenBSD|:x:|-||
-|[RT-Thread](https://www.rt-thread.org)|:x:|-|商业版已经适配，开源版没有支持。|
+|[RT-Thread](https://www.rt-thread.org)|:x:|-|商业版（专业版）已经适配，开源版没有支持。|
 
 #### GNU 工具链
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|binutils|:white_check_mark:|[龙芯分支](https://github.com/loongson/binutils-gdb)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。2.39 可用。|
-|gcc|:white_check_mark:|[龙芯分支](https://github.com/loongson/gcc)|在 gcc 12.1.0 正式发布了。|
-|glibc|:hourglass_flowing_sand:|[龙芯分支（v6）](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v6)|已经通过审查，几乎确定将在 2.36 正式发布。|
+|binutils|:white_check_mark:|[龙芯分支](https://github.com/loongson/binutils-gdb)|2.38 版本添加了初步支持，但不完整；<abbr title="processor supplement ABI">psABI</abbr> 已经改得不兼容了。2.39 可用，但建议等 2.40 以享受完整的新 psABI 支持。|
+|gcc|:white_check_mark:|[龙芯分支](https://github.com/loongson/gcc)|在 gcc 12.1.0 正式发布了，但现阶段建议追 13.0.0 快照版本，以获得新 psABI 支持。|
+|glibc|:white_check_mark:|[龙芯分支](https://github.com/loongson/glibc)|在 2.36 正式发布了。|
 
 #### 其他工具链组件、语言
 
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
-|musl|:wrench:|-||
-|llvm|:mag:|[龙芯分支](https://github.com/loongson/llvm-project)|分支的代码**不是**最新；关注 [SixWeining](https://reviews.llvm.org/p/SixWeining/) 以获取最新动态。|
-|rust|:wrench:|-|[抢跑的初始移植](https://github.com/rust-lang/rust/pull/96971)、[MCP](https://github.com/rust-lang/compiler-team/issues/518)。]|
-|go|:hourglass_flowing_sand:|-|将在 go1.19 正式发布。|
-|dotnet|:hourglass_flowing_sand:|-|LoongArch64 支持[已经合并](https://github.com/dotnet/runtime/issues/59561)；将在 7.0 正式发布。|
-|openjdk|:x:|-|状态未知。|
+|musl|:mag:|[龙芯分支](https://github.com/loongson/musl)|[正在接受代码审查](https://www.openwall.com/lists/musl/2022/11/15/1)。|
+|llvm|:hourglass_flowing_sand:|[龙芯分支](https://github.com/loongson/llvm-project)|分支的代码**不是**最新；关注 [SixWeining](https://reviews.llvm.org/p/SixWeining/) 以获取最新动态。16.0.0 应当可以开箱即用。|
+|rust|:mag:|-|[抢跑的初始移植](https://github.com/rust-lang/rust/pull/96971)、[MCP](https://github.com/rust-lang/compiler-team/issues/518)。]|
+|go|:white_check_mark:|-|在 go1.19 正式发布了。|
+|dotnet|:white_check_mark:|-|LoongArch64 支持[已经合并](https://github.com/dotnet/runtime/issues/59561)；在 7.0 正式发布了。|
+|openjdk|:wrench:|[龙芯分支](https://github.com/loongson/jdk)、[龙芯 jdk8u 分支](https://github.com/loongson/jdk8u)|构建支持已上游，JIT 移植正在进行。|
 |v8|:white_check_mark:|-|[已经通过审查、合并](https://chromium-review.googlesource.com/c/v8/v8/+/3089095)；在 9.5.3 版本发布了。|
 |nodejs|:white_check_mark:|-|在 v18.0.0 版本支持了。|
 
@@ -591,9 +591,9 @@ loongarch64 那边要严重一些。
 |项目|状态|开发代码库|备注|
 |-------|:----:|--------------|-----|
 |libbsd|:white_check_mark:|-|LoongArch64 支持[已经合并](https://gitlab.freedesktop.org/libbsd/libbsd/-/commit/15200ec7ac97e3f169b6c2f378f0ec2f94663c9f)；在 0.11.6 版本发布了。|
-|libffi|:hourglass_flowing_sand:|[GitHub PR](https://github.com/libffi/libffi/pull/678)||
-|libseccomp|:mag:|[GitHub PR](https://github.com/seccomp/libseccomp/pull/356)||
-|libunwind|:hourglass_flowing_sand:|-|LoongArch64 支持[已经合并](https://git.savannah.nongnu.org/cgit/libunwind.git/commit/?id=c5f1d12c77dea6a60740730c675fc56b3c52b86a)。|
+|libffi|:white_check_mark:|-|[已合并](https://github.com/libffi/libffi/pull/678)，[已改进](https://github.com/libffi/libffi/pull/723)，在 3.4.3 版本发布了。|
+|libseccomp|:mag:|[GitHub PR](https://github.com/seccomp/libseccomp/pull/356)|99% 完成了。|
+|libunwind|:hourglass_flowing_sand:|-|LoongArch64 支持[已经合并](https://git.savannah.nongnu.org/cgit/libunwind.git/commit/?id=c5f1d12c77dea6a60740730c675fc56b3c52b86a)，在等上游发版。|
 |strace|:white_check_mark:|-|LoongArch64 支持[已经](https://github.com/strace/strace/pull/205)[合并](https://github.com/strace/strace/pull/207)；在 5.17 版本发布了。|
 |systemd|:white_check_mark:|[LoongArch64 组织分支](https://github.com/loongarch64/systemd)|基本支持已经进入 v250 版本，以及为 LoongArch64 新增定义了一些[可发现分区类型][dpt]。|
 |util-linux|:white_check_mark:|-|新的[可发现分区类型][dpt]已经合并。在 2.38 版本发布了。|
@@ -655,11 +655,11 @@ LoongArch 的汇编语言，语法上基本是简化版的 MIPS 汇编，但也�
 
 * 与 MIPS 相同，寄存器都要带 `$` 前缀。（与 RISC-V 不同。）
 * 与 RISC-V 相同，ABI 也将寄存器分为 `$a*` `$t*` `$s*` 三大类。（与 MIPS 不同，没有单独的 `$v*`，也没有 `$k*`。）
-* PIC 写法与 RISC-V 相同，与 MIPS 不同。（abicall 调用约定是受 R6 之前的 MIPS 指令集功能限制而不得已的产物，没有带到新时代的必要。）
+* PIC 写法部分类似 RISC-V（PLT 代码片段中用到了 `pcaddu12i`，与 RISC-V `auipc` 等价），部分类似 AArch64（`pcalau12i` 等价于 AArch64 `adrp`，ELF psABI v2.00 的所有 PC 相对重定位都采用它）。二者与 MIPS 做法都存在天壤之别。（abicall 调用约定是受 R6 之前的 MIPS 指令集功能限制而不得已的产物，没有带到新时代的必要。）
 * TLS（线程本地存储）写法与 RISC-V 相同。（与 MIPS 不同，LoongArch 有专门的 `$tp` 寄存器了，不用 `rdhwr` 绕了。）
 * 与 MIPS 相同，寄存器移动指令也叫 `move`（与 x86、RISC-V 不同，不叫 `mov` 或者 `mv`。）
 * 与多数架构相同，空操作也叫 `nop`。（是 `andi $zero, $zero, 0` 的语法糖。）
-* 与 MIPS 相同，过程调用返回也叫 `jr $ra`。（是 `jirl $zero, $ra, 0` 的语法糖。与 RISC-V 不同，截至 2022.02.13，没有 `ret` 的语法糖。）
+* 与 MIPS 相同，过程调用返回也叫 `jr $ra`。（是 `jirl $zero, $ra, 0` 的语法糖。更方便的 `ret` 写法从 binutils 2.40 和 LLVM 16 起才能用。）
 * 与 MIPS 不同，代表内存地址的寄存器操作数不要加括号。（`ld $a0, 16($a1)` 变成 `ld.d $a0, $a1, 16`。）
 * 装载立即数的伪指令也要加宽度后缀。（基本 `li.w` 就够用了，很少装载 64 位数。）
 * 大部分指令操作数的书写顺序都是先寄存器后立即数，每组内从低位到高位。按照手册语法有特例！
@@ -686,7 +686,10 @@ LoongArch 的汇编语言，语法上基本是简化版的 MIPS 汇编，但也�
 系统级模拟（模拟一台完整的龙芯架构计算机）与用户态模拟（基于当前宿主系统的 Linux 内核提供一个龙芯架构的 Linux 系统调用界面）均可以支持。
 QEMU 的使用方法不属于本文范畴，请参考其他在线资料。
 
-注：截至 2022-07-23，LoongArch 的 target 支持已经完整合入 QEMU 主线。待 7.1 版本发布，直接用就好了。
+注：截至 2022-07-23，LoongArch 的 target 支持已经完整合入 QEMU 主线，但 7.1
+版本仍然存在一些 bugs，以至于这个版本的 LoongArch linux-user 模拟实质上不可用，
+系统模拟也受到一定影响。
+QEMU 7.2 应该可以开箱即用。
 
 ## 关于使用
 
@@ -749,11 +752,12 @@ AMD Yes！
 [loongnix-home]: http://www.loongnix.cn
 
 在 LoongArch 指令集手册等文档发布、以及工具链等基础软件的龙芯分支（fork）开源后，社区发行版也加快了移植的脚步。
-截至 2022-07-23 已经出现了以下的发行版移植项目（包括但不限于，字母顺序排列）：
+截至 2022-11-23 已经出现了以下的发行版移植项目（包括但不限于，字母顺序排列）：
 
-- [Arch Linux](https://github.com/archlinux-loongarch64/)
+- [Arch Linux](https://github.com/loongarchlinux)
 - [CLFS](https://github.com/sunhaiyong1978/CLFS-for-LoongArch)
-- [Debian](https://gitee.com/bexsder/debootstrap-la)
+- [Debian](https://wiki.debian.org/Ports/loongarch64)
+- [Fedora Remix LoongArch](https://github.com/fedora-remix-loongarch/releases-info)
 - [Gentoo][gentoo-loongarch-home]
 - [Slackware](https://github.com/shipujin/slackware-loongarch64)
 

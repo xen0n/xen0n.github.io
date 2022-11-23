@@ -1,5 +1,5 @@
 ---
-title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-07-23)"
+title: "The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-11-23)"
 date: 2022-02-12T14:55:00+08:00
 draft: false
 ShowToc: true
@@ -55,6 +55,7 @@ MIPS ecosystem.
 
 You can view the change details at [this article's Git history](https://github.com/xen0n/xen0n.github.io/commits/main/content/posts/tinkering/loongarch-faq.en.md).
 
+* 2022-11-23: Updated the upstreaming progress section.
 * 2022-07-23: Updated the upstreaming progress section.
 * 2022-07-18: Updated the upstreaming progress section.
 * 2022-04-26: Updated the upstreaming progress section; support has been merged in dotnet.
@@ -821,44 +822,43 @@ Table legend:
 * :wrench: -- WIP, or under community pre-review before first upstream submission
 * :x: -- TODO
 
-(Based on information as of 2022-07-18.)
+(Based on information as of 2022-11-23.)
 
 #### Emulator and firmware
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|QEMU (target)|:hourglass_flowing_sand:|-|For emulating LoongArch on other arches. Will appear in 7.1.|
+|QEMU (target)|:white_check_mark:|-|For emulating LoongArch on other arches. Released in 7.1, fully usable in 7.2.|
 |QEMU (host)|:white_check_mark:|-|For emulating other arches on LoongArch hosts. Released in 7.0.|
-|EDK II|:wrench:|[Loongson fork](https://github.com/loongson/edk2)||
+|EDK II|:hourglass_flowing_sand:|-|[Merged](https://github.com/tianocore/edk2/pull/3474). [QEMU firmware support](https://github.com/tianocore/edk2-platforms/pull/46) pending review.|
 
 #### Kernels
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|Linux|:hourglass_flowing_sand:|-|Will appear in v5.19.|
-|Linux|:mag:|loongarch-next [for end users](https://github.com/loongson/linux/tree/loongarch-next), and [for upstream](https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/?h=loongarch-next)|The "for-upstream" loongarch-next branch will only contain code that has passed reviews; head over to GitHub for ready-to-use (bootable) branch.|
+|Linux|:mag:|loongarch-next [for end users](https://github.com/loongson/linux/tree/loongarch-next), and [for upstream](https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/?h=loongarch-next)|Kernel ABI finalized in v5.19, irqchip changes integrated in v6.0, initial EFI boot support went in v6.1. Out-of-the-box usability expected in v6.2.<br />The "for-upstream" loongarch-next branch will only contain code that has passed reviews; head over to GitHub for ready-to-use (bootable) branch.|
 |FreeBSD|:x:|-||
 |OpenBSD|:x:|-||
-|[RT-Thread](https://www.rt-thread.org)|:x:|-|This is an original Chinese RTOS. Support has been added in its commercial variant, but not the open-source branch.|
+|[RT-Thread](https://www.rt-thread.org)|:x:|-|This is an original Chinese RTOS. Support has been added in its commercial/professional edition, but not the open-source branch.|
 
 #### GNU Toolchain
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|binutils|:white_check_mark:|[Loongson fork](https://github.com/loongson/binutils-gdb)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile. 2.39 should be fully usable.|
-|gcc|:white_check_mark:|[Loongson fork](https://github.com/loongson/gcc)|Released in 12.1.0.|
-|glibc|:hourglass_flowing_sand:|[Loongson fork (v6)](https://github.com/loongson/glibc/tree/loongarch_2_36_upstream_v6)|Passed reviews, almost certain to appear in 2.36.|
+|binutils|:white_check_mark:|[Loongson fork](https://github.com/loongson/binutils-gdb)|Initial support appeared in 2.38, but is incomplete; <abbr title="processor supplement ABI">psABI</abbr> already incompatibly revised meanwhile. 2.39 is usable but it is recommended to wait for 2.40 for full support of the new psABI.|
+|gcc|:white_check_mark:|[Loongson fork](https://github.com/loongson/gcc)|Released in 12.1.0, but it is recommended to stay on bleeding edge (i.e. 13.0.0 snapshots) for the new ELF psABI.|
+|glibc|:white_check_mark:|[Loongson fork](https://github.com/loongson/glibc)|Released in 2.36.|
 
 #### Other toolchain pieces/languages
 
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
-|musl|:wrench:|-||
-|llvm|:mag:|[Loongson fork](https://github.com/loongson/llvm-project)|The forked repo does *not* contain up-to-date code; follow [SixWeining](https://reviews.llvm.org/p/SixWeining/)'s activities for progress.|
-|rust|:wrench:|-|[Rushed initial bring-up](https://github.com/rust-lang/rust/pull/96971) and [MCP](https://github.com/rust-lang/compiler-team/issues/518).|
-|go|:hourglass_flowing_sand:|-|Will appear in go1.19.|
-|dotnet|:hourglass_flowing_sand:|-|LoongArch64 support [has been merged](https://github.com/dotnet/runtime/issues/59561). Will appear in 7.0.|
-|openjdk|:x:|-|Status unknown.|
+|musl|:mag:|[Loongson fork](https://github.com/loongson/musl)|[Under review](https://www.openwall.com/lists/musl/2022/11/15/1).|
+|llvm|:hourglass_flowing_sand:|[Loongson fork](https://github.com/loongson/llvm-project)|The forked repo does *not* contain up-to-date code; follow [SixWeining](https://reviews.llvm.org/p/SixWeining/)'s activities for progress. 16.0.0 should be usable out-of-the-box.|
+|rust|:mag:|-|[Rushed initial bring-up](https://github.com/rust-lang/rust/pull/96971) and [MCP](https://github.com/rust-lang/compiler-team/issues/518).|
+|go|:white_check_mark:|-|[Released in go1.19](https://go.dev/doc/go1.19#loong64).|
+|dotnet|:white_check_mark:|-|LoongArch64 support [has been merged](https://github.com/dotnet/runtime/issues/59561). Released in 7.0.|
+|openjdk|:wrench:|[Loongson fork](https://github.com/loongson/jdk), [Loongson's jdk8u fork](https://github.com/loongson/jdk8u)|Build support upstreamed, JIT porting ongoing.|
 |v8|:white_check_mark:|-|[Reviewed and merged](https://chromium-review.googlesource.com/c/v8/v8/+/3089095). Released in 9.5.3.|
 |nodejs|:white_check_mark:|-|Supported since v18.0.0.|
 
@@ -867,9 +867,9 @@ Table legend:
 |Project|Status|Dev repository|Notes|
 |-------|:----:|--------------|-----|
 |libbsd|:white_check_mark:|-|LoongArch64 support [has been merged](https://gitlab.freedesktop.org/libbsd/libbsd/-/commit/15200ec7ac97e3f169b6c2f378f0ec2f94663c9f). Released in 0.11.6.|
-|libffi|:hourglass_flowing_sand:|[GitHub PR](https://github.com/libffi/libffi/pull/678)||
-|libseccomp|:mag:|[GitHub PR](https://github.com/seccomp/libseccomp/pull/356)||
-|libunwind|:hourglass_flowing_sand:|-|LoongArch64 support [has been merged](https://git.savannah.nongnu.org/cgit/libunwind.git/commit/?id=c5f1d12c77dea6a60740730c675fc56b3c52b86a).|
+|libffi|:white_check_mark:|-|[Merged](https://github.com/libffi/libffi/pull/678), [improved](https://github.com/libffi/libffi/pull/723), and released in 3.4.3.|
+|libseccomp|:mag:|[GitHub PR](https://github.com/seccomp/libseccomp/pull/356)|99% done.|
+|libunwind|:hourglass_flowing_sand:|-|LoongArch64 support [has been merged](https://git.savannah.nongnu.org/cgit/libunwind.git/commit/?id=c5f1d12c77dea6a60740730c675fc56b3c52b86a). Awaiting upstream release.|
 |strace|:white_check_mark:|-|LoongArch64 support [has been](https://github.com/strace/strace/pull/205) [merged](https://github.com/strace/strace/pull/207). Released in 5.17.|
 |systemd|:white_check_mark:|[LoongArch64 porting group fork](https://github.com/loongarch64/systemd)|Basic support appeared in v250 along with new [discoverable partition types][dpt] defined for LoongArch64.|
 |util-linux|:white_check_mark:||Support for the new [discoverable partition types][dpt] already merged. Released in 2.38.|
@@ -967,8 +967,10 @@ this, coupled with manual reading, it is easy to master the language as well.
 * The <abbr title="application binary interface">ABI</abbr> divides registers
   into three classes `$a*` `$t*` `$s*`, like RISC-V.
   (Different from MIPS; there is no distinct `$v*` nor `$k*`.)
-* The way of doing <abbr title="position-independent code">PIC</abbr> is the
-  same as RISC-V, different from MIPS.
+* The way of doing <abbr title="position-independent code">PIC</abbr> is partly
+  like RISC-V (`pcaddu12i` is equivalent to RISC-V `auipc`, used in PLT stubs),
+  and partly like AArch64 (`pcalau12i` is equivalent to AArch64 `adrp`, used
+  by all ELF psABI v2.00 relocations); both usages are vastly different from MIPS.
   (The abicall convention is a compromise to the limited functionality of the
   pre-R6 MIPS <abbr title="instruction set architecture">ISA</abbr>, and as
   such, there is no point carrying it over to the new era.)
@@ -981,8 +983,8 @@ this, coupled with manual reading, it is easy to master the language as well.
 * The no-op is spelled `nop` as with most architectures.
   (Syntactic sugar for `andi $zero, $zero, 0`.)
 * Return from subroutine is `jr $ra`, like MIPS.
-  (Syntactic sugar for `jirl $zero, $ra, 0`; different from RISC-V, there is
-  no `ret` as an additional syntactic sugar as of 2022-07-18.)
+  (Syntactic sugar for `jirl $zero, $ra, 0`; the even more convenient `ret`
+  will only be available from binutils 2.40 and LLVM 16 onwards.)
 * Different from MIPS, there are no parentheses around registers that represent
   memory operands.
   (`ld $a0, 16($a1)` becomes `ld.d $a0, $a1, 16`.)
@@ -1034,8 +1036,11 @@ Linux kernel) are supported.
 Usage of QEMU is outside the scope of this documentation; consult other online
 resources for that.
 
-Note: Target support for LoongArch is fully upstreamed as of 2022-07-23.
-QEMU 7.1.0 should be usable out of the box.
+Note: Target support for LoongArch is fully upstreamed as of 2022-07-23,
+but QEMU 7.1.0 still contained bugs that effectively prevented linux-user
+emulation of LoongArch from working, and system emulation mildly suffered as
+well.
+QEMU 7.2.0 should be usable out of the box.
 
 ## About usage
 
@@ -1119,12 +1124,13 @@ After the publication of the various LoongArch documentation, and
 open-sourcing of Loongson forks of fundamental pieces of software,
 the porting pace of community distributions has accelerated as well.
 
-There are several ongoing porting efforts as of 2022-07-23, including but
+There are several ongoing porting efforts as of 2022-11-23, including but
 not limited to: (in alphabetical order)
 
-- [Arch Linux](https://github.com/archlinux-loongarch64)
+- [Arch Linux](https://github.com/loongarchlinux)
 - [CLFS](https://github.com/sunhaiyong1978/CLFS-for-LoongArch)
-- [Debian](https://gitee.com/bexsder/debootstrap-la)
+- [Debian](https://wiki.debian.org/Ports/loongarch64)
+- [Fedora Remix LoongArch](https://github.com/fedora-remix-loongarch/releases-info)
 - [Gentoo][gentoo-loongarch-home]
 - [Slackware](https://github.com/shipujin/slackware-loongarch64)
 
