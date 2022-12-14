@@ -206,8 +206,8 @@ target     prot opt source               destination
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>ip_error</span>(<span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb)
 </span></span><span style=display:flex><span>{
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>struct</span> in_device <span style=color:#f92672>*</span>in_dev <span style=color:#f92672>=</span> __in_dev_get_rcu(skb<span style=color:#f92672>-&gt;</span>dev);
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>struct</span> rtable <span style=color:#f92672>*</span>rt <span style=color:#f92672>=</span> skb_rtable(skb);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>struct</span> in_device <span style=color:#f92672>*</span>in_dev <span style=color:#f92672>=</span> <span style=color:#a6e22e>__in_dev_get_rcu</span>(skb<span style=color:#f92672>-&gt;</span>dev);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>struct</span> rtable <span style=color:#f92672>*</span>rt <span style=color:#f92672>=</span> <span style=color:#a6e22e>skb_rtable</span>(skb);
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>struct</span> inet_peer <span style=color:#f92672>*</span>peer;
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> now;
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>struct</span> net <span style=color:#f92672>*</span>net;
@@ -218,15 +218,15 @@ target     prot opt source               destination
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>in_dev)
 </span></span><span style=display:flex><span>                <span style=color:#66d9ef>goto</span> out;
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        net <span style=color:#f92672>=</span> dev_net(rt<span style=color:#f92672>-&gt;</span>dst.dev);
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>IN_DEV_FORWARD(in_dev)) {
+</span></span><span style=display:flex><span>        net <span style=color:#f92672>=</span> <span style=color:#a6e22e>dev_net</span>(rt<span style=color:#f92672>-&gt;</span>dst.dev);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>IN_DEV_FORWARD</span>(in_dev)) {
 </span></span><span style=display:flex><span>                <span style=color:#66d9ef>switch</span> (rt<span style=color:#f92672>-&gt;</span>dst.error) {
 </span></span><span style=display:flex><span>                <span style=color:#66d9ef>case</span> EHOSTUNREACH:
-</span></span><span style=display:flex><span>                        IP_INC_STATS_BH(net, IPSTATS_MIB_INADDRERRORS);
+</span></span><span style=display:flex><span>                        <span style=color:#a6e22e>IP_INC_STATS_BH</span>(net, IPSTATS_MIB_INADDRERRORS);
 </span></span><span style=display:flex><span>                        <span style=color:#66d9ef>break</span>;
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>                <span style=color:#66d9ef>case</span> ENETUNREACH:
-</span></span><span style=display:flex><span>                        IP_INC_STATS_BH(net, IPSTATS_MIB_INNOROUTES);
+</span></span><span style=display:flex><span>                        <span style=color:#a6e22e>IP_INC_STATS_BH</span>(net, IPSTATS_MIB_INNOROUTES);
 </span></span><span style=display:flex><span>                        <span style=color:#66d9ef>break</span>;
 </span></span><span style=display:flex><span>                }
 </span></span><span style=display:flex><span>                <span style=color:#66d9ef>goto</span> out;
@@ -234,7 +234,7 @@ target     prot opt source               destination
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>        <span style=color:#75715e>/* ... */</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>out:    kfree_skb(skb);
+</span></span><span style=display:flex><span>out:    <span style=color:#a6e22e>kfree_skb</span>(skb);
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></div><p>嗯&mldr; 这说明 <code>IN_DEV_FORWARD(in_dev)</code> 必然为假, 就是说 <code>/proc/sys/net/ipv4/conf/xxx/forwarding</code>
