@@ -95,7 +95,7 @@ CSS 的感觉一样. 那么我们的想法就是:
 编译结果输出到 `_templates/` 目录 (被 .gitignore 了), 又加了个 BrowserSync
 调试的功能, 其他的确实没什么了.
 
-[blog-dir-src]: https://github.com/xen0n/xen0n.github.io/tree/master/_src
+[blog-dir-src]: https://github.com/xen0n/xen0n.github.io/tree/old-site/_src
 
 
 ### Python 静态网页生成器
@@ -103,7 +103,7 @@ CSS 的感觉一样. 那么我们的想法就是:
 这是主要工作; 代码在 [`_generator/`][blog-dir-generator] 目录里, 实际上是个独立的项目, 只不过暂且没什么闲情逸致推到 PyPI 上而已...
 项目名字叫 Pybble (发音若 pebble), 是 `py-blog` 简化发音而来的.
 
-[blog-dir-generator]: https://github.com/xen0n/xen0n.github.io/tree/master/_generator
+[blog-dir-generator]: https://github.com/xen0n/xen0n.github.io/tree/old-site/_generator
 
 Pybble 的架构是受 Gulp 启发的, 也是基于流的结构. 处理流程放在 `pybble.process` 包里 (`process` 这个名字也许会换掉, 不过先这么用着好了):
 
