@@ -104,3 +104,11 @@ Title = 'write(2)'
 Content = """
 Random thoughts from the wandering craftsman.
 """
+
+# nitty-gritty details
+[module]
+
+[[module.mounts]]
+source = 'content'
+target = 'content'
+excludeFiles = ['**/*.d']
