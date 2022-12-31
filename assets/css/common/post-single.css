@@ -215,6 +215,11 @@
     margin: 20px 0;
     padding: 0 14px;
     border-inline-start: 3px solid var(--primary);
+    color: var(--secondary);
+}
+
+.post-content blockquote a {
+    color: var(--secondary);
 }
 
 .post-content hr {
