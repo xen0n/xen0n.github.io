@@ -9,6 +9,11 @@
     one : "预计阅读时间: 1 分钟"
     other: "预计阅读时间: {{ .Count }} 分钟"
 
+- id: words
+  translation:
+    one: "1 字"
+    other: "{{ .Count }} 字"
+
 - id: toc
   translation: "目录"
 
