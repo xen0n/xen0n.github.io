@@ -70,6 +70,9 @@ ShowShareButtons = false
 ShowPostNavLinks = true
 ShowBreadCrumbs = true
 
+# customized params
+icpBeian = '苏ICP备17027553号-1'
+
 [[params.socialIcons]]
 name = 'GitHub'
 url = 'https://github.com/xen0n'
