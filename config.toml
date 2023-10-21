@@ -23,12 +23,12 @@ home = ['HTML', 'RSS']
 languageName = ':cn:'
 languageAltTitle = '简体中文（大陆普通话）'
 weight = 1
-copyright = 'WANG Xuerui; 以 cc-by-nc-sa 4.0 授权'
+copyright = 'WANG Xuerui; 以 [cc-by-nc-sa 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans) 授权'
 [languages.en]
 languageName = ':us:'
 languageAltTitle = 'English (US)'
 weight = 2
-copyright = 'WANG Xuerui; licensed with cc-by-nc-sa 4.0'
+copyright = 'WANG Xuerui; licensed with [cc-by-nc-sa 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)'
 
 # menu
 [[languages.zh-cmn-hans-cn.menu.main]]
