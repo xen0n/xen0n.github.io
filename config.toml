@@ -21,12 +21,10 @@ home = ['HTML', 'RSS']
 [languages]
 [languages.zh-cmn-hans-cn]
 languageName = ':cn:'
-languageAltTitle = '简体中文（大陆普通话）'
 weight = 1
 copyright = 'WANG Xuerui; 以 [cc-by-nc-sa 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans) 授权'
 [languages.en]
 languageName = ':us:'
-languageAltTitle = 'English (US)'
 weight = 2
 copyright = 'WANG Xuerui; licensed with [cc-by-nc-sa 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)'
 
@@ -90,6 +88,7 @@ name = 'RSS'
 url = 'index.xml'
 
 [languages.zh-cmn-hans-cn.params]
+languageAltTitle = '简体中文（大陆普通话）'
 description = '漫步匠人的只言片语'
 DateFormat = '2006/01/02'
 
@@ -100,6 +99,7 @@ Content = """
 """
 
 [languages.en.params]
+languageAltTitle = 'English (US)'
 description = 'random thoughts from the wandering craftsman'
 
 [languages.en.params.homeInfoParams]
