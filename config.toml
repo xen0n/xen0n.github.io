@@ -84,6 +84,9 @@ url = 'https://space.bilibili.com/192484'
 name = 'NeteaseCloudMusic'
 url = 'https://music.163.com/#/user/home?id=79360463'
 [[params.socialIcons]]
+name = 'PGPKey'
+url = 'https://keyserver.ubuntu.com/pks/lookup?search=0xc01f7214bc931414&fingerprint=on&op=index'
+[[params.socialIcons]]
 name = 'RSS'
 url = 'index.xml'
 
