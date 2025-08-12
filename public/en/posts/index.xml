@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on write(2)</title><link>https://blog.xen0n.name/en/posts/</link><description>Recent content in Posts on write(2)</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>WANG Xuerui; licensed with [cc-by-nc-sa 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</copyright><lastBuildDate>Sat, 12 Feb 2022 14:55:00 +0800</lastBuildDate><atom:link href="https://blog.xen0n.name/en/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>The unofficial yet comprehensive FAQ for LoongArch (last updated 2022-11-23)</title><link>https://blog.xen0n.name/en/posts/tinkering/loongarch-faq/</link><pubDate>Sat, 12 Feb 2022 14:55:00 +0800</pubDate><guid>https://blog.xen0n.name/en/posts/tinkering/loongarch-faq/</guid><description>Things you probably should know about the LoongArch, compiled and written by an independent developer.
+Translated from the Chinese version with the addition of some helpful language and cultural background.</description></item><item><title>CyanogenMod for Meizu MX4: CM12.1 20160411 testing release</title><link>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-11/</link><pubDate>Tue, 12 Apr 2016 00:20:00 +0800</pubDate><guid>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-11/</guid><description>&lt;h2 id="disclaimer-and-acknowledgements">Disclaimer and acknowledgements&lt;/h2>
+&lt;p>&lt;strong>All your actions with your phone are at your own risk; the author of this
+ROM is not liable.&lt;/strong>&lt;/p>
+&lt;p>This ROM is compiled from CyanogenMod 12.1 sources with own modifications
+(which are open-sourced on GitHub). I&amp;rsquo;d like to acknowledge the following
+people for their respective efforts:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://4pda.ru/forum/index.php?showuser=4461476">kirill8000&lt;/a> and &lt;a href="http://4pda.ru/forum/index.php?showuser=610367">kkk4&lt;/a> for unlocking bootloader of ordinary MX4&amp;rsquo;s&lt;/li>
+&lt;li>&lt;a href="https://github.com/axet">@axet&lt;/a> and &lt;a href="https://github.com/fire855">@fire855&lt;/a> for the general MTK porting efforts&lt;/li>
+&lt;li>&lt;a href="https://github.com/DerTeufel">@DerTeufel&lt;/a> for the information regarding to the MTK GPS implementation&lt;/li>
+&lt;li>cofface&amp;rsquo;s CWM recovery&lt;/li>
+&lt;li>Daxiaamu&amp;rsquo;s one-key bootloader unlocking app (in Chinese)&lt;/li>
+&lt;li>Bugfixes and various contributions from @ccfxny (&lt;a href="http://weibo.com/ccfxny">Weibo&lt;/a>, &lt;a href="https://github.com/ccfxny">GitHub&lt;/a>)&lt;/li>
+&lt;/ul>
+&lt;h2 id="announcement-changelog">Announcement changelog&lt;/h2>
+&lt;p>&lt;em>NOTE: All times in this announcement are UTC+8.&lt;/em>&lt;/p></description></item><item><title>CyanogenMod for Meizu MX4: CM12.1 20160218 testing release</title><link>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-9/</link><pubDate>Thu, 25 Feb 2016 05:00:00 +0800</pubDate><guid>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-9/</guid><description>&lt;h2 id="disclaimer-and-acknowledgements">Disclaimer and acknowledgements&lt;/h2>
+&lt;p>&lt;strong>All your actions with your phone are at your own risk; the author of this
+ROM is not liable.&lt;/strong>&lt;/p>
+&lt;p>This ROM is compiled from CyanogenMod 12.1 sources with own modifications
+(which are open-sourced on GitHub). I&amp;rsquo;d like to acknowledge the following
+people for their respective efforts:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://4pda.ru/forum/index.php?showuser=4461476">kirill8000&lt;/a> and &lt;a href="http://4pda.ru/forum/index.php?showuser=610367">kkk4&lt;/a> for unlocking bootloader of ordinary MX4&amp;rsquo;s&lt;/li>
+&lt;li>&lt;a href="https://github.com/axet">@axet&lt;/a> and &lt;a href="https://github.com/fire855">@fire855&lt;/a> for the general MTK porting efforts&lt;/li>
+&lt;li>&lt;a href="https://github.com/DerTeufel">@DerTeufel&lt;/a> for the information regarding to the MTK GPS implementation&lt;/li>
+&lt;li>cofface&amp;rsquo;s CWM recovery&lt;/li>
+&lt;li>Daxiaamu&amp;rsquo;s one-key bootloader unlocking app (in Chinese)&lt;/li>
+&lt;li>Bugfixes and various contributions from @ccfxny (&lt;a href="http://weibo.com/ccfxny">Weibo&lt;/a>, &lt;a href="https://github.com/ccfxny">GitHub&lt;/a>)&lt;/li>
+&lt;/ul>
+&lt;h2 id="announcement-changelog">Announcement changelog&lt;/h2>
+&lt;p>&lt;em>NOTE: All times in this announcement are UTC+8.&lt;/em>&lt;/p></description></item><item><title>CyanogenMod for Meizu MX4: CM12.1 20151015 testing release</title><link>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-5/</link><pubDate>Fri, 16 Oct 2015 04:00:00 +0800</pubDate><guid>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-5/</guid><description>&lt;h2 id="disclaimer-and-acknowledgements">Disclaimer and acknowledgements&lt;/h2>
+&lt;p>&lt;strong>All your actions with your phone are at your own risk; the author of this
+ROM is not liable.&lt;/strong>&lt;/p>
+&lt;p>This ROM is compiled from CyanogenMod 12.1 sources with own modifications
+(which are open-sourced on GitHub). I&amp;rsquo;d like to acknowledge the following
+people for their respective efforts:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://4pda.ru/forum/index.php?showuser=4461476">kirill8000&lt;/a> and &lt;a href="http://4pda.ru/forum/index.php?showuser=610367">kkk4&lt;/a> for unlocking bootloader of ordinary MX4&amp;rsquo;s&lt;/li>
+&lt;li>&lt;a href="https://github.com/axet">@axet&lt;/a> and &lt;a href="https://github.com/fire855">@fire855&lt;/a> for the general MTK porting efforts&lt;/li>
+&lt;li>&lt;a href="https://github.com/DerTeufel">@DerTeufel&lt;/a> for the information regarding to the MTK GPS implementation&lt;/li>
+&lt;li>cofface&amp;rsquo;s CWM recovery&lt;/li>
+&lt;li>Daxiaamu&amp;rsquo;s one-key bootloader unlocking app (in Chinese)&lt;/li>
+&lt;/ul>
+&lt;h2 id="announcement-changelog">Announcement changelog&lt;/h2>
+&lt;p>&lt;em>NOTE: All times in this announcement are UTC+8.&lt;/em>&lt;/p></description></item><item><title>CyanogenMod for Meizu MX4: CM12.1 20151009 testing release</title><link>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-4/</link><pubDate>Sat, 10 Oct 2015 04:00:00 +0800</pubDate><guid>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-4/</guid><description>&lt;h2 id="disclaimer-and-acknowledgements">Disclaimer and acknowledgements&lt;/h2>
+&lt;p>&lt;strong>All your actions with your phone are at your own risk; the author of this
+ROM is not liable.&lt;/strong>&lt;/p>
+&lt;p>This ROM is compiled from CyanogenMod 12.1 sources with own modifications
+(which are open-sourced on GitHub). I&amp;rsquo;d like to acknowledge the following
+people for their respective efforts:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://4pda.ru/forum/index.php?showuser=4461476">kirill8000&lt;/a> and &lt;a href="http://4pda.ru/forum/index.php?showuser=610367">kkk4&lt;/a> for unlocking bootloader of ordinary MX4&amp;rsquo;s&lt;/li>
+&lt;li>&lt;a href="https://github.com/axet">@axet&lt;/a> and &lt;a href="https://github.com/fire855">@fire855&lt;/a> for the general MTK porting efforts&lt;/li>
+&lt;li>&lt;a href="https://github.com/DerTeufel">@DerTeufel&lt;/a> for the information regarding to the MTK GPS implementation&lt;/li>
+&lt;li>cofface&amp;rsquo;s CWM recovery&lt;/li>
+&lt;li>Daxiaamu&amp;rsquo;s one-key bootloader unlocking app (in Chinese)&lt;/li>
+&lt;/ul>
+&lt;h2 id="changelog">Changelog&lt;/h2>
+&lt;ul>
+&lt;li>2015/10/10 04:00 First (translated) release&lt;/li>
+&lt;/ul>
+&lt;h2 id="changes-since-last-release">Changes since last release&lt;/h2>
+&lt;ul>
+&lt;li>Synced with upstream sources as of 2015/10/09, with security updates merged&lt;/li>
+&lt;li>Blobs and prebuilt kernel synced to Flyme 4.5.6A&lt;/li>
+&lt;li>Disabled button backlight&lt;/li>
+&lt;li>Fixed HSPA+ connectivity&lt;/li>
+&lt;/ul>
+&lt;h2 id="known-bugs-and-limitations">Known bugs and limitations&lt;/h2>
+&lt;ul>
+&lt;li>Proximity sensor not properly working in some circumstances&lt;/li>
+&lt;li>Unable to revert from setting USB option to Charging-only&lt;/li>
+&lt;li>Audio is not properly re-routed on connecting Bluetooth audio&lt;/li>
+&lt;li>Unable to pair with some Bluetooth (BLE?) devices&lt;/li>
+&lt;li>FLAC decoding and playback is not supported&lt;/li>
+&lt;li>etc.&lt;/li>
+&lt;/ul>
+&lt;h2 id="downloading">Downloading&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://mega.nz/#F!p98B2AyK!QMeCacSnFZBzBIPlaNtiVQ">MEGA&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Checksums:&lt;/p></description></item><item><title>CyanogenMod for Meizu MX4: CM12.1 20151005 testing release</title><link>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-3/</link><pubDate>Tue, 06 Oct 2015 17:15:00 +0800</pubDate><guid>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/cm-12.1-userdebug-3/</guid><description>&lt;h2 id="disclaimer-and-acknowledgements">Disclaimer and acknowledgements&lt;/h2>
+&lt;p>&lt;strong>All your actions with your phone are at your own risk; the author of this
+ROM is not liable.&lt;/strong>&lt;/p>
+&lt;p>This ROM is compiled from CyanogenMod 12.1 sources with own modifications
+(which are open-sourced on GitHub). I&amp;rsquo;d like to acknowledge the following
+people for their respective efforts:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/axet">@axet&lt;/a> and &lt;a href="https://github.com/fire855">@fire855&lt;/a> for the general MTK porting efforts&lt;/li>
+&lt;li>&lt;a href="https://github.com/DerTeufel">@DerTeufel&lt;/a> for the information regarding to the MTK GPS implementation&lt;/li>
+&lt;/ul>
+&lt;h2 id="changelog">Changelog&lt;/h2>
+&lt;ul>
+&lt;li>2015/10/06 17:15 First (translated) release&lt;/li>
+&lt;/ul>
+&lt;h2 id="bugs-fixed-since-last-release">Bugs fixed since last release&lt;/h2>
+&lt;ul>
+&lt;li>Added incremental (not block-based, however) OTA package&lt;/li>
+&lt;li>Fixed some SIM cards not being recognized and FDD baseband not working&lt;/li>
+&lt;li>Fixed being unable to initialize Wi-Fi hotspot (kludgy; more elegant solution pending)&lt;/li>
+&lt;li>Fixed PLMN name &lt;code>UNICOM&lt;/code> not being correctly localized as China Unicom&lt;/li>
+&lt;li>Fixed Trebuchet crashing on long-pressing app icon when quick search bar is not present&lt;/li>
+&lt;li>Fixed LTE being not selectable as preferred network in Settings app&lt;/li>
+&lt;/ul>
+&lt;h2 id="known-bugs-and-limitations">Known bugs and limitations&lt;/h2>
+&lt;ul>
+&lt;li>FDD baseband cannot attach to UMTS networks&lt;/li>
+&lt;li>Proximity sensor not properly working in some circumstances&lt;/li>
+&lt;li>Unable to revert from setting USB option to Charging-only&lt;/li>
+&lt;li>Audio is not properly re-routed on connecting Bluetooth audio&lt;/li>
+&lt;li>Unable to pair with some Bluetooth (BLE?) devices&lt;/li>
+&lt;li>FLAC decoding and playback is not supported&lt;/li>
+&lt;li>etc.&lt;/li>
+&lt;/ul>
+&lt;h2 id="downloading">Downloading&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://mega.nz/#!tQdwWZ7J!Ky7EBFHpW3g8-9asrse_rrU8Ht3wqe0kE-JdDJ_Zw_o">MEGA&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Currently only builds for Android edition MX4 are available, but phones of the
+Ubuntu Edition should be compatible too.&lt;/p></description></item><item><title>CyanogenMod for Meizu MX4: FAQ #1</title><link>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/faq/</link><pubDate>Mon, 14 Sep 2015 16:35:00 +0800</pubDate><guid>https://blog.xen0n.name/en/posts/old/meizu-mx4-cm/faq/</guid><description>&lt;h2 id="status-on-bootloader-lock-circumvention">Status on bootloader lock circumvention&lt;/h2>
+&lt;p>As you&amp;rsquo;ve already known, ordinary version of Meizu MX4 has its bootloader
+locked, thus only stock Flyme images are allowed to boot. Due to the
+implementation of MTK &lt;s>secure&lt;/s> restricted boot, the device will be
+hard-bricked if the RSA signature verification failed. You can&amp;rsquo;t even
+recharge the battery as the verification code runs very early, even earlier
+than initialization of peripherals. Flashing using SP Flash Tool wouldn&amp;rsquo;t
+work either because the Boot ROM (BROM) is locked on the hardware level.&lt;/p></description></item></channel></rss>
